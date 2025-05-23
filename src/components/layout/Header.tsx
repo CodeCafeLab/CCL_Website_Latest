@@ -25,7 +25,6 @@ export default function Header() {
 
   // Since defaultTheme is "dark" and enableSystem is false, resolvedTheme will be "dark".
   // This logic will consistently pick the dark logo.
-  // No need to check theme if only dark mode is supported
   const logoSrc = "/codecafe_logo_dark.png";
   const logoAlt = "CodeCafe Lab Logo Dark";
 
@@ -35,8 +34,8 @@ export default function Header() {
     // to prevent hydration mismatch if the logo depends on the theme.
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2 py-2" aria-label="CodeCafe Lab Home">
+        <div className="container mx-auto flex h-20 items-center justify-between px-4">
+          <div className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
             {/* Placeholder for logo to avoid layout shift */}
             <div style={{ width: 171, height: 43 }} />
           </div>
@@ -55,8 +54,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 py-2" aria-label="CodeCafe Lab Home">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+        <Link href="/" className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
           <Image 
             src={logoSrc}
             alt={logoAlt}
