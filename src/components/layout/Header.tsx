@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image"; // Import next/image
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
@@ -10,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import { LogoIcon } from "@/components/icons/LogoIcon"; // Import the new LogoIcon
 
 export default function Header() {
   const pathname = usePathname();
@@ -32,7 +32,15 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
-          <LogoIcon className="h-8 w-auto" /> {/* Use LogoIcon here */}
+          {/* Use next/image for the logo */}
+          <Image 
+            src="/logo.png" 
+            alt="CodeCafe Lab Logo" 
+            width={171} 
+            height={43} 
+            priority 
+            data-ai-hint="company logo"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -64,7 +72,14 @@ export default function Header() {
             <SheetContent side="right" className="w-[300px] sm:w-[300px] p-0">
               <SheetHeader className="p-4 border-b">
                 <SheetTitle className="flex items-center gap-2">
-                  <LogoIcon className="h-7 w-auto" /> {/* Use LogoIcon in mobile sheet title */}
+                   {/* Use next/image for the logo in mobile sheet */}
+                  <Image 
+                    src="/logo.png" 
+                    alt="CodeCafe Lab Logo" 
+                    width={140} // Slightly smaller for the sheet
+                    height={35}
+                    data-ai-hint="company logo"
+                  />
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-2 p-4">
