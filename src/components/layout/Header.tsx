@@ -6,7 +6,7 @@ import Image from "next/image"; // Import next/image
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
-// import { ThemeToggle } from "@/components/ThemeToggle"; // ThemeToggle removed
+// ThemeToggle removed
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -23,13 +23,20 @@ export default function Header() {
     setIsMounted(true);
   }, []);
 
+  // Since defaultTheme is "dark" and enableSystem is false, resolvedTheme will be "dark".
+  // This logic will consistently pick the dark logo.
+  // No need to check theme if only dark mode is supported
+  const logoSrc = "/codecafe_logo_dark.png";
+  const logoAlt = "CodeCafe Lab Logo Dark";
+
+
   if (!isMounted) {
     // Render a placeholder or null until the theme is determined client-side
     // to prevent hydration mismatch if the logo depends on the theme.
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
+          <div className="flex items-center gap-2 py-2" aria-label="CodeCafe Lab Home">
             {/* Placeholder for logo to avoid layout shift */}
             <div style={{ width: 171, height: 43 }} />
           </div>
@@ -46,16 +53,10 @@ export default function Header() {
 
   const closeSheet = () => setIsSheetOpen(false);
 
-  // Since defaultTheme is "dark" and enableSystem is false, resolvedTheme will be "dark".
-  // This logic will consistently pick the dark logo.
-  const logoSrc = resolvedTheme === 'dark' ? "/codecafe_logo_dark.png" : "/codecafe_logo_light.png";
-  const logoAlt = resolvedTheme === 'dark' ? "CodeCafe Lab Logo Dark" : "CodeCafe Lab Logo Light";
-
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
+        <Link href="/" className="flex items-center gap-2 py-2" aria-label="CodeCafe Lab Home">
           <Image 
             src={logoSrc}
             alt={logoAlt}
