@@ -1,3 +1,159 @@
-export default function Home() {
-  return <></>;
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import AnimatedHeroText from '@/components/home/AnimatedHeroText';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SERVICES_DATA, PRODUCTS_DATA } from '@/lib/constants';
+import { ArrowRight, Bot, Users, Zap } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'Welcome to CodeCafe Lab - Where Innovation, AI, and Creativity meet to brew exceptional software solutions.',
+};
+
+export default function HomePage() {
+  const heroTexts = [
+    "Brewed Software with AI Precision",
+    "Innovative Solutions for a Digital World",
+    "Your Partner in Tech Excellence",
+  ];
+
+  return (
+    <div className="space-y-16 md:space-y-24">
+      {/* Hero Section */}
+      <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden bg-card shadow-lg">
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-5" 
+          style={{ backgroundImage: "url('https://placehold.co/1200x600/000000/ffffff.png?text=Tech+Background')", backgroundBlendMode: 'multiply' }}
+          data-ai-hint="tech background"
+        ></div>
+        <div className="relative z-10 container mx-auto px-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <AnimatedHeroText texts={heroTexts} />
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            CodeCafe Lab blends innovation, AI, and creativity to deliver cutting-edge software solutions tailored for your success.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Link href="/consultancy">Get a Quote <ArrowRight className="ml-2 h-5 w-5" /></Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/ai">Talk to Our AI <Bot className="ml-2 h-5 w-5" /></Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Overview */}
+      <section>
+        <h2 className="text-3xl font-bold text-center mb-12">Our Expertise</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {SERVICES_DATA.slice(0, 3).map((service) => (
+            <Card key={service.title} className="hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <div className="flex items-center gap-4 mb-2">
+                  <service.icon className="h-10 w-10 text-primary" />
+                  <CardTitle className="text-2xl">{service.title}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{service.description}</CardDescription>
+                <Button variant="link" asChild className="mt-4 px-0 text-primary">
+                  <Link href="/services">Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured AI Solutions */}
+      <section className="bg-card p-8 md:p-12 rounded-xl shadow-lg">
+        <div className="text-center mb-12">
+            <Zap className="h-12 w-12 text-accent mx-auto mb-4" />
+            <h2 className="text-3xl font-bold">Featured AI Innovations</h2>
+            <p className="text-muted-foreground mt-2">Explore our cutting-edge AI-powered products.</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {PRODUCTS_DATA.slice(0, 2).map((product) => (
+             <Card key={product.id} className="flex flex-col md:flex-row items-center gap-6 p-6 hover:shadow-xl transition-shadow duration-300">
+              <Image 
+                src={product.imageUrl} 
+                alt={product.name} 
+                width={150} 
+                height={100} 
+                className="rounded-md object-cover w-full md:w-[150px] h-auto md:h-[100px]" 
+                data-ai-hint={product.dataAiHint}
+              />
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-primary">{product.name}</h3>
+                <p className="text-sm text-muted-foreground mt-1 mb-3">{product.description}</p>
+                <Button variant="outline" asChild size="sm">
+                  <Link href={`/products#${product.id}`}>Discover <Bot className="ml-2 h-4 w-4" /></Link>
+                </Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+            <Button asChild size="lg" variant="ghost" className="text-accent hover:text-accent/90 hover:bg-accent/10">
+                <Link href="/ai">Explore All AI Solutions <ArrowRight className="ml-2 h-5 w-5"/></Link>
+            </Button>
+        </div>
+      </section>
+
+      {/* Testimonial Slider Placeholder */}
+      <section>
+        <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          {[1, 2].map((i) => (
+            <Card key={i} className="bg-secondary/50 p-6">
+              <CardContent className="p-0">
+                <div className="flex items-center mb-4">
+                  <Image src={`https://placehold.co/60x60.png`} alt={`Client ${i}`} width={60} height={60} className="rounded-full mr-4" data-ai-hint="person avatar" />
+                  <div>
+                    <h4 className="font-semibold">Client Name {i}</h4>
+                    <p className="text-sm text-muted-foreground">CEO, Company {i}</p>
+                  </div>
+                </div>
+                <p className="text-muted-foreground italic">"CodeCafe Lab delivered an outstanding product that exceeded our expectations. Their team is professional, skilled, and a pleasure to work with."</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Client Logos Section Placeholder */}
+      <section>
+        <h2 className="text-3xl font-bold text-center mb-12">Trusted By</h2>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+          {[...Array(5)].map((_, i) => (
+            <Image 
+              key={i} 
+              src={`https://placehold.co/120x60/ffffff/cccccc.png?text=Client${i+1}`} 
+              alt={`Client Logo ${i+1}`} 
+              width={120} 
+              height={60} 
+              className="opacity-70 hover:opacity-100 transition-opacity duration-300"
+              data-ai-hint="company logo" 
+            />
+          ))}
+        </div>
+      </section>
+
+       {/* Call to Action section */}
+       <section className="text-center py-16 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl">
+        <Users className="h-12 w-12 text-primary mx-auto mb-4" />
+        <h2 className="text-3xl font-bold mb-4">Ready to Brew Your Next Big Idea?</h2>
+        <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
+          Let&apos;s collaborate to build innovative solutions that drive your business forward.
+        </p>
+        <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+          <Link href="/contact">Start a Project <ArrowRight className="ml-2 h-5 w-5" /></Link>
+        </Button>
+      </section>
+    </div>
+  );
 }
