@@ -40,9 +40,9 @@ export default function Header() {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          <div className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
-            <div style={{ width: 171, height: 43 }} />
-          </div>
+          <Link href="/" className="flex items-center" aria-label="CodeCafe Lab Home">
+            <div style={{ width: 171, height: 43 }} /> {/* Placeholder for logo size */}
+          </Link>
           <div className="flex items-center gap-4">
              <Button variant="outline" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />
@@ -66,8 +66,10 @@ export default function Header() {
           onClick={closeSheet}
           className={cn(
             commonClasses,
-            "block px-3 py-2 rounded-md text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-             pathname === linkHref ? "bg-accent text-accent-foreground" : "text-foreground"
+            "block px-3 py-2 rounded-md text-base font-medium transition-colors",
+            pathname === linkHref 
+              ? "bg-white text-black" 
+              : "text-foreground hover:bg-white hover:text-black"
           )}
         >
           {service.icon && <service.icon className="h-5 w-5" />}
@@ -76,6 +78,8 @@ export default function Header() {
       );
     }
 
+    // For desktop DropdownMenuItem, styling is applied on DropdownMenuItem itself.
+    // Link just needs to provide content.
     return (
       <Link href={linkHref} className={commonClasses}>
         {service.icon && <service.icon className="h-4 w-4" />}
@@ -96,7 +100,7 @@ export default function Header() {
             height={43} 
             priority 
             data-ai-hint="company logo"
-            key={logoSrc}
+            key={logoSrc} // Force re-render if src changes, e.g. for theme
           />
         </Link>
 
@@ -109,8 +113,10 @@ export default function Header() {
                   <Button
                     variant="ghost"
                     className={cn(
-                      "flex items-center gap-1 transition-colors hover:text-primary px-3 py-2 text-sm font-medium",
-                      pathname.startsWith(link.href) ? "text-primary" : "text-foreground/60"
+                      "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
+                      pathname.startsWith(link.href) 
+                        ? "bg-white text-black" 
+                        : "text-foreground/60 hover:bg-white hover:text-black"
                     )}
                   >
                     {link.label}
@@ -119,7 +125,16 @@ export default function Header() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-64">
                   {SERVICES_DATA.map((service) => (
-                    <DropdownMenuItem key={service.slug} asChild>
+                    <DropdownMenuItem 
+                      key={service.slug} 
+                      asChild
+                      className={cn(
+                        "focus:bg-white focus:text-black", // For keyboard focus
+                        pathname === `/services#${service.slug}`
+                          ? "bg-white text-black" // Active state
+                          : "hover:bg-white hover:text-black" // Hover state
+                      )}
+                    >
                       {renderServiceSubMenuItems(service)}
                     </DropdownMenuItem>
                   ))}
@@ -130,8 +145,10 @@ export default function Header() {
                 <Link
                   href={link.href}
                   className={cn(
-                    "transition-colors hover:text-primary px-3 py-2 text-sm font-medium",
-                    pathname === link.href ? "text-primary" : "text-foreground/60"
+                    "transition-colors px-3 py-2 text-sm font-medium",
+                    pathname === link.href 
+                      ? "bg-white text-black" 
+                      : "text-foreground/60 hover:bg-white hover:text-black"
                   )}
                 >
                   {link.label}
@@ -170,8 +187,10 @@ export default function Header() {
                       <AccordionItem value="services" className="border-b-0">
                         <AccordionTrigger
                           className={cn(
-                            "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground no-underline",
-                             pathname.startsWith(link.href) ? "bg-accent text-accent-foreground" : "text-foreground"
+                            "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
+                            pathname.startsWith(link.href)
+                              ? "bg-white text-black"
+                              : "text-foreground hover:bg-white hover:text-black"
                           )}
                         >
                           <div className="flex items-center gap-3">
@@ -194,8 +213,10 @@ export default function Header() {
                       href={link.href}
                       onClick={closeSheet}
                       className={cn(
-                        "block px-3 py-2 rounded-md text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-                        pathname === link.href ? "bg-accent text-accent-foreground" : "text-foreground"
+                        "block px-3 py-2 rounded-md text-base font-medium transition-colors",
+                        pathname === link.href 
+                          ? "bg-white text-black" 
+                          : "text-foreground hover:bg-white hover:text-black"
                       )}
                     >
                       <div className="flex items-center gap-3">
