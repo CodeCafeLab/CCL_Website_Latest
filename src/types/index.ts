@@ -6,12 +6,20 @@ export interface NavItem {
   icon?: LucideIcon;
 }
 
-export interface Service {
+export interface SubService {
   title: string;
-  description: string;
+  slug: string; // e.g., "ui-ux-design"
+  description?: string;
+}
+
+export interface ServiceMenuItem {
+  title: string;
+  slug: string; // e.g., "ideation-design"
   icon: LucideIcon;
-  image: string;
-  dataAiHint: string;
+  subServices: SubService[];
+  description?: string; // Optional: for the main service page if needed
+  image?: string; // Optional: for the main service page if needed
+  dataAiHint?: string; // Optional: for the main service page if needed
 }
 
 export interface Product {

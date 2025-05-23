@@ -1,76 +1,292 @@
 
-import type { NavItem, Service, Product, TimelineEvent, BlogPost, BlogCategory } from '@/types';
-import { Code, Smartphone, Brain, Cloud, Palette, Briefcase, Newspaper, Users, Bot, HomeIcon, Layers, Building2, HelpCircle, BriefcaseBusiness, FileText, Globe, MessageSquare } from 'lucide-react';
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory } from '@/types';
+import { 
+  Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, 
+  Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig
+} from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
 
 export const NAV_LINKS: NavItem[] = [
   { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/services", label: "Services", icon: Layers }, // Main link for Services
+  { href: "/services", label: "Services", icon: Layers },
   { href: "/company", label: "Company", icon: Building2 },
   { href: "/products", label: "Products", icon: Smartphone },
   { href: "/ai", label: "AI", icon: Bot },
-  { href: "/blog", label: "Resources", icon: FileText }, // Changed from /resources to /blog as per previous step
+  { href: "/blog", label: "Resources", icon: FileText },
 ];
 
-export const SERVICES_DATA: Service[] = [
+// New structured SERVICES_DATA for multi-level menu
+export const SERVICES_DATA: ServiceMenuItem[] = [
   {
-    title: "Custom Software Development",
-    slug: "custom-software-development",
-    description: "Tailored software solutions to meet your unique business needs, built with cutting-edge technologies.",
-    icon: Code,
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Custom+Software",
-    dataAiHint: "custom software",
+    title: "Ideation & Design",
+    slug: "ideation-design",
+    icon: Lightbulb,
+    subServices: [
+      { title: "UI/UX Design", slug: "ui-ux-design" },
+      { title: "Product Roadmap", slug: "product-roadmap" },
+    ],
   },
   {
     title: "Mobile App Development",
     slug: "mobile-app-development",
-    description: "Engaging and high-performance mobile applications for iOS and Android platforms.",
     icon: Smartphone,
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Mobile+App",
-    dataAiHint: "mobile app",
+    subServices: [
+      { title: "Android App Development", slug: "android-app-development" },
+      { title: "iOS App Development", slug: "ios-app-development" },
+      { title: "Cross-Platform App Development", slug: "cross-platform-app-development" },
+    ],
+  },
+  {
+    title: "Web Development",
+    slug: "web-development",
+    icon: Code, // Using 'Code' as 'Globe' was used for 'Web App Development' before
+    subServices: [
+      { title: "Website Development", slug: "website-development" },
+      { title: "Web App Development", slug: "web-app-development" },
+    ],
+  },
+  {
+    title: "AI Development",
+    slug: "ai-development",
+    icon: Cpu,
+    subServices: [
+      { title: "AI Consulting", slug: "ai-consulting" },
+      { title: "AI Agent Development", slug: "ai-agent-development" },
+      { title: "Adaptive AI Development", slug: "adaptive-ai-development" },
+      { title: "AI Chatbot Development", slug: "ai-chatbot-development" },
+    ],
+  },
+  {
+    title: "Software Development",
+    slug: "software-development",
+    icon: Server,
+    subServices: [
+      { title: "Custom Software Development", slug: "custom-software-development" },
+      { title: "Enterprise Software Development", slug: "enterprise-software-development" },
+    ],
+  },
+  {
+    title: "Blockchain Services",
+    slug: "blockchain-services",
+    icon: Gem,
+    subServices: [
+      { title: "ICO Development", slug: "ico-development" },
+      { title: "Wallet Development", slug: "wallet-development" },
+      { title: "Smart Contract Development", slug: "smart-contract-development" },
+      { title: "NFT Development", slug: "nft-development" },
+      { title: "DeFi Development", slug: "defi-development" },
+      { title: "Asset Tokenization", slug: "asset-tokenization" },
+      { title: "Real Estate Tokenization", slug: "real-estate-tokenization" },
+    ],
+  },
+];
+
+// For the main /services page, you might want a flat list or a different structure.
+// This is the old flat structure, kept for reference or if needed on the services page itself.
+// You can choose to remove this or adapt it.
+export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
+  {
+    title: "UI/UX Design",
+    slug: "ui-ux-design",
+    icon: Palette,
+    subServices: [],
+    description: "Intuitive and visually appealing user interfaces that provide exceptional user experiences.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=UI+UX+Design",
+    dataAiHint: "ui ux",
+  },
+  {
+    title: "Product Roadmap",
+    slug: "product-roadmap",
+    icon: BarChartBig,
+    subServices: [],
+    description: "Strategic planning and roadmap development to guide your product's journey from concept to market success.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Product+Roadmap",
+    dataAiHint: "product strategy",
+  },
+  {
+    title: "Android App Development",
+    slug: "android-app-development",
+    icon: Smartphone, // Placeholder, specific Android icon if available
+    subServices: [],
+    description: "Native Android applications built for performance and a seamless user experience on a wide range of devices.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Android+App",
+    dataAiHint: "android development",
+  },
+  {
+    title: "iOS App Development",
+    slug: "ios-app-development",
+    icon: Smartphone, // Placeholder, specific iOS icon if available
+    subServices: [],
+    description: "Elegant and powerful iOS applications designed to meet Apple's high standards and delight users.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=iOS+App",
+    dataAiHint: "ios development",
+  },
+  {
+    title: "Cross-Platform App Development",
+    slug: "cross-platform-app-development",
+    icon: Smartphone,
+    subServices: [],
+    description: "Efficiently build and deploy applications across multiple platforms (iOS, Android, Web) from a single codebase.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Cross+Platform",
+    dataAiHint: "cross platform",
+  },
+  {
+    title: "Website Development",
+    slug: "website-development",
+    icon: Code,
+    subServices: [],
+    description: "Beautiful, responsive, and high-performing websites that serve as the digital face of your brand.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Website+Dev",
+    dataAiHint: "website creation",
   },
   {
     title: "Web App Development",
     slug: "web-app-development",
-    description: "Modern and responsive web applications to elevate your online presence and functionality.",
-    icon: Globe,
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Web+App",
+    icon: DatabaseZap,
+    subServices: [],
+    description: "Complex and scalable web applications with rich interactivity and robust backend systems.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Web+Application",
     dataAiHint: "web application",
   },
   {
-    title: "AI & Automation Solutions",
-    slug: "ai-automation-solutions",
-    description: "Leverage AI and Machine Learning to automate processes, gain insights, and drive innovation.",
-    icon: Brain,
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Automation",
-    dataAiHint: "artificial intelligence automation",
+    title: "AI Consulting",
+    slug: "ai-consulting",
+    icon: MessageCircle,
+    subServices: [],
+    description: "Expert guidance to help you identify and implement AI solutions that drive business value and innovation.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=AI+Consulting",
+    dataAiHint: "ai strategy",
   },
+  {
+    title: "AI Agent Development",
+    slug: "ai-agent-development",
+    icon: Bot,
+    subServices: [],
+    description: "Development of intelligent AI agents capable of autonomous decision-making and task execution.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Agents",
+    dataAiHint: "intelligent agents",
+  },
+  {
+    title: "Adaptive AI Development",
+    slug: "adaptive-ai-development",
+    icon: Brain,
+    subServices: [],
+    description: "AI systems that learn and adapt over time, continuously improving performance and responsiveness.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Adaptive+AI",
+    dataAiHint: "learning ai",
+  },
+  {
+    title: "AI Chatbot Development",
+    slug: "ai-chatbot-development",
+    icon: MessageCircle, // Re-using, can be more specific
+    subServices: [],
+    description: "Sophisticated AI-powered chatbots for customer service, engagement, and process automation.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Chatbots",
+    dataAiHint: "chatbot solutions",
+  },
+  {
+    title: "Custom Software Development",
+    slug: "custom-software-development",
+    icon: PenTool,
+    subServices: [],
+    description: "Bespoke software solutions meticulously crafted to meet your unique business requirements and objectives.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Custom+Software",
+    dataAiHint: "bespoke software",
+  },
+  {
+    title: "Enterprise Software Development",
+    slug: "enterprise-software-development",
+    icon: Building2,
+    subServices: [],
+    description: "Robust and scalable software solutions designed for large organizations to optimize operations and drive growth.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Enterprise+Software",
+    dataAiHint: "enterprise solutions",
+  },
+  {
+    title: "ICO Development",
+    slug: "ico-development",
+    icon: Gem, // Placeholder, can be more specific
+    subServices: [],
+    description: "End-to-end Initial Coin Offering development services, from token creation to launch.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=ICO+Dev",
+    dataAiHint: "cryptocurrency ico",
+  },
+  {
+    title: "Wallet Development",
+    slug: "wallet-development",
+    icon: ShieldCheck,
+    subServices: [],
+    description: "Secure and user-friendly cryptocurrency wallet development for various blockchain platforms.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Crypto+Wallet",
+    dataAiHint: "crypto wallet",
+  },
+  {
+    title: "Smart Contract Development",
+    slug: "smart-contract-development",
+    icon: FileText,
+    subServices: [],
+    description: "Development of self-executing smart contracts for automating agreements and processes on the blockchain.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Smart+Contracts",
+    dataAiHint: "blockchain contract",
+  },
+  {
+    title: "NFT Development",
+    slug: "nft-development",
+    icon: Gem, // Re-using
+    subServices: [],
+    description: "Creation of Non-Fungible Tokens (NFTs) and marketplaces for digital collectibles and assets.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=NFT+Dev",
+    dataAiHint: "nft marketplace",
+  },
+  {
+    title: "DeFi Development",
+    slug: "defi-development",
+    icon: GitBranch,
+    subServices: [],
+    description: "Building decentralized finance (DeFi) applications for lending, borrowing, trading, and more.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=DeFi+Apps",
+    dataAiHint: "decentralized finance",
+  },
+  {
+    title: "Asset Tokenization",
+    slug: "asset-tokenization",
+    icon: Layers,
+    subServices: [],
+    description: "Transforming real-world assets into digital tokens on the blockchain for increased liquidity and accessibility.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Asset+Tokenization",
+    dataAiHint: "digital assets",
+  },
+  {
+    title: "Real Estate Tokenization",
+    slug: "real-estate-tokenization",
+    icon: Building2, // Re-using
+    subServices: [],
+    description: "Tokenizing real estate assets to enable fractional ownership and new investment opportunities.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Real+Estate+Tokens",
+    dataAiHint: "property tokenization",
+  },
+   // Adding a few from the old list that might not be directly in the new structure for completeness on the services page
   {
     title: "Cloud & DevOps Services",
     slug: "cloud-devops-services",
     description: "Streamline your development lifecycle and scale your infrastructure with our robust Cloud and DevOps solutions.",
     icon: Cloud,
+    subServices: [],
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Cloud+DevOps",
     dataAiHint: "cloud devops",
   },
   {
-    title: "UI/UX Design",
-    slug: "ui-ux-design",
-    description: "Intuitive and visually appealing user interfaces that provide exceptional user experiences.",
-    icon: Palette,
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=UI+UX+Design",
-    dataAiHint: "ui ux",
-  },
-  {
-    title: "Tech Consultancy",
+    title: "Tech Consultancy", // Already somewhat covered by AI Consulting
     slug: "tech-consultancy",
     description: "Expert guidance to navigate complex technology challenges and strategize for digital transformation.",
-    icon: MessageSquare, // Using MessageSquare as it's on consultancy page
+    icon: Users, 
+    subServices: [],
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Tech+Consultancy",
     dataAiHint: "tech consultation",
   },
 ];
+
 
 export const PRODUCTS_DATA: Product[] = [
   {
@@ -126,6 +342,9 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
   { id: "ui-ux", name: "UI/UX" },
   { id: "devops", name: "DevOps" },
   { id: "company-news", name: "Company News" },
+  { id: "blockchain", name: "Blockchain"},
+  { id: "case-studies", name: "Case Studies"},
+  { id: "tutorials", name: "Tutorials"},
 ];
 
 export const BLOG_POSTS_DATA: BlogPost[] = [
@@ -177,5 +396,40 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     content: "Full blog post content about CodeCafe Lab's journey in AI...",
     tags: ["CodeCafe Lab", "AI Innovation", "Company Story"],
   },
+  {
+    id: "5",
+    title: "Deep Dive into DeFi Development",
+    slug: "deep-dive-defi-development",
+    date: "2024-08-01",
+    excerpt: "Exploring the core concepts and challenges of building Decentralized Finance applications.",
+    category: "blockchain",
+    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=DeFi+Deep+Dive",
+    dataAiHint: "decentralized finance blockchain",
+    content: "Full blog post content about DeFi development...",
+    tags: ["DeFi", "Blockchain", "Smart Contracts", "Ethereum"],
+  },
+  {
+    id: "6",
+    title: "Case Study: AI-Powered Logistics Optimization",
+    slug: "case-study-ai-logistics",
+    date: "2024-08-05",
+    excerpt: "How CodeCafe Lab helped a major logistics firm reduce costs and improve efficiency using AI.",
+    category: "case-studies",
+    imageUrl: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Logistics+Case+Study",
+    dataAiHint: "logistics optimization ai",
+    content: "Detailed case study on AI in logistics...",
+    tags: ["AI", "Case Study", "Logistics", "Optimization", "Machine Learning"],
+  },
+  {
+    id: "7",
+    title: "Getting Started with Next.js: A Beginner's Tutorial",
+    slug: "nextjs-beginners-tutorial",
+    date: "2024-08-10",
+    excerpt: "A step-by-step guide to building your first web application with Next.js.",
+    category: "tutorials",
+    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=NextJS+Tutorial",
+    dataAiHint: "nextjs tutorial web",
+    content: "Comprehensive tutorial on Next.js for beginners...",
+    tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
+  },
 ];
-

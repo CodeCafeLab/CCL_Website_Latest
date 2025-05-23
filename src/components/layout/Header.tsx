@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import type { Service } from '@/types';
+import type { ServiceMenuItem, SubService } from '@/types';
 
 export default function Header() {
   const pathname = usePathname();
@@ -33,21 +33,19 @@ export default function Header() {
     setIsMounted(true);
   }, []);
 
-  const logoSrc = "/codecafe_logo_dark.png";
+  // As dark mode is default, only dark logo is needed.
+  const logoSrc = "/codecafe_logo_dark.png"; 
   const logoAlt = "CodeCafe Lab Logo Dark";
 
   if (!isMounted) {
+    // Skeleton loader for SSR to prevent layout shift
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          <Link href="/" className="flex items-center" aria-label="CodeCafe Lab Home">
-            <div style={{ width: 171, height: 43 }} /> {/* Placeholder for logo size */}
-          </Link>
-          <div className="flex items-center gap-4">
-             <Button variant="outline" size="icon" className="md:hidden">
-                <Menu className="h-6 w-6" />
-             </Button>
-          </div>
+          <div style={{ width: 171, height: 43 }} /> {/* Placeholder for logo size */}
+          <Button variant="outline" size="icon" className="md:hidden">
+            <Menu className="h-6 w-6" />
+          </Button>
         </div>
       </header>
     );
@@ -55,36 +53,48 @@ export default function Header() {
 
   const closeSheet = () => setIsSheetOpen(false);
 
-  const renderServiceSubMenuItems = (service: Service, isMobile: boolean = false) => {
-    const commonClasses = "flex items-center gap-2 w-full text-left";
-    const linkHref = `/services#${service.slug}`;
-    
+  const renderSubServiceLink = (categorySlug: string, subService: SubService, isMobile: boolean = false) => {
+    // For now, all sub-services link to sections on the main /services page.
+    // Ensure subService.slug is unique across all categories for this to work perfectly,
+    // or adjust the href to be like `/services/${categorySlug}#${subService.slug}` if sub-pages per category are planned.
+    const href = `/services#${subService.slug}`;
+    const commonClasses = "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors";
+    const activeClass = "bg-white text-black";
+    const hoverClass = "hover:bg-white hover:text-black";
+    const inactiveClass = "text-foreground/80";
+
+    // Check if the current path is for this specific sub-service anchor
+    // Note: this simple check might not be robust enough if pathname includes other queries/hashes
+    const isActive = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
+
+
     if (isMobile) {
       return (
         <Link
-          href={linkHref}
+          href={href}
           onClick={closeSheet}
           className={cn(
             commonClasses,
-            "block px-3 py-2 rounded-md text-base font-medium transition-colors",
-            pathname === linkHref 
-              ? "bg-white text-black" 
-              : "text-foreground hover:bg-white hover:text-black"
+            isActive ? activeClass : cn(inactiveClass, hoverClass)
           )}
         >
-          {service.icon && <service.icon className="h-5 w-5" />}
-          {service.title}
+          {subService.title}
         </Link>
       );
     }
 
-    // For desktop DropdownMenuItem, styling is applied on DropdownMenuItem itself.
-    // Link just needs to provide content.
     return (
-      <Link href={linkHref} className={commonClasses}>
-        {service.icon && <service.icon className="h-4 w-4" />}
-        {service.title}
-      </Link>
+      <DropdownMenuItem 
+        asChild 
+        className={cn(
+          "p-0 focus:bg-transparent focus:text-black", // Override default focus for asChild
+           isActive ? activeClass : cn("focus:bg-white focus:text-black", hoverClass) // Ensure consistent hover/active
+        )}
+      >
+        <Link href={href} className={cn(commonClasses, "text-popover-foreground", isActive ? activeClass : hoverClass)}>
+          {subService.title}
+        </Link>
+      </DropdownMenuItem>
     );
   };
 
@@ -100,7 +110,7 @@ export default function Header() {
             height={43} 
             priority 
             data-ai-hint="company logo"
-            key={logoSrc} // Force re-render if src changes, e.g. for theme
+            key={logoSrc} 
           />
         </Link>
 
@@ -114,7 +124,7 @@ export default function Header() {
                     variant="ghost"
                     className={cn(
                       "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
-                      pathname.startsWith(link.href) 
+                      pathname.startsWith(link.href) || pathname === "/services" // Match /services or /services/*
                         ? "bg-white text-black" 
                         : "text-foreground/60 hover:bg-white hover:text-black"
                     )}
@@ -123,21 +133,24 @@ export default function Header() {
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-64">
-                  {SERVICES_DATA.map((service) => (
-                    <DropdownMenuItem 
-                      key={service.slug} 
-                      asChild
-                      className={cn(
-                        "focus:bg-white focus:text-black", // For keyboard focus
-                        pathname === `/services#${service.slug}`
-                          ? "bg-white text-black" // Active state
-                          : "hover:bg-white hover:text-black" // Hover state
-                      )}
-                    >
-                      {renderServiceSubMenuItems(service)}
-                    </DropdownMenuItem>
-                  ))}
+                <DropdownMenuContent className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border" align="start">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                    {SERVICES_DATA.map((category) => (
+                      <div key={category.slug}>
+                        <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
+                          {category.icon && <category.icon className="h-5 w-5" />}
+                          {category.title}
+                        </h4>
+                        <ul className="space-y-1">
+                          {category.subServices.map((subService) => (
+                            <li key={subService.slug}>
+                              {renderSubServiceLink(category.slug, subService, false)}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
@@ -167,8 +180,8 @@ export default function Header() {
                 <span className="sr-only">Open navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[300px] p-0">
-              <SheetHeader className="p-4 border-b">
+            <SheetContent side="right" className="w-[300px] sm:w-[300px] p-0 bg-background text-foreground">
+              <SheetHeader className="p-4 border-b border-border">
                 <SheetTitle className="flex items-center gap-2">
                   <Image 
                     src={logoSrc} 
@@ -184,11 +197,11 @@ export default function Header() {
                 {NAV_LINKS.map((link) =>
                   link.label === "Services" ? (
                     <Accordion type="single" collapsible key={link.href} className="w-full">
-                      <AccordionItem value="services" className="border-b-0">
+                      <AccordionItem value="services-main" className="border-b-0">
                         <AccordionTrigger
                           className={cn(
                             "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
-                            pathname.startsWith(link.href)
+                             pathname.startsWith(link.href) || pathname === "/services"
                               ? "bg-white text-black"
                               : "text-foreground hover:bg-white hover:text-black"
                           )}
@@ -198,12 +211,28 @@ export default function Header() {
                             {link.label}
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent className="pt-1 pb-0 pl-4">
-                          <div className="flex flex-col space-y-1">
-                            {SERVICES_DATA.map((service) => (
-                               renderServiceSubMenuItems(service, true)
+                        <AccordionContent className="pt-1 pb-0 pl-2 space-y-1">
+                           <Accordion type="multiple" className="w-full">
+                            {SERVICES_DATA.map((category) => (
+                              <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
+                                <AccordionTrigger className={cn(
+                                  "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline",
+                                  "text-foreground/80 hover:bg-white hover:text-black [&[data-state=open]]:bg-white/90 [&[data-state=open]]:text-black"
+                                  // Add active state logic if needed for category trigger
+                                )}>
+                                   <div className="flex items-center gap-2">
+                                    {category.icon && <category.icon className="h-4 w-4" />}
+                                    {category.title}
+                                  </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="pt-1 pb-0 pl-4 space-y-1">
+                                  {category.subServices.map((subService) => (
+                                    renderSubServiceLink(category.slug, subService, true)
+                                  ))}
+                                </AccordionContent>
+                              </AccordionItem>
                             ))}
-                          </div>
+                           </Accordion>
                         </AccordionContent>
                       </AccordionItem>
                     </Accordion>
