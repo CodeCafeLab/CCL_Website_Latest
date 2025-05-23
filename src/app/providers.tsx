@@ -8,7 +8,13 @@ import { Toaster } from "@/components/ui/toaster";
 
 export function Providers({ children, ...props }: ThemeProviderProps & { children: ReactNode }): JSX.Element {
   return (
-    <NextThemesProvider {...props}>
+    <NextThemesProvider 
+      {...props} 
+      attribute="class" 
+      defaultTheme="dark" 
+      enableSystem={false} 
+      disableTransitionOnChange
+    >
       {children}
       <Toaster />
     </NextThemesProvider>

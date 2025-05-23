@@ -6,7 +6,7 @@ import Image from "next/image"; // Import next/image
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
-import { ThemeToggle } from "@/components/ThemeToggle";
+// import { ThemeToggle } from "@/components/ThemeToggle"; // ThemeToggle removed
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -34,7 +34,7 @@ export default function Header() {
             <div style={{ width: 171, height: 43 }} />
           </div>
           <div className="flex items-center gap-4">
-            <ThemeToggle />
+            {/* ThemeToggle removed */}
              <Button variant="outline" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />
              </Button>
@@ -46,8 +46,11 @@ export default function Header() {
 
   const closeSheet = () => setIsSheetOpen(false);
 
+  // Since defaultTheme is "dark" and enableSystem is false, resolvedTheme will be "dark".
+  // This logic will consistently pick the dark logo.
   const logoSrc = resolvedTheme === 'dark' ? "/codecafe_logo_dark.png" : "/codecafe_logo_light.png";
   const logoAlt = resolvedTheme === 'dark' ? "CodeCafe Lab Logo Dark" : "CodeCafe Lab Logo Light";
+
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -81,7 +84,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <ThemeToggle />
+          {/* ThemeToggle removed */}
           {/* Mobile Navigation */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild className="md:hidden">
