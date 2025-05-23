@@ -6,16 +6,17 @@ export const SITE_NAME = "CodeCafe Lab";
 
 export const NAV_LINKS: NavItem[] = [
   { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/services", label: "Services", icon: Layers },
+  { href: "/services", label: "Services", icon: Layers }, // Main link for Services
   { href: "/company", label: "Company", icon: Building2 },
   { href: "/products", label: "Products", icon: Smartphone },
   { href: "/ai", label: "AI", icon: Bot },
-  { href: "/resources", label: "Resources", icon: FileText }, // Points to /blog
+  { href: "/blog", label: "Resources", icon: FileText }, // Changed from /resources to /blog as per previous step
 ];
 
 export const SERVICES_DATA: Service[] = [
   {
     title: "Custom Software Development",
+    slug: "custom-software-development",
     description: "Tailored software solutions to meet your unique business needs, built with cutting-edge technologies.",
     icon: Code,
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Custom+Software",
@@ -23,6 +24,7 @@ export const SERVICES_DATA: Service[] = [
   },
   {
     title: "Mobile App Development",
+    slug: "mobile-app-development",
     description: "Engaging and high-performance mobile applications for iOS and Android platforms.",
     icon: Smartphone,
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=Mobile+App",
@@ -30,6 +32,7 @@ export const SERVICES_DATA: Service[] = [
   },
   {
     title: "Web App Development",
+    slug: "web-app-development",
     description: "Modern and responsive web applications to elevate your online presence and functionality.",
     icon: Globe,
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Web+App",
@@ -37,6 +40,7 @@ export const SERVICES_DATA: Service[] = [
   },
   {
     title: "AI & Automation Solutions",
+    slug: "ai-automation-solutions",
     description: "Leverage AI and Machine Learning to automate processes, gain insights, and drive innovation.",
     icon: Brain,
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Automation",
@@ -44,6 +48,7 @@ export const SERVICES_DATA: Service[] = [
   },
   {
     title: "Cloud & DevOps Services",
+    slug: "cloud-devops-services",
     description: "Streamline your development lifecycle and scale your infrastructure with our robust Cloud and DevOps solutions.",
     icon: Cloud,
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Cloud+DevOps",
@@ -51,6 +56,7 @@ export const SERVICES_DATA: Service[] = [
   },
   {
     title: "UI/UX Design",
+    slug: "ui-ux-design",
     description: "Intuitive and visually appealing user interfaces that provide exceptional user experiences.",
     icon: Palette,
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=UI+UX+Design",
@@ -58,6 +64,7 @@ export const SERVICES_DATA: Service[] = [
   },
   {
     title: "Tech Consultancy",
+    slug: "tech-consultancy",
     description: "Expert guidance to navigate complex technology challenges and strategize for digital transformation.",
     icon: MessageSquare, // Using MessageSquare as it's on consultancy page
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Tech+Consultancy",
@@ -171,3 +178,4 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     tags: ["CodeCafe Lab", "AI Innovation", "Company Story"],
   },
 ];
+
