@@ -1,17 +1,16 @@
+
 import type { NavItem, Service, Product, TimelineEvent, BlogPost, BlogCategory } from '@/types';
-import { Code, Smartphone, Brain, Cloud, Palette, Briefcase, Newspaper, Users, Bot, HomeIcon, Layers, Building2, HelpCircle, BriefcaseBusiness, FileText } from 'lucide-react';
+import { Code, Smartphone, Brain, Cloud, Palette, Briefcase, Newspaper, Users, Bot, HomeIcon, Layers, Building2, HelpCircle, BriefcaseBusiness, FileText, Globe, MessageSquare } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
 
 export const NAV_LINKS: NavItem[] = [
   { href: "/", label: "Home", icon: HomeIcon },
   { href: "/services", label: "Services", icon: Layers },
-  { href: "/products", label: "Products", icon: Smartphone },
   { href: "/company", label: "Company", icon: Building2 },
+  { href: "/products", label: "Products", icon: Smartphone },
   { href: "/ai", label: "AI", icon: Bot },
-  { href: "/consultancy", label: "Consultancy", icon: HelpCircle },
-  { href: "/career", label: "Career", icon: BriefcaseBusiness },
-  { href: "/blog", label: "Blog", icon: FileText },
+  { href: "/resources", label: "Resources", icon: FileText }, // Points to /blog
 ];
 
 export const SERVICES_DATA: Service[] = [
@@ -30,25 +29,39 @@ export const SERVICES_DATA: Service[] = [
     dataAiHint: "mobile app",
   },
   {
-    title: "AI/ML Integrations",
-    description: "Leverage the power of Artificial Intelligence and Machine Learning to automate processes and gain insights.",
-    icon: Brain,
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=AI+ML",
-    dataAiHint: "artificial intelligence",
+    title: "Web App Development",
+    description: "Modern and responsive web applications to elevate your online presence and functionality.",
+    icon: Globe,
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Web+App",
+    dataAiHint: "web application",
   },
   {
-    title: "DevOps & Cloud",
-    description: "Streamline your development lifecycle and scale your infrastructure with our DevOps and Cloud solutions.",
+    title: "AI & Automation Solutions",
+    description: "Leverage AI and Machine Learning to automate processes, gain insights, and drive innovation.",
+    icon: Brain,
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Automation",
+    dataAiHint: "artificial intelligence automation",
+  },
+  {
+    title: "Cloud & DevOps Services",
+    description: "Streamline your development lifecycle and scale your infrastructure with our robust Cloud and DevOps solutions.",
     icon: Cloud,
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=DevOps+Cloud",
-    dataAiHint: "cloud computing",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Cloud+DevOps",
+    dataAiHint: "cloud devops",
   },
   {
     title: "UI/UX Design",
     description: "Intuitive and visually appealing user interfaces that provide exceptional user experiences.",
     icon: Palette,
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=UI+UX+Design",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=UI+UX+Design",
     dataAiHint: "ui ux",
+  },
+  {
+    title: "Tech Consultancy",
+    description: "Expert guidance to navigate complex technology challenges and strategize for digital transformation.",
+    icon: MessageSquare, // Using MessageSquare as it's on consultancy page
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Tech+Consultancy",
+    dataAiHint: "tech consultation",
   },
 ];
 
