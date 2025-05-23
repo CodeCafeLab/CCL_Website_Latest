@@ -11,35 +11,56 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 export default function Header() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { theme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-
   if (!isMounted) {
-    return null; 
+    // Render a placeholder or null until the theme is determined client-side
+    // to prevent hydration mismatch if the logo depends on the theme.
+    return (
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+          <div className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
+            {/* Placeholder for logo to avoid layout shift */}
+            <div style={{ width: 171, height: 43 }} />
+          </div>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+             <Button variant="outline" size="icon" className="md:hidden">
+                <Menu className="h-6 w-6" />
+             </Button>
+          </div>
+        </div>
+      </header>
+    );
   }
 
   const closeSheet = () => setIsSheetOpen(false);
+
+  const logoSrc = resolvedTheme === 'dark' ? "/codecafe_logo_dark.png" : "/codecafe_logo_light.png";
+  const logoAlt = resolvedTheme === 'dark' ? "CodeCafe Lab Logo Dark" : "CodeCafe Lab Logo Light";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
-          {/* Use next/image for the logo */}
           <Image 
-            src="/logo.png" 
-            alt="CodeCafe Lab Logo" 
+            src={logoSrc}
+            alt={logoAlt}
             width={171} 
             height={43} 
             priority 
             data-ai-hint="company logo"
+            key={logoSrc} // Add key to ensure re-render on src change
           />
         </Link>
 
@@ -72,13 +93,13 @@ export default function Header() {
             <SheetContent side="right" className="w-[300px] sm:w-[300px] p-0">
               <SheetHeader className="p-4 border-b">
                 <SheetTitle className="flex items-center gap-2">
-                   {/* Use next/image for the logo in mobile sheet */}
                   <Image 
-                    src="/logo.png" 
-                    alt="CodeCafe Lab Logo" 
+                    src={logoSrc} 
+                    alt={logoAlt}
                     width={140} // Slightly smaller for the sheet
                     height={35}
                     data-ai-hint="company logo"
+                    key={`sheet-${logoSrc}`} // Add key
                   />
                 </SheetTitle>
               </SheetHeader>
