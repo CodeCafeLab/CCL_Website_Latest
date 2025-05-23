@@ -1,14 +1,16 @@
+
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Coffee, Menu, X } from "lucide-react";
-import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
+import { Menu } from "lucide-react";
+import { NAV_LINKS } from "@/lib/constants";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import { LogoIcon } from "@/components/icons/LogoIcon"; // Import the new LogoIcon
 
 export default function Header() {
   const pathname = usePathname();
@@ -29,9 +31,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-primary">
-          <Coffee className="h-7 w-7" />
-          <span>{SITE_NAME}</span>
+        <Link href="/" className="flex items-center gap-2" aria-label="CodeCafe Lab Home">
+          <LogoIcon className="h-8 w-auto" /> {/* Use LogoIcon here */}
         </Link>
 
         {/* Desktop Navigation */}
@@ -62,9 +63,8 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[300px] p-0">
               <SheetHeader className="p-4 border-b">
-                <SheetTitle className="flex items-center gap-2 text-primary">
-                  <Coffee className="h-6 w-6" />
-                  {SITE_NAME}
+                <SheetTitle className="flex items-center gap-2">
+                  <LogoIcon className="h-7 w-auto" /> {/* Use LogoIcon in mobile sheet title */}
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-2 p-4">
