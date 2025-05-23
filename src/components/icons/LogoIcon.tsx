@@ -5,36 +5,53 @@ export function LogoIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 160 40"
-      width="120" // Default width, can be overridden by props
-      height="30" // Default height, can be overridden by props
+      viewBox="0 0 56 42" // Aspect ratio roughly 4:3, similar to the provided image
       aria-labelledby="logoTitle"
       role="img"
-      {...props} // className will be passed here, e.g., h-8 w-auto
+      {...props} // className (e.g., h-8 w-auto) will be passed here
     >
       <title id="logoTitle">CodeCafe Lab Logo</title>
-      {/* Angled bracket < */}
-      {/* Uses primary theme color */}
-      <path d="M30 0 L0 20 L30 40" fill="hsl(var(--primary))" />
       
-      {/* Coffee cup */}
-      {/* Uses accent theme color for strokes */}
-      <g transform="translate(12, 10) scale(0.7)">
-        <path d="M0 5C0 2.23858 2.23858 0 5 0H15C17.7614 0 20 2.23858 20 5V12C20 14.7614 17.7614 17 15 17H12C9.23858 17 7 14.7614 7 12V10" stroke="hsl(var(--accent))" strokeWidth="2" fill="none" />
-        <path d="M7 10H0" stroke="hsl(var(--accent))" strokeWidth="2" />
-        <path d="M10 3V1" stroke="hsl(var(--accent))" strokeWidth="1.5" strokeLinecap="round"/>
-        <path d="M14 3V1" stroke="hsl(var(--accent))" strokeWidth="1.5" strokeLinecap="round"/>
+      {/* Left Chevron (Yellow) - Uses primary theme color */}
+      <path 
+        d="M26 4 L4 21 L26 38 L32 38 L10 21 L32 4 Z" 
+        fill="hsl(var(--primary))" 
+      />
+      
+      {/* Right Chevron (Orange) - Specific color #FFA500 */}
+      <path 
+        d="M30 4 L52 21 L30 38 L24 38 L46 21 L24 4 Z" 
+        fill="#FFA500"
+      />
+      
+      {/* Coffee Cup Group - Centered */}
+      <g>
+        {/* Cup body (outline) - Uses muted-foreground theme color */}
+        <path 
+          d="M23 24 C22 21 34 21 33 24 L33 27 C34 30 22 30 23 27 Z" 
+          fill="hsl(var(--muted-foreground))" 
+        />
+        {/* Cup liquid - Uses accent theme color (green) */}
+        <ellipse 
+          cx="28" 
+          cy="24.5" // Centered within the cup body
+          rx="4" 
+          ry="1.8" 
+          fill="hsl(var(--accent))" 
+        />
+         {/* Cup Handle - Uses muted-foreground theme color */}
+        <path 
+          d="M33 23 C35 23 35.5 26 33 26" // Adjusted to connect to new cup body
+          stroke="hsl(var(--muted-foreground))"
+          strokeWidth="1.3" // Slightly thicker for visibility
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* Steam lines - Uses muted-foreground theme color */}
+        <path d="M25 20 Q26 18 25 16" stroke="hsl(var(--muted-foreground))" strokeWidth="1" fill="none" strokeLinecap="round"/>
+        <path d="M28 21 Q29 19 28 17" stroke="hsl(var(--muted-foreground))" strokeWidth="1" fill="none" strokeLinecap="round"/>
+        <path d="M31 20 Q32 18 31 16" stroke="hsl(var(--muted-foreground))" strokeWidth="1" fill="none" strokeLinecap="round"/>
       </g>
-      
-      {/* Angled bracket > */}
-      {/* This color #FFA500 is specific. Kept as is. If it needs to be themed, it should map to a semantic theme variable. */}
-      <path d="M35 0 L65 20 L35 40" fill="#FFA500" /> 
-      
-      {/* Text "LAB" */}
-      {/* Uses accent theme color */}
-      <text x="75" y="27" fontFamily="Arial, sans-serif" fontSize="20" fontWeight="bold" fill="hsl(var(--accent))">
-        LAB
-      </text>
     </svg>
   );
 }
