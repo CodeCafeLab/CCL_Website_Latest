@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
+import YoutubeShortsSection from '@/components/home/YoutubeShortsSection'; // Added import
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA } from '@/lib/constants';
@@ -55,6 +56,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* YouTube Shorts Section - Added Here */}
+      <YoutubeShortsSection />
 
       {/* Services Overview */}
       <section>

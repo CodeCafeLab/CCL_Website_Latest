@@ -100,3 +100,18 @@ export interface OpenPosition {
   description: string;
   applyUrl: string;
 }
+
+export interface YouTubeShort {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  youtubeUrl: string;
+  dataAiHint: string;
+  duration: string; // e.g., "0:58"
+}
+
+export interface YouTubeShortsCategory {
+  id: string;
+  categoryName: string;
+  shorts: YouTubeShort[];
+}

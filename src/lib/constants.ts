@@ -1,11 +1,11 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem } from '@/types';
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, YouTubeShortsCategory } from '@/types';
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
   Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus,
-  PresentationChart, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig
+  PresentationChart, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig, PlayCircle
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -16,7 +16,7 @@ export const NAV_LINKS: NavItem[] = [
   { href: "/services", label: "Services", icon: Layers },
   { href: "/products", label: "Products", icon: Smartphone },
   { href: "/company", label: "Company", icon: Building2 },
-  { href: "/blog", label: "Resources", icon: FileText }, // Main "Resources" link points to /blog
+  { href: "/blog", label: "Resources", icon: FileText }, 
 ];
 
 export const COMPANY_SUB_LINKS: NavItem[] = [
@@ -35,7 +35,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   {
     href: "/consultancy",
     label: "Consultancy",
-    icon: Briefcase, // Changed from MessageSquare to Briefcase
+    icon: Briefcase, 
     description: "We provide consultancy for recruitment also"
   },
   {
@@ -195,7 +195,7 @@ export const RESOURCES_SUB_LINKS: NavItem[] = [
   {
     href: "#",
     label: "Case Studies",
-    icon: BarChartHorizontalBig, // Using BarChartHorizontalBig as PresentationChart might not be available or fit well
+    icon: BarChartHorizontalBig,
     description: "Real client success stories with challenges, solutions, results, and testimonials.",
   },
   {
@@ -252,6 +252,9 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Prototyping & Wireframing", slug: "prototyping-wireframing", description: "Clickable prototypes and low-fidelity screens to validate ideas quickly." },
       { title: "Competitor Analysis", slug: "competitor-analysis", description: "Market research and UX/UI comparisons for competitive differentiation." },
     ],
+    description: "Transforming concepts into engaging and user-centric digital experiences.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Ideation+Design",
+    dataAiHint: "design thinking",
   },
   {
     title: "Mobile App Development",
@@ -263,10 +266,13 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Cross-Platform App Development", slug: "cross-platform-app-development", description: "Apps using React Native, Flutter, or Xamarin for both iOS and Android." },
       { title: "Progressive Web Apps (PWA)", slug: "progressive-web-apps", description: "Web apps with native-like experiences for mobile browsers." },
       { title: "Mobile App UI/UX Design", slug: "mobile-app-ui-ux-design", description: "Custom user interface design and mobile-specific UX strategy." },
-      { title: "App Testing & QA", slug: "app-testing-qa", description: "Functional, performance, and user testing for bug-free launches." },
-      { title: "App Deployment & Launch", slug: "app-deployment-launch", description: "Publishing to Google Play Store & Apple App Store with compliance." },
-      { title: "App Maintenance & Support", slug: "app-maintenance-support", description: "Post-launch updates, monitoring, and feature improvements." },
+      { title: "App Testing & QA", slug: "mobile-app-testing-qa", description: "Functional, performance, and user testing for bug-free launches." },
+      { title: "App Deployment & Launch", slug: "mobile-app-deployment-launch", description: "Publishing to Google Play Store & Apple App Store with compliance." },
+      { title: "App Maintenance & Support", slug: "mobile-app-maintenance-support", description: "Post-launch updates, monitoring, and feature improvements." },
     ],
+    description: "Building high-performance, scalable mobile applications for iOS and Android.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Mobile+Apps",
+    dataAiHint: "mobile development",
   },
   {
     title: "Web Development",
@@ -283,6 +289,9 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Performance Optimization", slug: "performance-optimization", description: "Speed, SEO, accessibility, and Core Web Vitals improvements." },
       { title: "Web Hosting & Deployment", slug: "web-hosting-deployment", description: "Scalable hosting setup on AWS, Vercel, Netlify, DigitalOcean, etc." },
     ],
+    description: "Crafting dynamic websites and powerful web applications tailored to your needs.",
+    image: "https://placehold.co/600x400/1c1c1c/ffffff.png?text=Web+Development",
+    dataAiHint: "web design",
   },
   {
     title: "Software Development",
@@ -299,6 +308,9 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Software Testing & QA", slug: "software-testing-qa", description: "Manual and automated testing for functionality, performance, and security." },
       { title: "Software Maintenance & Support", slug: "software-maintenance-support", description: "Ongoing upgrades, troubleshooting, and performance monitoring." },
     ],
+    description: "Delivering robust and scalable custom software solutions for diverse business challenges.",
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Software+Development",
+    dataAiHint: "custom software",
   },
   {
     title: "AI Development",
@@ -316,6 +328,9 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Recommendation Systems", slug: "recommendation-systems", description: "Personalized content, product, or service suggestions using AI." },
       { title: "AI Model Deployment & MLOps", slug: "ai-model-deployment-mlops", description: "Scalable AI pipeline management with tools like TensorFlow Serving or SageMaker." },
     ],
+    description: "Leveraging artificial intelligence and machine learning to build intelligent systems.",
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Development",
+    dataAiHint: "artificial intelligence",
   },
   {
     title: "Blockchain Development",
@@ -333,6 +348,41 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Private & Consortium Blockchain", slug: "private-consortium-blockchain", description: "Permissioned blockchain networks for enterprises using Hyperledger or Quorum." },
       { title: "dApp Development", slug: "dapp-development", description: "Decentralized application design with Web3 integrations and wallet connectivity." },
     ],
+    description: "Exploring decentralized solutions with our expert blockchain development services.",
+    image: "https://placehold.co/600x400/1c1c1c/ffffff.png?text=Blockchain+Tech",
+    dataAiHint: "blockchain technology",
+  },
+   {
+    title: "Cloud & DevOps Services",
+    slug: "cloud-devops-services",
+    description: "Streamline your development lifecycle and scale your infrastructure with our robust Cloud and DevOps solutions.",
+    icon: Cloud,
+    subServices: [
+       { title: "Cloud Migration", slug: "cloud-migration", description: "Seamlessly move your applications and data to leading cloud platforms like AWS, Azure, or GCP." },
+       { title: "Infrastructure as Code (IaC)", slug: "infrastructure-as-code", description: "Automate infrastructure provisioning and management using tools like Terraform and CloudFormation." },
+       { title: "CI/CD Pipelines", slug: "ci-cd-pipelines", description: "Implement continuous integration and delivery pipelines for faster, reliable software releases." },
+       { title: "Containerization & Orchestration", slug: "containerization-orchestration", description: "Utilize Docker and Kubernetes to build, deploy, and manage containerized applications." },
+       { title: "Monitoring & Logging", slug: "monitoring-logging", description: "Set up comprehensive monitoring and logging solutions for proactive issue detection and resolution." },
+       { title: "Cloud Cost Optimization", slug: "cloud-cost-optimization", description: "Analyze and optimize your cloud spending to ensure cost-efficiency without compromising performance." }
+    ],
+    image: "https://placehold.co/600x400/ffc011/000000.png?text=Cloud+DevOps",
+    dataAiHint: "cloud devops",
+  },
+  {
+    title: "Tech Consultancy",
+    slug: "tech-consultancy",
+    description: "Expert guidance to navigate complex technology challenges and strategize for digital transformation.",
+    icon: Users,
+    subServices: [
+      { title: "Digital Transformation Strategy", slug: "digital-transformation-strategy", description: "Develop comprehensive strategies to integrate digital technology into all areas of your business." },
+      { title: "Technology Stack Advisory", slug: "technology-stack-advisory", description: "Receive expert advice on selecting the optimal technology stack for your projects and business goals." },
+      { title: "IT Architecture Planning", slug: "it-architecture-planning", description: "Design scalable and robust IT architectures that support your business's growth and evolution." },
+      { title: "Cybersecurity Consulting", slug: "cybersecurity-consulting", description: "Enhance your security posture with expert assessments, strategy development, and compliance guidance." },
+      { title: "Data Strategy & Analytics", slug: "data-strategy-analytics", description: "Leverage data as a strategic asset with our services in data governance, analytics, and BI." },
+      { title: "Agile & DevOps Transformation", slug: "agile-devops-transformation", description: "Adopt agile methodologies and DevOps practices to improve efficiency, collaboration, and speed to market." }
+    ],
+    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Tech+Consultancy",
+    dataAiHint: "tech consultation",
   },
 ];
 
@@ -518,24 +568,6 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Real+Estate+Tokens",
     dataAiHint: "property tokenization",
   },
-  {
-    title: "Cloud & DevOps Services",
-    slug: "cloud-devops-services",
-    description: "Streamline your development lifecycle and scale your infrastructure with our robust Cloud and DevOps solutions.",
-    icon: Cloud,
-    subServices: [],
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Cloud+DevOps",
-    dataAiHint: "cloud devops",
-  },
-  {
-    title: "Tech Consultancy",
-    slug: "tech-consultancy",
-    description: "Expert guidance to navigate complex technology challenges and strategize for digital transformation.",
-    icon: Users,
-    subServices: [],
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Tech+Consultancy",
-    dataAiHint: "tech consultation",
-  },
 ];
 
 
@@ -683,4 +715,34 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     content: "Comprehensive tutorial on Next.js for beginners...",
     tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
   },
+];
+
+export const YOUTUBE_SHORTS_DATA: YouTubeShortsCategory[] = [
+  {
+    id: "cat1",
+    categoryName: "AI Quick Demos",
+    shorts: [
+      { id: "s1", title: "Instant Image Analysis with AI", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "ai image analysis", duration: "0:45" },
+      { id: "s2", title: "NLP: Summarizing Text in Seconds", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "nlp text summary", duration: "0:52" },
+      { id: "s3", title: "Chatbot Magic: Customer Support", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "ai chatbot support", duration: "1:03" },
+    ]
+  },
+  {
+    id: "cat2",
+    categoryName: "Web Dev Tips & Tricks",
+    shorts: [
+      { id: "s4", title: "React Tip: Efficient State Management", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "react state tip", duration: "0:58" },
+      { id: "s5", title: "Next.js Performance Boosters", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "nextjs performance", duration: "1:10" },
+      { id: "s6", title: "Tailwind CSS Power Moves", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "tailwind css trick", duration: "0:49" },
+    ]
+  },
+  {
+    id: "cat3",
+    categoryName: "Behind the Code @ CodeCafe",
+    shorts: [
+      { id: "s7", title: "A Day in the Life of a Dev", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "developer life day", duration: "1:15" },
+      { id: "s8", title: "Our Collaborative Coding Sessions", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "team coding collaboration", duration: "0:55" },
+      { id: "s9", title: "Innovation Hour Highlights", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "innovation ideas tech", duration: "1:05" },
+    ]
+  }
 ];
