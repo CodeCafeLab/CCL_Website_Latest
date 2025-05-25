@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, HomeIcon, Layers, Building2, Smartphone, Bot, FileText, Info, Briefcase, Mail } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -71,13 +71,13 @@ export default function Header() {
       clearTimeout(companyMenuTimerRef.current);
       companyMenuTimerRef.current = null;
     }
-    setCompanyMenuOpen(false); // Close other menu
+    setCompanyMenuOpen(false);
 
     if (servicesMenuTimerRef.current) {
       clearTimeout(servicesMenuTimerRef.current);
       servicesMenuTimerRef.current = null;
     }
-    setServicesMenuOpen(true);
+    if (!servicesMenuOpen) setServicesMenuOpen(true);
   };
 
   const handleServicesTriggerLeave = () => {
@@ -92,6 +92,9 @@ export default function Header() {
       clearTimeout(servicesMenuTimerRef.current);
       servicesMenuTimerRef.current = null;
     }
+    // Keep company menu closed if services content is hovered
+    if (companyMenuOpen) setCompanyMenuOpen(false);
+    if (!servicesMenuOpen) setServicesMenuOpen(true);
   };
 
   const handleServicesContentLeave = () => {
@@ -105,8 +108,8 @@ export default function Header() {
     setServicesMenuOpen(open);
     if (open) {
       if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-      setCompanyMenuOpen(false); // Ensure other menu is closed
-    } else { // Menu is closing
+      setCompanyMenuOpen(false); 
+    } else { 
       if (servicesMenuTimerRef.current) {
         clearTimeout(servicesMenuTimerRef.current);
         servicesMenuTimerRef.current = null;
@@ -120,13 +123,13 @@ export default function Header() {
       clearTimeout(servicesMenuTimerRef.current);
       servicesMenuTimerRef.current = null;
     }
-    setServicesMenuOpen(false); // Close other menu
+    setServicesMenuOpen(false); 
 
     if (companyMenuTimerRef.current) {
       clearTimeout(companyMenuTimerRef.current);
       companyMenuTimerRef.current = null;
     }
-    setCompanyMenuOpen(true);
+    if(!companyMenuOpen) setCompanyMenuOpen(true);
   };
 
   const handleCompanyTriggerLeave = () => {
@@ -141,6 +144,9 @@ export default function Header() {
       clearTimeout(companyMenuTimerRef.current);
       companyMenuTimerRef.current = null;
     }
+    // Keep services menu closed if company content is hovered
+    if (servicesMenuOpen) setServicesMenuOpen(false);
+    if (!companyMenuOpen) setCompanyMenuOpen(true);
   };
 
   const handleCompanyContentLeave = () => {
@@ -154,8 +160,8 @@ export default function Header() {
     setCompanyMenuOpen(open);
     if (open) {
       if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-      setServicesMenuOpen(false); // Ensure other menu is closed
-    } else { // Menu is closing
+      setServicesMenuOpen(false); 
+    } else { 
       if (companyMenuTimerRef.current) {
         clearTimeout(companyMenuTimerRef.current);
         companyMenuTimerRef.current = null;
@@ -181,7 +187,7 @@ export default function Header() {
             "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             isActiveServiceLink
               ? "text-primary font-semibold"
-              : "text-foreground/80 hover:text-primary"
+              : "text-foreground/80 hover:text-white"
           )}
         >
           {subService.title}
@@ -202,7 +208,7 @@ export default function Header() {
             "text-popover-foreground",
             isActiveServiceLink
               ? "text-primary font-semibold"
-              : "hover:text-primary"
+              : "hover:text-white"
           )}
         >
           {subService.title}
@@ -246,10 +252,10 @@ export default function Header() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0", 
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-0 focus-visible:ring-offset-0 outline-none", 
                         servicesMenuOpen || isServicesActive
                           ? "text-primary font-semibold"
-                          : "text-foreground/60 hover:text-primary"
+                          : "text-foreground/60 hover:text-white"
                       )}
                       onMouseEnter={handleServicesTriggerEnter}
                       onMouseLeave={handleServicesTriggerLeave}
@@ -298,10 +304,10 @@ export default function Header() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                         companyMenuOpen || companyActive
                           ? "text-primary font-semibold"
-                          : "text-foreground/60 hover:text-primary"
+                          : "text-foreground/60 hover:text-white"
                       )}
                       onMouseEnter={handleCompanyTriggerEnter}
                       onMouseLeave={handleCompanyTriggerLeave}
@@ -325,7 +331,7 @@ export default function Header() {
                             "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
                             (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                               ? "text-primary font-semibold"
-                              : "hover:text-primary"
+                              : "hover:text-white"
                           )}
                         >
                           <subLink.icon className="h-4 w-4" />
@@ -346,7 +352,7 @@ export default function Header() {
                     "transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                     isActive
                       ? "text-primary font-semibold"
-                      : "text-foreground/60 hover:text-primary"
+                      : "text-foreground/60 hover:text-white"
                   )}
                 >
                   {link.label}
@@ -387,7 +393,7 @@ export default function Header() {
                         <AccordionItem value="services-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-white outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                               isServicesActive
                                 ? "text-primary font-semibold"
                                 : "text-foreground" 
@@ -403,7 +409,7 @@ export default function Header() {
                               {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
-                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-primary [&[data-state=open]]:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-white [&[data-state=open]]:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                     "text-foreground/80"
                                   )}>
                                     <div className="flex items-center gap-2">
@@ -431,7 +437,7 @@ export default function Header() {
                         <AccordionItem value="company-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-white outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                               companyActive
                                 ? "text-primary font-semibold"
                                 : "text-foreground"
@@ -452,7 +458,7 @@ export default function Header() {
                                   "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                     ? "text-primary font-semibold"
-                                    : "text-foreground/80 hover:text-primary"
+                                    : "text-foreground/80 hover:text-white"
                                 )}
                               >
                                 <subLink.icon className="h-4 w-4" />
@@ -474,7 +480,7 @@ export default function Header() {
                         "block px-3 py-2 rounded-md text-base font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         isActive
                           ? "text-primary font-semibold"
-                          : "text-foreground hover:text-primary"
+                          : "text-foreground hover:text-white"
                       )}
                     >
                       <div className="flex items-center gap-3">
