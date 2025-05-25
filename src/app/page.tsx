@@ -25,9 +25,9 @@ export default function HomePage() {
   const featuredServices = SERVICES_DATA.slice(0, 5);
   const featuredBlogPosts = BLOG_POSTS_DATA.slice(0, 3);
 
-  const techStackRow1Count = 18;
-  const techStackRow2Count = 11;
-  // const techStackRow3Count = TECH_STACK_DATA.length - techStackRow1Count - techStackRow2Count; // This will be 6
+  const techStackRow1Count = 12;
+  const techStackRow2Count = 10;
+  const techStackRow3Count = 8;
 
 
   return (
@@ -160,36 +160,48 @@ export default function HomePage() {
         <div className="space-y-6">
             {/* Row 1 */}
             <div className="flex flex-wrap justify-center items-center gap-4">
-              {TECH_STACK_DATA.slice(0, techStackRow1Count).map((tech) => (
+              {TECH_STACK_DATA.slice(0, techStackRow1Count).map((tech, itemIndex) => (
                 <div 
                   key={tech.name} 
                   className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
-                  <tech.icon className="h-10 w-10 text-accent mb-2" />
+                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
                   <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
                 </div>
               ))}
             </div>
             {/* Row 2 */}
             <div className="flex flex-wrap justify-center items-center gap-4">
-              {TECH_STACK_DATA.slice(techStackRow1Count, techStackRow1Count + techStackRow2Count).map((tech) => (
+              {TECH_STACK_DATA.slice(techStackRow1Count, techStackRow1Count + techStackRow2Count).map((tech, itemIndex) => (
                 <div 
                   key={tech.name} 
                   className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
-                  <tech.icon className="h-10 w-10 text-accent mb-2" />
+                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
                   <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
                 </div>
               ))}
             </div>
             {/* Row 3 */}
             <div className="flex flex-wrap justify-center items-center gap-4">
-              {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count).map((tech) => (
+              {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count, techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
                 <div 
                   key={tech.name} 
                   className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
-                  <tech.icon className="h-10 w-10 text-accent mb-2" />
+                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                  <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                </div>
+              ))}
+            </div>
+            {/* Row 4 */}
+            <div className="flex flex-wrap justify-center items-center gap-4">
+              {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
+                <div 
+                  key={tech.name} 
+                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                >
+                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
                   <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
                 </div>
               ))}
