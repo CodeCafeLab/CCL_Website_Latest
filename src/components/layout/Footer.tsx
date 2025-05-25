@@ -1,33 +1,34 @@
 
-import { Coffee, Github, Linkedin, Twitter, Facebook, Briefcase, MessageSquare, Send, Instagram } from "lucide-react";
+import { Coffee, Github, Linkedin, Twitter, Facebook, Briefcase, MessageSquare, Send, Instagram, Download } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE_NAME } from "@/lib/constants";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const exploreLinks = [
-    { href: "/", label: "Home" },
-    { href: "/services", label: "Services" },
-    { href: "/products", label: "Products" },
-    { href: "/ai", label: "AI Solutions" },
+  const usefulLinks = [
+    { href: "#", label: "Terms & Conditions" },
+    { href: "#", label: "Privacy Policy" },
+    { href: "#", label: "Return Policy" },
   ];
 
-  const companyLinks = [
-    { href: "/company", label: "About Us" },
-    { href: "/career", label: "Careers" },
-    { href: "/contact", label: "Contact Us" },
+  const resourceLinks = [
     { href: "/blog", label: "Blog" },
+    { href: "/career", label: "Career" },
+    { href: "/consultancy", label: "Consultancy" },
+    { href: "#", label: "Download Brochure", icon: Download },
   ];
 
   return (
     <footer className="border-t border-border/40 bg-background/95">
       <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
           {/* Column 1: Brand & Social */}
-          <div className="md:col-span-1 lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-block" aria-label={`${SITE_NAME} Home`}>
+          <div className="space-y-4 lg:col-span-1">
+            <Link href="/" className="inline-block mb-2" aria-label={`${SITE_NAME} Home`}>
               <Image
                 src="/codecafe_logo_dark.png"
                 alt={`${SITE_NAME} Logo`}
@@ -65,11 +66,11 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Explore Links */}
+          {/* Column 2: Useful Links */}
           <div className="space-y-4">
-            <h4 className="text-base font-semibold text-foreground">Explore</h4>
+            <h4 className="text-base font-semibold text-foreground">Useful Links</h4>
             <ul className="space-y-2">
-              {exploreLinks.map((link) => (
+              {usefulLinks.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                     {link.label}
@@ -79,18 +80,36 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Company Links */}
+          {/* Column 3: Resources */}
           <div className="space-y-4">
-            <h4 className="text-base font-semibold text-foreground">Company</h4>
+            <h4 className="text-base font-semibold text-foreground">Resources</h4>
             <ul className="space-y-2">
-              {companyLinks.map((link) => (
+              {resourceLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
+                    {link.icon && <link.icon className="h-4 w-4" />}
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Column 4: Subscribe Us & Talk to Us */}
+          <div className="space-y-6">
+            <div>
+              <h4 className="text-base font-semibold text-foreground mb-3">Subscribe Us</h4>
+              <form className="flex flex-col sm:flex-row gap-2 items-start">
+                <Input type="email" placeholder="Your email" className="flex-grow bg-muted/30 border-border placeholder:text-muted-foreground/70" />
+                <Button type="submit" variant="outline" className="shrink-0">Subscribe</Button>
+              </form>
+            </div>
+            <div>
+              <h4 className="text-base font-semibold text-foreground mb-3">Talk to Us</h4>
+              <Button asChild className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Link href="/contact">Get in Touch</Link>
+              </Button>
+            </div>
           </div>
         </div>
 
