@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, MessageSquare as ChatIcon, CalendarPlus } from "lucide-react"; // Renamed MessageSquare to ChatIcon to avoid conflict
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge } from "lucide-react"; // Renamed MessageSquare to ChatIcon to avoid conflict
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS, PRODUCT_SUB_LINKS, ProductSubMenuItem as AppProductSubMenuItem } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -73,26 +73,21 @@ export default function Header() {
     let setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     let otherSetOpens: React.Dispatch<React.SetStateAction<boolean>>[] = [];
     let timerRef: React.MutableRefObject<NodeJS.Timeout | null>;
-    let otherTimerRefs: React.MutableRefObject<NodeJS.Timeout | null>[] = [];
   
     if (menuToControl === 'services') {
       setOpen = setServicesMenuOpen;
       otherSetOpens = [setCompanyMenuOpen, setProductsMenuOpen];
       timerRef = servicesMenuTimerRef;
-      otherTimerRefs = [companyMenuTimerRef, productsMenuTimerRef];
     } else if (menuToControl === 'company') {
       setOpen = setCompanyMenuOpen;
       otherSetOpens = [setServicesMenuOpen, setProductsMenuOpen];
       timerRef = companyMenuTimerRef;
-      otherTimerRefs = [servicesMenuTimerRef, productsMenuTimerRef];
     } else { // products
       setOpen = setProductsMenuOpen;
       otherSetOpens = [setServicesMenuOpen, setCompanyMenuOpen];
       timerRef = productsMenuTimerRef;
-      otherTimerRefs = [servicesMenuTimerRef, companyMenuTimerRef];
     }
   
-    // Clear its own timer first
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -100,14 +95,12 @@ export default function Header() {
   
     if (action === 'enter') {
       setOpen(true);
-      // Close other menus and clear their timers
       otherSetOpens.forEach(setFn => setFn(false));
-      otherTimerRefs.forEach(ref => {
-        if (ref.current) {
-          clearTimeout(ref.current);
-          ref.current = null;
-        }
-      });
+      // Clear timers for other menus explicitly if they exist
+      if (menuToControl !== 'services' && servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+      if (menuToControl !== 'company' && companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+      if (menuToControl !== 'products' && productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
+
     } else { // action === 'leave'
       timerRef.current = setTimeout(() => {
         setOpen(false);
@@ -116,53 +109,30 @@ export default function Header() {
     }
   };
   
-  const onServicesOpenChange = (open: boolean) => {
-    setServicesMenuOpen(open);
-    if (servicesMenuTimerRef.current) {
-      clearTimeout(servicesMenuTimerRef.current);
-      servicesMenuTimerRef.current = null;
+  const createOpenChangeHandler = (
+    setThisMenuOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    setOtherMenuOpen1: React.Dispatch<React.SetStateAction<boolean>>,
+    setOtherMenuOpen2: React.Dispatch<React.SetStateAction<boolean>>,
+    thisTimerRef: React.MutableRefObject<NodeJS.Timeout | null>
+  ) => (open: boolean) => {
+    setThisMenuOpen(open);
+    if (thisTimerRef.current) {
+      clearTimeout(thisTimerRef.current);
+      thisTimerRef.current = null;
     }
     if (open) {
-      setCompanyMenuOpen(false);
-      setProductsMenuOpen(false);
-      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-      if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-      companyMenuTimerRef.current = null;
-      productsMenuTimerRef.current = null;
-    }
-  };
-  
-  const onCompanyOpenChange = (open: boolean) => {
-    setCompanyMenuOpen(open);
-    if (companyMenuTimerRef.current) {
-      clearTimeout(companyMenuTimerRef.current);
-      companyMenuTimerRef.current = null;
-    }
-    if (open) {
-      setServicesMenuOpen(false);
-      setProductsMenuOpen(false);
-      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-      if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-      servicesMenuTimerRef.current = null;
-      productsMenuTimerRef.current = null;
+      setOtherMenuOpen1(false);
+      setOtherMenuOpen2(false);
+      // Also clear other timers if they exist
+       if (servicesMenuTimerRef.current && thisTimerRef !== servicesMenuTimerRef) clearTimeout(servicesMenuTimerRef.current);
+       if (companyMenuTimerRef.current && thisTimerRef !== companyMenuTimerRef) clearTimeout(companyMenuTimerRef.current);
+       if (productsMenuTimerRef.current && thisTimerRef !== productsMenuTimerRef) clearTimeout(productsMenuTimerRef.current);
     }
   };
 
-  const onProductsOpenChange = (open: boolean) => {
-    setProductsMenuOpen(open);
-    if (productsMenuTimerRef.current) {
-      clearTimeout(productsMenuTimerRef.current);
-      productsMenuTimerRef.current = null;
-    }
-    if (open) {
-      setServicesMenuOpen(false);
-      setCompanyMenuOpen(false);
-      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-      servicesMenuTimerRef.current = null;
-      companyMenuTimerRef.current = null;
-    }
-  };
+  const onServicesOpenChange = createOpenChangeHandler(setServicesMenuOpen, setCompanyMenuOpen, setProductsMenuOpen, servicesMenuTimerRef);
+  const onCompanyOpenChange = createOpenChangeHandler(setCompanyMenuOpen, setServicesMenuOpen, setProductsMenuOpen, companyMenuTimerRef);
+  const onProductsOpenChange = createOpenChangeHandler(setProductsMenuOpen, setServicesMenuOpen, setCompanyMenuOpen, productsMenuTimerRef);
 
   const isCompanyLinkActive = (currentPathname: string) => {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
@@ -228,7 +198,7 @@ export default function Header() {
                               </h4>
                               <ul className="space-y-1">
                                 {category.subServices.slice(0, 4).map((subService) => {
-                                  const href = `/services#${subService.slug}`;
+                                  const href = `/services#${category.slug}-${subService.slug}`;
                                   return (
                                     <li key={subService.slug} className="group">
                                       <Link
@@ -350,34 +320,56 @@ export default function Header() {
                         onMouseLeave={() => handleMenuInteraction('products', 'leave')}
                         sideOffset={15}
                       >
-                        <div className="container mx-auto py-4 px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
-                          {PRODUCT_SUB_LINKS.map((subLink) => (
-                            <div key={subLink.label} className="p-0 rounded-md hover:bg-muted/30 focus-within:bg-muted/30">
-                                <Link
-                                href={subLink.href}
-                                onClick={() => setProductsMenuOpen(false)}
-                                className={cn(
-                                    "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 rounded-md",
-                                    (pathname === subLink.href) && "font-semibold" // Assuming direct links for products
-                                )}
-                                >
-                                {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />}
-                                <div className="flex-1">
-                                    <span className="font-medium text-primary">{subLink.label}</span>
-                                    {subLink.subtitle && (
-                                    <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
-                                        {subLink.subtitle}
-                                    </p>
-                                    )}
-                                    {subLink.description && (
-                                    <p className="text-xs text-muted-foreground/80 whitespace-normal">
-                                        {subLink.description}
-                                    </p>
-                                    )}
-                                </div>
-                                </Link>
-                            </div>
-                          ))}
+                        <div className="container mx-auto py-6 px-4 md:px-8 grid lg:grid-cols-4 gap-x-8 gap-y-6 max-h-[80vh] overflow-y-auto">
+                          <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
+                            {PRODUCT_SUB_LINKS.map((subLink) => (
+                              <div key={subLink.label} className="p-0 rounded-md hover:bg-muted/30 focus-within:bg-muted/30">
+                                  <Link
+                                  href={subLink.href}
+                                  onClick={() => setProductsMenuOpen(false)}
+                                  className={cn(
+                                      "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 rounded-md",
+                                      (pathname === subLink.href) && "font-semibold" 
+                                  )}
+                                  >
+                                  {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />}
+                                  <div className="flex-1">
+                                      <span className="font-medium text-primary">{subLink.label}</span>
+                                      {subLink.subtitle && (
+                                      <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
+                                          {subLink.subtitle}
+                                      </p>
+                                      )}
+                                      {subLink.description && (
+                                      <p className="text-xs text-muted-foreground/80 whitespace-normal">
+                                          {subLink.description}
+                                      </p>
+                                      )}
+                                  </div>
+                                  </Link>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="hidden lg:flex lg:col-span-1 flex-col gap-6 pt-1">
+                            <Link href="/contact?demo=true" className="block p-6 rounded-xl shadow-lg bg-gradient-to-br from-primary to-accent text-white hover:shadow-xl transition-shadow duration-300 group">
+                              <h3 className="text-lg font-semibold mb-1 flex items-center">
+                                <CalendarPlus className="mr-2 h-5 w-5"/> Book a Demo
+                              </h3>
+                              <p className="text-sm opacity-90 mb-3">See our products in action. Schedule a personalized demonstration.</p>
+                              <span className="inline-flex items-center text-sm font-medium group-hover:underline">
+                                Request Now <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                              </span>
+                            </Link>
+                            <Link href="/contact?partner=true" className="block p-6 rounded-xl shadow-lg bg-gradient-to-br from-accent to-primary text-white hover:shadow-xl transition-shadow duration-300 group">
+                              <h3 className="text-lg font-semibold mb-1 flex items-center">
+                                <Handshake className="mr-2 h-5 w-5"/> Partner With Us
+                              </h3>
+                              <p className="text-sm opacity-90 mb-3">Explore opportunities to collaborate and grow together.</p>
+                              <span className="inline-flex items-center text-sm font-medium group-hover:underline">
+                                Learn More <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                              </span>
+                            </Link>
+                          </div>
                         </div>
                       </DropdownMenuContent>
                     </DropdownMenu>
