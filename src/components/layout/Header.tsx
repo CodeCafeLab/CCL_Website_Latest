@@ -189,7 +189,7 @@ export default function Header() {
                       <ChevronDown className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-64 p-2 bg-background shadow-xl rounded-lg border-border" align="start">
+                  <DropdownMenuContent className="w-80 p-2 bg-background shadow-xl rounded-lg border-border" align="start">
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
                         <Link
