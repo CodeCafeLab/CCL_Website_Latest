@@ -25,10 +25,9 @@ export default function HomePage() {
   const featuredServices = SERVICES_DATA.slice(0, 5);
   const featuredBlogPosts = BLOG_POSTS_DATA.slice(0, 3);
 
-  const techStackRow1Count = 10;
-  const techStackRow2Count = 9;
-  const techStackRow3Count = 8;
-  // const techStackRow4Count = TECH_STACK_DATA.length - (techStackRow1Count + techStackRow2Count + techStackRow3Count);
+  const techStackRow1Count = 13;
+  const techStackRow2Count = 12;
+  const techStackRow3Count = 10;
 
 
   return (
@@ -40,7 +39,7 @@ export default function HomePage() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-40 dark:opacity-40"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
           src="/codecafelab_herobgvideo.mp4"
         >
           Your browser does not support the video tag.
@@ -151,7 +150,7 @@ export default function HomePage() {
 
       {/* CodeCafe Lab Tech Stack Section */}
       <section className="ai-glow-bg py-16 md:py-24">
-        <div className="relative z-10 container mx-auto px-4">
+        <div className="relative z-10 container mx-auto"> {/* Removed px-4 from here */}
             <div className="text-center mb-12">
                 <Brain className="h-12 w-12 text-primary mx-auto mb-4" />
                 <h2 className="text-3xl font-bold">CodeCafe Lab Tech Stack</h2>
@@ -187,18 +186,6 @@ export default function HomePage() {
                 {/* Row 3 */}
                 <div className="flex flex-wrap justify-center items-center gap-4">
                   {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count, techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
-                    <div 
-                      key={tech.name} 
-                      className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
-                    >
-                      <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
-                      <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
-                    </div>
-                  ))}
-                </div>
-                {/* Row 4 */}
-                <div className="flex flex-wrap justify-center items-center gap-4">
-                  {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
                     <div 
                       key={tech.name} 
                       className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
