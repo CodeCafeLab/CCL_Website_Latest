@@ -1,12 +1,12 @@
 
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA } from '@/lib/constants';
 import { ArrowRight, Bot, Users, Zap } from 'lucide-react';
+import Image from 'next/image'; // Keep Image for other images on the page
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -24,10 +24,16 @@ export default function HomePage() {
     <div className="space-y-16 md:space-y-24">
       {/* Hero Section */}
       <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden bg-card shadow-lg">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-40 dark:opacity-40"
-          style={{ backgroundImage: "url('/codecafelab_herobg.png')", backgroundBlendMode: 'multiply' }}
-        ></div>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-40 dark:opacity-40"
+          src="/codecafelab_herobgvideo.mp4"
+        >
+          Your browser does not support the video tag.
+        </video>
         <div className="relative z-10 container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <AnimatedHeroText texts={heroTexts} />
@@ -51,7 +57,7 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold text-center mb-12">Our Expertise</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {SERVICES_DATA.slice(0, 3).map((service) => (
-            <Card key={service.title} className="hover:shadow-xl transition-shadow duration-300">
+            <Card key={service.slug} className="hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
                 <div className="flex items-center gap-4 mb-2">
                   <service.icon className="h-10 w-10 text-primary" />
@@ -59,9 +65,9 @@ export default function HomePage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription>{service.description}</CardDescription>
+                <CardDescription>{service.subServices.length > 0 ? service.subServices[0].description : 'Explore our expert services.'}</CardDescription>
                 <Button variant="link" asChild className="mt-4 px-0 text-primary">
-                  <Link href="/services">Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                  <Link href={`/services#${service.slug}`}>Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
                 </Button>
               </CardContent>
             </Card>
