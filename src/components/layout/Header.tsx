@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -71,17 +71,20 @@ export default function Header() {
     const otherSetOpen = menuToControl === 'services' ? setCompanyMenuOpen : setServicesMenuOpen;
     const timerRef = menuToControl === 'services' ? servicesMenuTimerRef : companyMenuTimerRef;
     const otherTimerRef = menuToControl === 'services' ? companyMenuTimerRef : servicesMenuTimerRef;
-
+  
     if (action === 'enter') {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
       setOpen(true);
-      otherSetOpen(false); // Close other menu
-      if (otherTimerRef.current) { // Clear other menu's close timer
-        clearTimeout(otherTimerRef.current);
-        otherTimerRef.current = null;
+      // Ensure the other menu is closed when this one opens via hover
+      if (otherSetOpen) { // Check if otherSetOpen is defined
+        otherSetOpen(false);
+        if (otherTimerRef.current) {
+          clearTimeout(otherTimerRef.current);
+          otherTimerRef.current = null;
+        }
       }
     } else { // action === 'leave'
       timerRef.current = setTimeout(() => {
@@ -93,31 +96,31 @@ export default function Header() {
   
   const onServicesOpenChange = (open: boolean) => {
     setServicesMenuOpen(open);
-    if (open) {
-      setCompanyMenuOpen(false); // Ensure company menu is closed
-      if (companyMenuTimerRef.current) {
-        clearTimeout(companyMenuTimerRef.current);
-        companyMenuTimerRef.current = null;
-      }
+    if (servicesMenuTimerRef.current) { // Clear timer if Radix closes it or user clicks
+        clearTimeout(servicesMenuTimerRef.current);
+        servicesMenuTimerRef.current = null;
     }
-    if (!open && servicesMenuTimerRef.current) { // Clear timer if Radix closes it
-      clearTimeout(servicesMenuTimerRef.current);
-      servicesMenuTimerRef.current = null;
+    if (open) { // If services menu is opening, ensure company menu is closed
+        setCompanyMenuOpen(false);
+        if (companyMenuTimerRef.current) {
+            clearTimeout(companyMenuTimerRef.current);
+            companyMenuTimerRef.current = null;
+        }
     }
   };
   
   const onCompanyOpenChange = (open: boolean) => {
     setCompanyMenuOpen(open);
-    if (open) {
-      setServicesMenuOpen(false); // Ensure services menu is closed
-      if (servicesMenuTimerRef.current) {
-        clearTimeout(servicesMenuTimerRef.current);
-        servicesMenuTimerRef.current = null;
-      }
+    if (companyMenuTimerRef.current) { // Clear timer if Radix closes it or user clicks
+        clearTimeout(companyMenuTimerRef.current);
+        companyMenuTimerRef.current = null;
     }
-    if (!open && companyMenuTimerRef.current) { // Clear timer if Radix closes it
-      clearTimeout(companyMenuTimerRef.current);
-      companyMenuTimerRef.current = null;
+    if (open) { // If company menu is opening, ensure services menu is closed
+        setServicesMenuOpen(false);
+        if (servicesMenuTimerRef.current) {
+            clearTimeout(servicesMenuTimerRef.current);
+            servicesMenuTimerRef.current = null;
+        }
     }
   };
 
@@ -142,9 +145,7 @@ export default function Header() {
           >
             {subService.title}
           </Link>
-          {subService.description && (
-            <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">&mdash; {subService.description}</p>
-          )}
+          {/* Sub-service description removed for mobile */}
         </div>
       );
     }
@@ -166,9 +167,7 @@ export default function Header() {
         >
           <div>
             {subService.title}
-            {subService.description && (
-              <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">&mdash; {subService.description}</p>
-            )}
+             {/* Sub-service description removed for desktop */}
           </div>
         </Link>
       </DropdownMenuItem>
@@ -252,9 +251,7 @@ export default function Header() {
                                   >
                                     {subService.title}
                                   </Link>
-                                  {subService.description && (
-                                    <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">&mdash; {subService.description}</p>
-                                  )}
+                                  {/* Sub-service description removed */}
                                 </li>
                               );
                             })}
@@ -392,7 +389,21 @@ export default function Header() {
                                   </AccordionTrigger>
                                   <AccordionContent className="pt-1 pb-0 pl-0 space-y-0.5">
                                     {category.subServices.map((subService) => (
-                                      renderSubServiceLink(subService, true, category.slug)
+                                       <div key={subService.slug} className="ml-3 py-1">
+                                       <Link
+                                         href={`/services#${category.slug}-${subService.slug}`}
+                                         onClick={closeSheet}
+                                         className={cn(
+                                           "block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                           (typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services')
+                                             ? "text-primary font-semibold"
+                                             : "text-foreground/80 hover:text-white"
+                                         )}
+                                       >
+                                         {subService.title}
+                                       </Link>
+                                       {/* Sub-service description removed */}
+                                     </div>
                                     ))}
                                   </AccordionContent>
                                 </AccordionItem>
@@ -471,4 +482,3 @@ export default function Header() {
     </header>
   );
 }
-
