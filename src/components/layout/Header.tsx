@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, DollarSign, Users, Star, Link as LinkIcon } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -45,7 +45,8 @@ export default function Header() {
     };
   }, []);
 
-  const logoSrc = "/codecafe_logo_dark.png";
+  // Dark mode is default, so always use dark logo
+  const logoSrc = "/codecafe_logo_dark.png"; 
   const logoAlt = `${SITE_NAME} Logo (Dark Mode)`;
 
   if (!isMounted) {
@@ -78,12 +79,12 @@ export default function Header() {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
-      if (otherTimerRef.current) { // Clear timer for the other menu if it exists
+      if (otherTimerRef.current) { 
         clearTimeout(otherTimerRef.current);
         otherTimerRef.current = null;
       }
       setOpen(true);
-      otherSetOpen(false); // Explicitly close the other menu
+      otherSetOpen(false); 
     } else { // action === 'leave'
       timerRef.current = setTimeout(() => {
         setOpen(false);
@@ -137,7 +138,7 @@ export default function Header() {
             height={43}
             priority
             data-ai-hint="company logo dark"
-            key={logoSrc}
+            key={logoSrc} // Re-keying if src changes, though it's static dark now
           />
         </Link>
 
@@ -185,20 +186,19 @@ export default function Header() {
                             <ul className="space-y-1">
                                 {category.subServices.slice(0, 4).map((subService) => {
                                 const href = `/services#${category.slug}-${subService.slug}`;
-                                const isActiveServiceLink = typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services';
+                                // Active state for sub-services is tricky with hash links, consider if needed.
+                                // For now, no special active state for sub-service links themselves.
                                 return (
                                     <li key={subService.slug} className="group">
-                                    <Link
-                                        href={href}
-                                        className={cn(
-                                        "block text-sm font-medium rounded-md transition-colors px-3 py-1.5",
-                                        isActiveServiceLink
-                                            ? "text-primary" 
-                                            : "text-popover-foreground hover:text-white" 
-                                        )}
-                                    >
-                                        {subService.title}
-                                    </Link>
+                                      <Link
+                                          href={href}
+                                          className={cn(
+                                          "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-popover-foreground hover:text-white" 
+                                          )}
+                                          onClick={() => setServicesMenuOpen(false)} // Close menu on click
+                                      >
+                                          {subService.title}
+                                      </Link>
                                     </li>
                                 );
                                 })}
@@ -207,6 +207,7 @@ export default function Header() {
                                     <Link
                                         href={`/services#${category.slug}`}
                                         className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
+                                        onClick={() => setServicesMenuOpen(false)} // Close menu on click
                                     >
                                         See All <ArrowRight className="h-4 w-4" />
                                     </Link>
@@ -246,25 +247,33 @@ export default function Header() {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
+                        className="w-96 p-2 bg-background shadow-xl rounded-lg border-border"
                         align="start"
                         onMouseEnter={() => handleMenuInteraction('company', 'enter')}
                         onMouseLeave={() => handleMenuInteraction('company', 'leave')}
                         sideOffset={15} 
                     >
                         {COMPANY_SUB_LINKS.map((subLink) => (
-                        <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
+                        <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground rounded-md hover:bg-accent">
                             <Link
-                            href={subLink.href}
-                            className={cn(
-                                "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
+                                href={subLink.href}
+                                onClick={() => setCompanyMenuOpen(false)} // Close menu on click
+                                className={cn(
+                                "block w-full text-left px-3 py-2.5 text-sm transition-colors text-popover-foreground flex items-start gap-3",
                                 (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                 ? "text-primary font-semibold" 
                                 : "hover:text-white" 
-                            )}
+                                )}
                             >
-                            <subLink.icon className="h-4 w-4" />
-                            {subLink.label}
+                            {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0" />}
+                            <div>
+                                <span className="font-medium">{subLink.label}</span>
+                                {subLink.description && (
+                                    <p className="text-xs text-muted-foreground/80 mt-1 whitespace-normal">
+                                        {subLink.description}
+                                    </p>
+                                )}
+                            </div>
                             </Link>
                         </DropdownMenuItem>
                         ))}
@@ -278,7 +287,7 @@ export default function Header() {
                     <Link
                     href={link.href}
                     className={cn(
-                        "transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        "transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                         isActive
                         ? "text-primary font-semibold" 
                         : "text-foreground/60 hover:text-white" 
@@ -332,7 +341,7 @@ export default function Header() {
                         <AccordionItem value="services-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                               isServicesActive
                                 ? "text-primary font-semibold" 
                                 : "text-foreground hover:text-white" 
@@ -348,7 +357,7 @@ export default function Header() {
                               {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
-                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline [&[data-state=open]]:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline [&[data-state=open]]:text-primary outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                                     "text-foreground/80 hover:text-white" 
                                   )}>
                                     <div className="flex items-center gap-2">
@@ -363,7 +372,7 @@ export default function Header() {
                                          href={`/services#${category.slug}-${subService.slug}`}
                                          onClick={closeSheet}
                                          className={cn(
-                                           "block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                           "block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                                            (typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services')
                                              ? "text-primary font-semibold"
                                              : "text-foreground/80 hover:text-white"
@@ -378,7 +387,7 @@ export default function Header() {
                                         <Link
                                           href={`/services#${category.slug}`}
                                           onClick={closeSheet}
-                                          className="block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-primary font-semibold hover:text-white flex items-center gap-1"
+                                          className="block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-primary font-semibold hover:text-white flex items-center gap-1"
                                         >
                                           See All <ArrowRight className="h-4 w-4" />
                                         </Link>
@@ -400,7 +409,7 @@ export default function Header() {
                         <AccordionItem value="company-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                               companyActive
                                 ? "text-primary font-semibold" 
                                 : "text-foreground hover:text-white" 
@@ -418,14 +427,21 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3 outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                     ? "text-primary font-semibold" 
                                     : "text-foreground/80 hover:text-white" 
                                 )}
                               >
-                                <subLink.icon className="h-4 w-4" />
-                                {subLink.label}
+                                {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0" />}
+                                <div>
+                                    <span className="font-medium">{subLink.label}</span>
+                                    {subLink.description && (
+                                        <p className="text-xs text-muted-foreground/80 mt-0.5 whitespace-normal">
+                                            {subLink.description}
+                                        </p>
+                                    )}
+                                </div>
                               </Link>
                             ))}
                           </AccordionContent>
@@ -440,7 +456,7 @@ export default function Header() {
                       href={link.href}
                       onClick={closeSheet}
                       className={cn(
-                        "block px-3 py-2 rounded-md text-base font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        "block px-3 py-2 rounded-md text-base font-medium transition-colors outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                         isActive
                           ? "text-primary font-semibold" 
                           : "text-foreground hover:text-white" 
@@ -461,4 +477,3 @@ export default function Header() {
     </header>
   );
 }
-

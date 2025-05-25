@@ -3,7 +3,7 @@ import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCa
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
-  Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings
+  Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -18,9 +18,54 @@ export const NAV_LINKS: NavItem[] = [
 ];
 
 export const COMPANY_SUB_LINKS: NavItem[] = [
-  { href: "/company", label: "About CodeCafe Lab", icon: Info },
-  { href: "/career", label: "Career", icon: Briefcase },
-  { href: "/contact", label: "Contact Us", icon: Mail },
+  { 
+    href: "/company", 
+    label: "About CodeCafe Lab", 
+    icon: Info,
+    description: "Company mission, vision, values, founding story, leadership team, and journey."
+  },
+  { 
+    href: "#", // Replace with actual link for Pricing page
+    label: "Pricing", 
+    icon: DollarSign,
+    description: "We have transparent pricing modules for individuals, Startups, Companies."
+  },
+  { 
+    href: "#", // Replace with actual link for Consultancy page
+    label: "Consultancy", 
+    icon: Briefcase, // Using Briefcase as per previous discussions for careers/general business
+    description: "We provide consultancy for recruitment also."
+  },
+  { 
+    href: "/contact", 
+    label: "Contact Us", 
+    icon: Mail,
+    description: "Contact form, phone, email, office locations, Google Maps embed, and social links."
+  },
+  { 
+    href: "/career", 
+    label: "Career", 
+    icon: Users, // Using Users as distinct from Briefcase
+    description: "Current job openings, work culture, benefits, hiring process, and intern programs."
+  },
+  { 
+    href: "#", // Replace with actual link for Our Team page
+    label: "Our Team", 
+    icon: Users,
+    description: "Photos, bios, and roles of key team members (adds a human touch)."
+  },
+  { 
+    href: "#", // Replace with actual link for Why Choose Us page
+    label: "Why Choose Us", 
+    icon: Star,
+    description: "Key differentiators, client success stories, testimonials, and USPs."
+  },
+  { 
+    href: "#", // Replace with actual link for Partners page
+    label: "Partners & Affiliations", 
+    icon: LinkIcon,
+    description: "Tech alliances, certifications, and strategic partners."
+  },
 ];
 
 export const SERVICES_DATA: ServiceMenuItem[] = [
@@ -65,7 +110,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Frontend Development", slug: "frontend-development", description: "React, Next.js, Vue.js, and modern JavaScript frameworks." },
       { title: "Backend Development", slug: "backend-development", description: "Node.js, Laravel, Python/Django, and scalable API development." },
       { title: "CMS & Custom Admin Panels", slug: "cms-custom-admin-panels", description: "WordPress, Strapi, Headless CMSs, or fully custom admin interfaces." },
-      { title: "API Integration & Development", slug: "api-integration-development-web", description: "RESTful APIs, GraphQL, and third-party API integrations." },
+      { title: "API Integration & Development (Web)", slug: "api-integration-development-web", description: "RESTful APIs, GraphQL, and third-party API integrations." },
       { title: "Performance Optimization", slug: "performance-optimization", description: "Speed, SEO, accessibility, and Core Web Vitals improvements." },
       { title: "Web Hosting & Deployment", slug: "web-hosting-deployment", description: "Scalable hosting setup on AWS, Vercel, Netlify, DigitalOcean, etc." },
     ],
@@ -81,7 +126,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "ERP & CRM Solutions", slug: "erp-crm-solutions", description: "Internal tools for enterprise resource planning and customer relationship management." },
       { title: "Legacy Software Modernization", slug: "legacy-software-modernization", description: "Rebuilding or upgrading outdated systems using modern technologies." },
       { title: "Desktop Application Development", slug: "desktop-application-development", description: "Software for Windows, macOS, or Linux platforms." },
-      { title: "API Development & Integration", slug: "api-development-integration-software", description: "Scalable RESTful or GraphQL APIs and third-party service integrations." },
+      { title: "API Development & Integration (Software)", slug: "api-development-integration-software", description: "Scalable RESTful or GraphQL APIs and third-party service integrations." },
       { title: "Software Testing & QA", slug: "software-testing-qa", description: "Manual and automated testing for functionality, performance, and security." },
       { title: "Software Maintenance & Support", slug: "software-maintenance-support", description: "Ongoing upgrades, troubleshooting, and performance monitoring." },
     ],
@@ -474,8 +519,3 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
   },
 ];
-
-
-
-
-

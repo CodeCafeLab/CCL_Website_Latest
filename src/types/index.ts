@@ -1,9 +1,11 @@
+
 import type { LucideIcon } from 'lucide-react';
 
 export interface NavItem {
   href: string;
   label: string;
   icon?: LucideIcon;
+  description?: string; // Added for company submenu descriptions
 }
 
 export interface SubService {
