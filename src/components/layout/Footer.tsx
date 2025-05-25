@@ -105,8 +105,8 @@ export default function Footer() {
               </form>
             </div>
             <div>
-              <h4 className="text-base font-semibold text-foreground mb-3">Talk to Us</h4>
-              <Button asChild className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
+              {/* Removed "Talk to Us" h4 title */}
+              <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Link href="/contact">Get in Touch</Link>
               </Button>
             </div>
