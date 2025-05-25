@@ -161,7 +161,7 @@ export default function HomePage() {
       </section>
 
       {/* CodeCafe Lab Tech Stack Section */}
-      <section className="ai-glow-bg pt-8 pb-16 md:pt-12 md:pb-24">
+      <section className="ai-glow-bg pt-8 pb-16 md:pt-12 md:pb-24 rounded-xl">
         <div className="relative z-10 container mx-auto">
             <div className="text-center mb-12">
                 <Brain className="h-12 w-12 text-primary mx-auto mb-4" />
