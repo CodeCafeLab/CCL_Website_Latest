@@ -4,7 +4,8 @@ import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
-  Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus
+  Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus,
+  PresentationChart, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -15,7 +16,7 @@ export const NAV_LINKS: NavItem[] = [
   { href: "/services", label: "Services", icon: Layers },
   { href: "/products", label: "Products", icon: Smartphone },
   { href: "/company", label: "Company", icon: Building2 },
-  { href: "/blog", label: "Resources", icon: FileText },
+  { href: "/blog", label: "Resources", icon: FileText }, // Main "Resources" link points to /blog
 ];
 
 export const COMPANY_SUB_LINKS: NavItem[] = [
@@ -34,8 +35,8 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   {
     href: "/consultancy",
     label: "Consultancy",
-    icon: MessageSquare, // Changed from Briefcase to MessageSquare as per an earlier request
-    description: "We provide consultancy for recruitment also."
+    icon: Briefcase, // Changed from MessageSquare to Briefcase
+    description: "We provide consultancy for recruitment also"
   },
   {
     href: "/contact",
@@ -64,7 +65,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   {
     href: "#",
     label: "Partners & Affiliations",
-    icon: Handshake, // Changed from LinkIcon to Handshake
+    icon: Handshake,
     description: "Tech alliances, certifications, and strategic partners."
   },
 ];
@@ -131,7 +132,7 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     subtitle: "(WhatsApp Automation)",
     description: "Automated WhatsApp messaging for smart outreach.",
     href: "#",
-    icon: MessageSquare,
+    icon: MessageSquareIcon,
   },
   {
     label: "TeamSage",
@@ -181,6 +182,57 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     description: "Real-time analytics for your social presence.",
     href: "#",
     icon: BarChart3,
+  },
+];
+
+export const RESOURCES_SUB_LINKS: NavItem[] = [
+  {
+    href: "/blog",
+    label: "Blog",
+    icon: FileText,
+    description: "Articles on tech trends, case studies, coding tips, AI advancements, and startup advice.",
+  },
+  {
+    href: "#",
+    label: "Case Studies",
+    icon: BarChartHorizontalBig, // Using BarChartHorizontalBig as PresentationChart might not be available or fit well
+    description: "Real client success stories with challenges, solutions, results, and testimonials.",
+  },
+  {
+    href: "#",
+    label: "Whitepapers & Reports",
+    icon: DownloadCloud,
+    description: "Downloadable PDFs on industry insights, AI, blockchain, or software strategy.",
+  },
+  {
+    href: "#",
+    label: "News & Announcements",
+    icon: Newspaper,
+    description: "Product launches, event participation, partnerships, awards, or media mentions.",
+  },
+  {
+    href: "#",
+    label: "Webinars & Events",
+    icon: CalendarClock,
+    description: "Upcoming webinars, past recordings, tech meetups, or training events.",
+  },
+  {
+    href: "#",
+    label: "Help Center / FAQs",
+    icon: HelpCircle,
+    description: "Support articles, onboarding guides, and general help topics.",
+  },
+  {
+    href: "#",
+    label: "Tutorials & How-Tos",
+    icon: BookOpenText,
+    description: "Technical tutorials, integrations, and walkthroughs for developers and clients.",
+  },
+  {
+    href: "#",
+    label: "Newsletter Signup",
+    icon: MailPlus,
+    description: "A place to collect emails for a monthly newsletter on company updates and tech trends.",
   },
 ];
 
