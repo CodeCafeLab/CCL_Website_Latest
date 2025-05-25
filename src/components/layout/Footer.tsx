@@ -1,5 +1,5 @@
 
-import { Coffee, Github, Linkedin, Twitter, Facebook, Briefcase, MessageSquare, Send } from "lucide-react";
+import { Coffee, Github, Linkedin, Twitter, Facebook, Briefcase, MessageSquare, Send, Instagram } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE_NAME } from "@/lib/constants";
@@ -50,8 +50,8 @@ export default function Footer() {
               <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Meta (Facebook)" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook className="h-6 w-6" />
               </Link>
-              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Upwork" className="text-muted-foreground hover:text-primary transition-colors">
-                <Briefcase className="h-6 w-6" />
+              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground hover:text-primary transition-colors">
+                <Instagram className="h-6 w-6" />
               </Link>
               <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground hover:text-primary transition-colors">
                 <MessageSquare className="h-6 w-6" />
