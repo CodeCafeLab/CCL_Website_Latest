@@ -143,157 +143,167 @@ export default function Header() {
           />
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-1">
-          {NAV_LINKS.map((link) => {
-            if (link.label === "Services") {
-              const isServicesActive = pathname.startsWith(link.href) || pathname === "/services" || servicesMenuOpen;
-              return (
-                <DropdownMenu
-                    key={link.href}
-                    open={servicesMenuOpen}
-                    onOpenChange={onServicesOpenChange}
-                >
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0", 
-                        isServicesActive
-                          ? "text-primary font-semibold" 
-                          : "text-foreground/60 hover:text-white" 
-                      )}
-                      onMouseEnter={() => handleMenuInteraction('services', 'enter')}
-                      onMouseLeave={() => handleMenuInteraction('services', 'leave')}
-                      aria-expanded={servicesMenuOpen}
+        <div className="flex items-center flex-grow justify-end"> {/* Flex container for nav and button */}
+            <nav className="hidden md:flex items-center space-x-1">
+            {NAV_LINKS.map((link) => {
+                if (link.label === "Services") {
+                const isServicesActive = pathname.startsWith(link.href) || pathname === "/services" || servicesMenuOpen;
+                return (
+                    <DropdownMenu
+                        key={link.href}
+                        open={servicesMenuOpen}
+                        onOpenChange={onServicesOpenChange}
                     >
-                      {link.label}
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    className="w-screen max-w-none p-0" 
-                    onMouseEnter={() => handleMenuInteraction('services', 'enter')}
-                    onMouseLeave={() => handleMenuInteraction('services', 'leave')}
-                    sideOffset={5} 
-                  >
-                    <div className="container mx-auto py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-h-[75vh] overflow-y-auto">
-                      {SERVICES_DATA.map((category: AppServiceMenuItem) => (
-                        <div key={category.slug}>
-                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
-                            {category.icon && <category.icon className="h-5 w-5" />}
-                            {category.title}
-                          </h4>
-                          <ul className="space-y-1">
-                            {category.subServices.slice(0, 4).map((subService) => {
-                               const href = `/services#${category.slug}-${subService.slug}`;
-                               const isActiveServiceLink = typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services';
-                              return (
-                                <li key={subService.slug} className="group">
-                                   <Link
-                                    href={href}
-                                    className={cn(
-                                      "block text-sm font-medium rounded-md transition-colors px-3 py-1.5",
-                                      isActiveServiceLink
-                                        ? "text-primary" 
-                                        : "text-popover-foreground hover:text-white" 
-                                    )}
-                                  >
-                                    {subService.title}
-                                  </Link>
-                                </li>
-                              );
-                            })}
-                             {category.subServices.length > 4 && (
-                                <li className="group">
-                                  <Link
-                                    href={`/services#${category.slug}`}
-                                    className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
-                                  >
-                                    See All <ArrowRight className="h-4 w-4" />
-                                  </Link>
-                                </li>
-                              )}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              );
-            }
-            if (link.label === "Company") {
-              const companyActive = isCompanyLinkActive(pathname) || companyMenuOpen;
-              return (
-                <DropdownMenu
-                    key={link.href}
-                    open={companyMenuOpen}
-                    onOpenChange={onCompanyOpenChange}
-                >
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
-                        companyActive
-                          ? "text-primary font-semibold" 
-                          : "text-foreground/60 hover:text-white" 
-                      )}
-                      onMouseEnter={() => handleMenuInteraction('company', 'enter')}
-                      onMouseLeave={() => handleMenuInteraction('company', 'leave')}
-                      aria-expanded={companyMenuOpen}
-                    >
-                      {link.label}
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
-                    align="start"
-                    onMouseEnter={() => handleMenuInteraction('company', 'enter')}
-                    onMouseLeave={() => handleMenuInteraction('company', 'leave')}
-                  >
-                    {COMPANY_SUB_LINKS.map((subLink) => (
-                      <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
-                        <Link
-                          href={subLink.href}
-                          className={cn(
-                            "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
-                            (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
-                              ? "text-primary font-semibold" 
-                              : "hover:text-white" 
-                          )}
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                        variant="ghost"
+                        className={cn(
+                            "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0", 
+                            isServicesActive
+                            ? "text-primary font-semibold" 
+                            : "text-foreground/60 hover:text-white" 
+                        )}
+                        onMouseEnter={() => handleMenuInteraction('services', 'enter')}
+                        onMouseLeave={() => handleMenuInteraction('services', 'leave')}
+                        aria-expanded={servicesMenuOpen}
                         >
-                          <subLink.icon className="h-4 w-4" />
-                          {subLink.label}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              );
-            }
-            const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
-            return (
-              <Button asChild variant="ghost" key={link.href}>
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    isActive
-                      ? "text-primary font-semibold" 
-                      : "text-foreground/60 hover:text-white" 
-                  )}
-                >
-                  {link.label}
-                </Link>
-              </Button>
-            );
-          })}
-        </nav>
+                        {link.label}
+                        <ChevronDown className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        className="w-screen max-w-none p-0" 
+                        onMouseEnter={() => handleMenuInteraction('services', 'enter')}
+                        onMouseLeave={() => handleMenuInteraction('services', 'leave')}
+                        sideOffset={15} // Increased offset for better visibility
+                    >
+                        <div className="container mx-auto py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-h-[75vh] overflow-y-auto">
+                        {SERVICES_DATA.map((category: AppServiceMenuItem) => (
+                            <div key={category.slug}>
+                            <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
+                                {category.icon && <category.icon className="h-5 w-5" />}
+                                {category.title}
+                            </h4>
+                            <ul className="space-y-1">
+                                {category.subServices.slice(0, 4).map((subService) => {
+                                const href = `/services#${category.slug}-${subService.slug}`;
+                                const isActiveServiceLink = typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services';
+                                return (
+                                    <li key={subService.slug} className="group">
+                                    <Link
+                                        href={href}
+                                        className={cn(
+                                        "block text-sm font-medium rounded-md transition-colors px-3 py-1.5",
+                                        isActiveServiceLink
+                                            ? "text-primary" 
+                                            : "text-popover-foreground hover:text-white" 
+                                        )}
+                                    >
+                                        {subService.title}
+                                    </Link>
+                                    </li>
+                                );
+                                })}
+                                {category.subServices.length > 4 && (
+                                    <li className="group">
+                                    <Link
+                                        href={`/services#${category.slug}`}
+                                        className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
+                                    >
+                                        See All <ArrowRight className="h-4 w-4" />
+                                    </Link>
+                                    </li>
+                                )}
+                            </ul>
+                            </div>
+                        ))}
+                        </div>
+                    </DropdownMenuContent>
+                    </DropdownMenu>
+                );
+                }
+                if (link.label === "Company") {
+                const companyActive = isCompanyLinkActive(pathname) || companyMenuOpen;
+                return (
+                    <DropdownMenu
+                        key={link.href}
+                        open={companyMenuOpen}
+                        onOpenChange={onCompanyOpenChange}
+                    >
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                        variant="ghost"
+                        className={cn(
+                            "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                            companyActive
+                            ? "text-primary font-semibold" 
+                            : "text-foreground/60 hover:text-white" 
+                        )}
+                        onMouseEnter={() => handleMenuInteraction('company', 'enter')}
+                        onMouseLeave={() => handleMenuInteraction('company', 'leave')}
+                        aria-expanded={companyMenuOpen}
+                        >
+                        {link.label}
+                        <ChevronDown className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
+                        align="start"
+                        onMouseEnter={() => handleMenuInteraction('company', 'enter')}
+                        onMouseLeave={() => handleMenuInteraction('company', 'leave')}
+                        sideOffset={15} // Increased offset
+                    >
+                        {COMPANY_SUB_LINKS.map((subLink) => (
+                        <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
+                            <Link
+                            href={subLink.href}
+                            className={cn(
+                                "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
+                                (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
+                                ? "text-primary font-semibold" 
+                                : "hover:text-white" 
+                            )}
+                            >
+                            <subLink.icon className="h-4 w-4" />
+                            {subLink.label}
+                            </Link>
+                        </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                    </DropdownMenu>
+                );
+                }
+                const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
+                return (
+                <Button asChild variant="ghost" key={link.href}>
+                    <Link
+                    href={link.href}
+                    className={cn(
+                        "transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        isActive
+                        ? "text-primary font-semibold" 
+                        : "text-foreground/60 hover:text-white" 
+                    )}
+                    >
+                    {link.label}
+                    </Link>
+                </Button>
+                );
+            })}
+            </nav>
 
-        <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center ml-4"> {/* Added ml-4 for spacing */}
+                <Button asChild>
+                    <Link href="/contact">Talk to Us</Link>
+                </Button>
+            </div>
+        </div>
+
+
+        <div className="flex items-center gap-4 md:hidden"> {/* Mobile menu trigger - kept separate */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild className="md:hidden">
+            <SheetTrigger asChild>
               <Button variant="outline" size="icon">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open navigation menu</span>
