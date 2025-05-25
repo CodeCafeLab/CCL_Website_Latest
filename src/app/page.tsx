@@ -6,7 +6,7 @@ import YoutubeShortsSection from '@/components/home/YoutubeShortsSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
-import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star } from 'lucide-react'; // Added Star
+import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star } from 'lucide-react'; 
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 
@@ -56,7 +56,7 @@ export default function HomePage() {
               <Link href="/consultancy">Get a Quote <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/contact">Talk to Us <Bot className="ml-2 h-5 w-5" /></Link>
+              <Link href="/contact">Talk to Us 24*7 <Bot className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured AI Innovations */}
-      <section className="relative overflow-hidden bg-card p-8 md:p-12 rounded-xl shadow-lg">
+      <section className="relative overflow-hidden p-8 md:p-12 rounded-xl shadow-lg">
         <video
           autoPlay
           loop
@@ -211,7 +211,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Client Logos Section Placeholder */}
+      {/* Trusted By Section */}
       <section>
         <h2 className="text-5xl text-center mb-12 font-brittany text-royal-shine">Trusted By</h2>
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
@@ -327,5 +327,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    

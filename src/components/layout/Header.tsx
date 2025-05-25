@@ -141,7 +141,7 @@ export default function Header() {
         currentTimerRef.current = null;
     }
 
-    if (open) { // If this menu is opening, ensure others are closed
+    if (open) { 
         Object.keys(setMenuStateFunctions).forEach((key) => {
             if (key !== menuToControl) {
                 setMenuStateFunctions[key as keyof typeof setMenuStateFunctions](false);
@@ -220,7 +220,7 @@ export default function Header() {
                         sideOffset={15} 
                     >
                         <div className="bg-background shadow-xl rounded-lg border-border">
-                            <div className="px-6 py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
+                            <div className="container mx-auto py-4 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
                             {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                                 <div key={category.slug}>
                                 <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
@@ -353,7 +353,7 @@ export default function Header() {
                         sideOffset={15}
                       >
                         <div className="bg-background shadow-xl rounded-lg border-border">
-                            <div className="px-6 py-6 grid lg:grid-cols-4 gap-x-8 gap-y-6 max-h-[80vh] overflow-y-auto">
+                            <div className="container mx-auto py-6 px-6 grid lg:grid-cols-4 gap-x-8 gap-y-6 max-h-[80vh] overflow-y-auto">
                             <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
                                 {PRODUCT_SUB_LINKS.map((subLink) => (
                                 <div key={subLink.label} className="p-0 rounded-md hover:bg-muted/30 focus-within:bg-muted/30">
@@ -486,15 +486,14 @@ export default function Header() {
             </nav>
         </div>
 
-        {/* This div for Talk to Us button was removed as per user request */}
-        {/* <div className="hidden md:flex items-center ml-4 group">
+        <div className="hidden md:flex items-center ml-4 group">
             <Button asChild className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Link href="/contact">
                     Talk to Us
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200 ease-in-out" />
                 </Link>
             </Button>
-        </div> */}
+        </div>
 
 
         <div className="flex items-center gap-4 md:hidden">
@@ -681,6 +680,20 @@ export default function Header() {
                                 </div>
                               </Link>
                             ))}
+                             <div className="mt-4 space-y-3">
+                                <Link href="/contact?demo=true" onClick={closeSheet} className="block p-3 rounded-lg shadow-md bg-gradient-to-br from-primary to-accent text-white hover:shadow-lg transition-shadow duration-300 group">
+                                <h4 className="text-sm font-semibold mb-0.5 flex items-center">
+                                    <CalendarPlus className="mr-2 h-4 w-4"/> Book a Demo
+                                </h4>
+                                <p className="text-xs opacity-90">See our products in action.</p>
+                                </Link>
+                                <Link href="/contact?partner=true" onClick={closeSheet} className="block p-3 rounded-lg shadow-md bg-gradient-to-br from-accent to-primary text-white hover:shadow-lg transition-shadow duration-300 group">
+                                <h4 className="text-sm font-semibold mb-0.5 flex items-center">
+                                    <Handshake className="mr-2 h-4 w-4"/> Partner With Us
+                                </h4>
+                                <p className="text-xs opacity-90">Explore collaboration opportunities.</p>
+                                </Link>
+                            </div>
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>
@@ -759,4 +772,3 @@ export default function Header() {
     </header>
   );
 }
-

@@ -109,7 +109,6 @@ export default function Footer() {
               <Button asChild className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Link href="/contact">Get in Touch</Link>
               </Button>
-              <p className="text-xs text-muted-foreground mt-2">24*7</p>
             </div>
           </div>
         </div>
