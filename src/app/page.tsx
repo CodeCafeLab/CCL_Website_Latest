@@ -28,7 +28,7 @@ export default function HomePage() {
   const techStackRow1Count = 12;
   const techStackRow2Count = 10;
   const techStackRow3Count = 8;
-  // Remaining items will go into the fourth row
+  const techStackRow4Count = TECH_STACK_DATA.length - (techStackRow1Count + techStackRow2Count + techStackRow3Count);
 
 
   return (
@@ -40,7 +40,7 @@ export default function HomePage() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 dark:opacity-40"
           src="/codecafelab_herobgvideo.mp4"
         >
           Your browser does not support the video tag.
@@ -150,62 +150,64 @@ export default function HomePage() {
       </section>
 
       {/* CodeCafe Lab Tech Stack Section */}
-      <section>
-        <div className="text-center mb-12">
-            <Brain className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h2 className="text-3xl font-bold">CodeCafe Lab Tech Stack</h2>
-            <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-                We leverage a modern and versatile technology stack to build robust, scalable, and innovative solutions.
-            </p>
-        </div>
-        <div className="space-y-6">
-            {/* Row 1 */}
-            <div className="flex flex-wrap justify-center items-center gap-4">
-              {TECH_STACK_DATA.slice(0, techStackRow1Count).map((tech, itemIndex) => (
-                <div 
-                  key={tech.name} 
-                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
-                >
-                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
-                  <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
-                </div>
-              ))}
+      <section className="ai-glow-bg py-16 md:py-24">
+        <div className="relative z-10 container mx-auto px-4">
+            <div className="text-center mb-12">
+                <Brain className="h-12 w-12 text-primary mx-auto mb-4" />
+                <h2 className="text-3xl font-bold">CodeCafe Lab Tech Stack</h2>
+                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+                    We leverage a modern and versatile technology stack to build robust, scalable, and innovative solutions.
+                </p>
             </div>
-            {/* Row 2 */}
-            <div className="flex flex-wrap justify-center items-center gap-4">
-              {TECH_STACK_DATA.slice(techStackRow1Count, techStackRow1Count + techStackRow2Count).map((tech, itemIndex) => (
-                <div 
-                  key={tech.name} 
-                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
-                >
-                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
-                  <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+            <div className="space-y-6">
+                {/* Row 1 */}
+                <div className="flex flex-wrap justify-center items-center gap-4">
+                  {TECH_STACK_DATA.slice(0, techStackRow1Count).map((tech, itemIndex) => (
+                    <div 
+                      key={tech.name} 
+                      className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                    >
+                      <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            {/* Row 3 */}
-            <div className="flex flex-wrap justify-center items-center gap-4">
-              {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count, techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
-                <div 
-                  key={tech.name} 
-                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
-                >
-                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
-                  <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                {/* Row 2 */}
+                <div className="flex flex-wrap justify-center items-center gap-4">
+                  {TECH_STACK_DATA.slice(techStackRow1Count, techStackRow1Count + techStackRow2Count).map((tech, itemIndex) => (
+                    <div 
+                      key={tech.name} 
+                      className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                    >
+                      <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            {/* Row 4 */}
-            <div className="flex flex-wrap justify-center items-center gap-4">
-              {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
-                <div 
-                  key={tech.name} 
-                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
-                >
-                  <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
-                  <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                {/* Row 3 */}
+                <div className="flex flex-wrap justify-center items-center gap-4">
+                  {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count, techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
+                    <div 
+                      key={tech.name} 
+                      className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                    >
+                      <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+                {/* Row 4 */}
+                <div className="flex flex-wrap justify-center items-center gap-4">
+                  {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
+                    <div 
+                      key={tech.name} 
+                      className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                    >
+                      <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                    </div>
+                  ))}
+                </div>
             </div>
         </div>
       </section>
