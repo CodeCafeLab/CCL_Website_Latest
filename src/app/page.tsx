@@ -56,7 +56,7 @@ export default function HomePage() {
               <Link href="/consultancy">Get a Quote <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/ai">Talk to Us <Bot className="ml-2 h-5 w-5" /></Link>
+              <Link href="/contact">Talk to Us <Bot className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured AI Innovations */}
-      <section className="relative overflow-hidden bg-card p-8 md:p-12 rounded-xl shadow-lg">
+      <section className="relative overflow-hidden p-8 md:p-12 rounded-xl shadow-lg">
         <video
           autoPlay
           loop
@@ -215,9 +215,9 @@ export default function HomePage() {
       <section>
         <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
         <div className="relative w-full overflow-hidden group">
-          <div className="flex animate-marquee group-hover:pause whitespace-nowrap">
+          <div className="flex animate-marquee group-hover:pause whitespace-nowrap" style={{ willChange: 'transform' }}>
             {[...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA].map((testimonial, index) => (
-              <Card key={`${testimonial.id}-${index}`} className="flex-shrink-0 w-80 md:w-96 mx-4 bg-secondary/50 p-6">
+              <Card key={`${testimonial.id}-${index}`} className="flex-shrink-0 w-72 md:w-80 mx-4 bg-secondary/50 p-6">
                 <CardContent className="p-0 flex flex-col h-full">
                   <div className="flex items-center mb-4">
                     <Image 
@@ -225,7 +225,7 @@ export default function HomePage() {
                         alt={testimonial.name} 
                         width={60} 
                         height={60} 
-                        className="rounded-full mr-4" 
+                        className="rounded-full mr-4 object-cover" 
                         data-ai-hint={testimonial.dataAiHint} 
                     />
                     <div>
