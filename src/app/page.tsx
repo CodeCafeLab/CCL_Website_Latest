@@ -159,11 +159,11 @@ export default function HomePage() {
         </div>
         <div className="space-y-6">
             {/* Row 1 */}
-            <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
+            <div className="flex flex-wrap justify-center items-center gap-4">
               {TECH_STACK_DATA.slice(0, techStackRow1Count).map((tech) => (
                 <div 
                   key={tech.name} 
-                  className="flex-shrink-0 w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
                   <tech.icon className="h-10 w-10 text-accent mb-2" />
                   <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
@@ -171,11 +171,11 @@ export default function HomePage() {
               ))}
             </div>
             {/* Row 2 */}
-            <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
+            <div className="flex flex-wrap justify-center items-center gap-4">
               {TECH_STACK_DATA.slice(techStackRow1Count, techStackRow1Count + techStackRow2Count).map((tech) => (
                 <div 
                   key={tech.name} 
-                  className="flex-shrink-0 w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
                   <tech.icon className="h-10 w-10 text-accent mb-2" />
                   <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
@@ -183,11 +183,11 @@ export default function HomePage() {
               ))}
             </div>
             {/* Row 3 */}
-            <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
+            <div className="flex flex-wrap justify-center items-center gap-4">
               {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count).map((tech) => (
                 <div 
                   key={tech.name} 
-                  className="flex-shrink-0 w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                  className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
                   <tech.icon className="h-10 w-10 text-accent mb-2" />
                   <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
