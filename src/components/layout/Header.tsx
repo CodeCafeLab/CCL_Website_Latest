@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -71,6 +71,7 @@ export default function Header() {
           onClick={closeSheet}
           className={cn(
             commonClasses,
+            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
             isActiveServiceLink
               ? "text-primary font-semibold"
               : "text-foreground/80 hover:text-primary"
@@ -134,9 +135,7 @@ export default function Header() {
                     open={servicesMenuOpen}
                     onOpenChange={(open) => {
                         setServicesMenuOpen(open);
-                        if (open) {
-                            setCompanyMenuOpen(false); 
-                        }
+                        if (open) setCompanyMenuOpen(false);
                     }}
                 >
                   <DropdownMenuTrigger asChild>
@@ -150,6 +149,7 @@ export default function Header() {
                       )}
                       onMouseEnter={() => {
                         setServicesMenuOpen(true);
+                        setCompanyMenuOpen(false);
                       }}
                       aria-expanded={servicesMenuOpen}
                     >
@@ -161,7 +161,10 @@ export default function Header() {
                     className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border"
                     align="start"
                     onMouseLeave={() => setServicesMenuOpen(false)}
-                    onMouseEnter={() => setServicesMenuOpen(true)} 
+                    onMouseEnter={() => {
+                        setServicesMenuOpen(true);
+                        setCompanyMenuOpen(false);
+                    }}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                       {SERVICES_DATA.map((category: AppServiceMenuItem) => (
@@ -192,9 +195,7 @@ export default function Header() {
                     open={companyMenuOpen}
                     onOpenChange={(open) => {
                         setCompanyMenuOpen(open);
-                        if (open) {
-                            setServicesMenuOpen(false);
-                        }
+                        if (open) setServicesMenuOpen(false);
                     }}
                 >
                   <DropdownMenuTrigger asChild>
@@ -208,6 +209,7 @@ export default function Header() {
                       )}
                       onMouseEnter={() => {
                         setCompanyMenuOpen(true);
+                        setServicesMenuOpen(false);
                       }}
                       aria-expanded={companyMenuOpen}
                     >
@@ -219,7 +221,10 @@ export default function Header() {
                     className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
                     align="start"
                     onMouseLeave={() => setCompanyMenuOpen(false)}
-                    onMouseEnter={() => setCompanyMenuOpen(true)} 
+                    onMouseEnter={() => {
+                        setCompanyMenuOpen(true);
+                        setServicesMenuOpen(false);
+                    }}
                   >
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
