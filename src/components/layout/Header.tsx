@@ -4,8 +4,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, HomeIcon, Layers, Building2, Bot, FileText, Smartphone } from "lucide-react";
-import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem } from "@/lib/constants"; // Renamed to avoid conflict
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
+import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME } from "@/lib/constants"; // Renamed to avoid conflict
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
-import type { SubService, NavItem } from '@/types'; // Keep existing types
+import type { SubService } from '@/types'; 
 
 interface CompanySubItem {
   href: string;
@@ -43,17 +43,14 @@ export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
-  // State and refs for Services dropdown (desktop hover)
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const servicesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // State and refs for Company dropdown (desktop hover)
   const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
   const companyMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
-    // Cleanup timers on component unmount
     return () => {
       if (servicesMenuTimerRef.current) {
         clearTimeout(servicesMenuTimerRef.current);
@@ -65,13 +62,14 @@ export default function Header() {
   }, []);
 
   const logoSrc = "/codecafe_logo_dark.png"; 
-  const logoAlt = "CodeCafe Lab Logo Dark";
+  const logoAlt = `${SITE_NAME} Logo Dark`;
 
   if (!isMounted) {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          <div style={{ width: 171, height: 43 }} />
+          {/* Placeholder for logo dimensions to prevent layout shift */}
+          <div style={{ width: 171, height: 43 }} /> 
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
           </Button>
@@ -85,6 +83,7 @@ export default function Header() {
   const renderSubServiceLink = (subService: SubService, isMobile: boolean = false) => {
     const href = `/services#${subService.slug}`;
     const commonClasses = "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors";
+    // Check if current path is /services and hash matches subService.slug
     const isActive = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
 
     if (isMobile) {
@@ -96,8 +95,8 @@ export default function Header() {
           className={cn(
             commonClasses,
             isActive
-              ? "text-primary font-semibold"
-              : "text-foreground/80 hover:text-primary"
+              ? "text-primary font-semibold" // Active style
+              : "text-foreground/80 hover:text-primary" // Default and hover
           )}
         >
           {subService.title}
@@ -109,7 +108,7 @@ export default function Header() {
       <DropdownMenuItem
         key={subService.slug}
         asChild
-        className="p-0 focus:bg-accent focus:text-accent-foreground"
+        className="p-0 focus:bg-accent focus:text-accent-foreground" 
       >
         <Link
           href={href}
@@ -117,8 +116,8 @@ export default function Header() {
             commonClasses,
             "text-popover-foreground",
             isActive
-              ? "text-primary font-semibold"
-              : "hover:text-primary"
+              ? "text-primary font-semibold" // Active style
+              : "hover:text-primary" // Default and hover
           )}
         >
           {subService.title}
@@ -127,33 +126,44 @@ export default function Header() {
     );
   };
 
+
   const isCompanyLinkActive = (currentPathname: string) => {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
 
-  // Handlers for Services dropdown hover
   const handleServicesMenuEnter = () => {
     if (servicesMenuTimerRef.current) {
       clearTimeout(servicesMenuTimerRef.current);
-      servicesMenuTimerRef.current = null; // Crucial: Reset timer ref
+      servicesMenuTimerRef.current = null;
     }
-    setServicesMenuOpen(true);
+    if (!servicesMenuOpen) {
+      setServicesMenuOpen(true);
+    }
   };
   const handleServicesMenuLeave = () => {
+    if (servicesMenuTimerRef.current) {
+        clearTimeout(servicesMenuTimerRef.current);
+        servicesMenuTimerRef.current = null;
+    }
     servicesMenuTimerRef.current = setTimeout(() => {
       setServicesMenuOpen(false);
     }, HOVER_MENU_DELAY);
   };
 
-  // Handlers for Company dropdown hover
   const handleCompanyMenuEnter = () => {
     if (companyMenuTimerRef.current) {
       clearTimeout(companyMenuTimerRef.current);
-      companyMenuTimerRef.current = null; // Crucial: Reset timer ref
+      companyMenuTimerRef.current = null;
     }
-    setCompanyMenuOpen(true);
+    if (!companyMenuOpen) {
+      setCompanyMenuOpen(true);
+    }
   };
   const handleCompanyMenuLeave = () => {
+    if (companyMenuTimerRef.current) {
+        clearTimeout(companyMenuTimerRef.current);
+        companyMenuTimerRef.current = null;
+    }
     companyMenuTimerRef.current = setTimeout(() => {
       setCompanyMenuOpen(false);
     }, HOVER_MENU_DELAY);
@@ -163,7 +173,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-24 items-center justify-between px-4">
-        <Link href="/" className="flex items-center" aria-label="CodeCafe Lab Home">
+        <Link href="/" className="flex items-center" aria-label={`${SITE_NAME} Home`}>
           <Image
             src={logoSrc}
             alt={logoAlt}
@@ -171,7 +181,7 @@ export default function Header() {
             height={43}
             priority
             data-ai-hint="company logo dark"
-            key={logoSrc}
+            key={logoSrc} 
           />
         </Link>
 
@@ -180,25 +190,29 @@ export default function Header() {
             if (link.label === "Services") {
               const isServicesActive = pathname.startsWith(link.href) || pathname === "/services";
               return (
-                <DropdownMenu key={link.href} open={servicesMenuOpen} onOpenChange={setServicesMenuOpen}>
+                <DropdownMenu 
+                    key={link.href} 
+                    open={servicesMenuOpen} 
+                    onOpenChange={(isOpen) => {
+                        if (!isOpen && servicesMenuTimerRef.current) {
+                            clearTimeout(servicesMenuTimerRef.current);
+                            servicesMenuTimerRef.current = null;
+                        }
+                        setServicesMenuOpen(isOpen);
+                    }}
+                >
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
                         isServicesActive || servicesMenuOpen
-                          ? "text-primary font-semibold"
+                          ? "text-primary font-semibold" // Active state for trigger
                           : "text-foreground/60 hover:text-primary"
                       )}
                       onMouseEnter={handleServicesMenuEnter}
                       onMouseLeave={handleServicesMenuLeave}
-                      onClick={() => {
-                          if (servicesMenuTimerRef.current) {
-                              clearTimeout(servicesMenuTimerRef.current);
-                              servicesMenuTimerRef.current = null;
-                          }
-                          setServicesMenuOpen(!servicesMenuOpen);
-                      }}
+                      // onClick removed to rely on Radix default trigger behavior
                       aria-expanded={servicesMenuOpen}
                     >
                       {link.label}
@@ -235,25 +249,29 @@ export default function Header() {
             if (link.label === "Company") {
               const companyActive = isCompanyLinkActive(pathname);
               return (
-                <DropdownMenu key={link.href} open={companyMenuOpen} onOpenChange={setCompanyMenuOpen}>
+                <DropdownMenu 
+                    key={link.href} 
+                    open={companyMenuOpen} 
+                    onOpenChange={(isOpen) => {
+                        if (!isOpen && companyMenuTimerRef.current) {
+                            clearTimeout(companyMenuTimerRef.current);
+                            companyMenuTimerRef.current = null;
+                        }
+                        setCompanyMenuOpen(isOpen);
+                    }}
+                >
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
                         companyActive || companyMenuOpen
-                          ? "text-primary font-semibold"
+                          ? "text-primary font-semibold" // Active state for trigger
                           : "text-foreground/60 hover:text-primary"
                       )}
                       onMouseEnter={handleCompanyMenuEnter}
                       onMouseLeave={handleCompanyMenuLeave}
-                      onClick={() => {
-                        if (companyMenuTimerRef.current) {
-                            clearTimeout(companyMenuTimerRef.current);
-                            companyMenuTimerRef.current = null;
-                        }
-                        setCompanyMenuOpen(!companyMenuOpen);
-                      }}
+                      // onClick removed
                       aria-expanded={companyMenuOpen}
                     >
                       {link.label}
@@ -273,8 +291,8 @@ export default function Header() {
                           className={cn(
                             "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
                             pathname === subLink.href
-                              ? "text-primary font-semibold"
-                              : "hover:text-primary"
+                              ? "text-primary font-semibold" // Active style
+                              : "hover:text-primary" // Default and hover
                           )}
                         >
                           <subLink.icon className="h-4 w-4" />
@@ -294,7 +312,7 @@ export default function Header() {
                   className={cn(
                     "transition-colors px-3 py-2 text-sm font-medium",
                     isActive
-                      ? "text-primary font-semibold"
+                      ? "text-primary font-semibold" // Active style for main links
                       : "text-foreground/60 hover:text-primary"
                   )}
                 >
@@ -306,7 +324,6 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          {/* ThemeToggle is removed as per previous request for dark mode only */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon">
@@ -318,12 +335,12 @@ export default function Header() {
               <SheetHeader className="p-4 border-b border-border">
                 <SheetTitle className="flex items-center gap-2">
                   <Image
-                    src={logoSrc} // Use dark logo consistently
+                    src={logoSrc}
                     alt={logoAlt}
                     width={140}
                     height={35}
                     data-ai-hint="company logo dark"
-                    key={`sheet-${logoSrc}`}
+                    key={`sheet-${logoSrc}`} 
                   />
                 </SheetTitle>
               </SheetHeader>
@@ -338,7 +355,7 @@ export default function Header() {
                             className={cn(
                               "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
                               isServicesActive
-                                ? "text-primary font-semibold"
+                                ? "text-primary font-semibold" // Active style
                                 : "text-foreground hover:text-primary"
                             )}
                           >
@@ -382,7 +399,7 @@ export default function Header() {
                             className={cn(
                               "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
                               companyActive
-                                ? "text-primary font-semibold"
+                                ? "text-primary font-semibold" // Active style
                                 : "text-foreground hover:text-primary"
                             )}
                           >
@@ -400,7 +417,7 @@ export default function Header() {
                                 className={cn(
                                   "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2",
                                   pathname === subLink.href
-                                    ? "text-primary font-semibold"
+                                    ? "text-primary font-semibold" // Active style
                                     : "text-foreground/80 hover:text-primary"
                                 )}
                               >
@@ -422,7 +439,7 @@ export default function Header() {
                       className={cn(
                         "block px-3 py-2 rounded-md text-base font-medium transition-colors",
                         isActive
-                          ? "text-primary font-semibold"
+                          ? "text-primary font-semibold" // Active style
                           : "text-foreground hover:text-primary"
                       )}
                     >
