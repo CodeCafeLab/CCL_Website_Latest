@@ -1,12 +1,12 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, YouTubeShortsCategory, TechStackItem } from '@/types'; // Added TechStackItem
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, YouTubeShortsCategory, TechStackItem, Testimonial } from '@/types'; // Added Testimonial
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
   Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus,
-  PresentationChart, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig, PlayCircle, Container, Share, Database, Settings2, Network, ServerCog, Shield, AppWindow, CodeXml, Cable, FileJson, TerminalSquare, FileCode
-} from 'lucide-react'; // Added more icons for tech stack and FileCode
+  DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig, PlayCircle, Container, Share, Database, Settings2, Network, ServerCog, Shield, AppWindow, CodeXml, Cable, FileJson, TerminalSquare, FileCode
+} from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
 
@@ -36,7 +36,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     href: "/consultancy",
     label: "Consultancy",
     icon: Briefcase,
-    description: "We provide consultancy for recruitment also"
+    description: "We provide consultancy for recruitment also."
   },
   {
     href: "/contact",
@@ -750,18 +750,18 @@ export const YOUTUBE_SHORTS_DATA: YouTubeShortsCategory[] = [
 
 export const TECH_STACK_DATA: TechStackItem[] = [
   { name: "Next.js", icon: Package },
-  { name: "React", icon: Package }, // Using generic 'Package' for React as specific logo isn't in Lucide
+  { name: "React", icon: Package },
   { name: "TypeScript", icon: FileCode },
   { name: "Node.js", icon: Server },
   { name: "Python", icon: FileCode },
   { name: "AI / ML", icon: Brain },
-  { name: "Genkit", icon: Settings2 }, // Representing Genkit (AI Toolkit)
+  { name: "Genkit", icon: Settings2 },
   { name: "Tailwind CSS", icon: Palette },
   { name: "Firebase", icon: Cloud },
   { name: "Google Cloud", icon: Cloud },
   { name: "AWS", icon: Cloud },
   { name: "Docker", icon: Container },
-  { name: "Kubernetes", icon: Share }, // Using Share for Kubernetes (orchestration)
+  { name: "Kubernetes", icon: Share },
   { name: "PostgreSQL", icon: Database },
   { name: "MongoDB", icon: DatabaseZap },
   { name: "Git", icon: GitMerge },
@@ -782,6 +782,56 @@ export const TECH_STACK_DATA: TechStackItem[] = [
   { name: "CI/CD", icon: ServerCog },
   { name: "Cybersecurity", icon: Shield },
   { name: "WebSockets", icon: Network },
-  { name: "Microservices", icon: LayoutGrid }, // Or AppWindow
+  { name: "Microservices", icon: LayoutGrid },
   { name: "Headless CMS", icon: AppWindow },
 ];
+
+export const TESTIMONIALS_DATA: Testimonial[] = [
+  {
+    id: "1",
+    name: "Sarah Miller",
+    role: "CEO, Innovatech Solutions",
+    company: "Innovatech Solutions",
+    quote: "CodeCafe Lab transformed our vision into a reality with their exceptional AI expertise. Their team is not only skilled but also incredibly responsive and collaborative.",
+    avatarUrl: "https://placehold.co/60x60.png",
+    dataAiHint: "woman portrait"
+  },
+  {
+    id: "2",
+    name: "John Davis",
+    role: "CTO, QuantumLeap AI",
+    company: "QuantumLeap AI",
+    quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
+    avatarUrl: "https://placehold.co/60x60.png",
+    dataAiHint: "man portrait"
+  },
+  {
+    id: "3",
+    name: "Emily Carter",
+    role: "Product Manager, NextGen Apps",
+    company: "NextGen Apps",
+    quote: "The mobile app developed by CodeCafe Lab exceeded all our expectations in terms of design, functionality, and performance. Highly recommended!",
+    avatarUrl: "https://placehold.co/60x60.png",
+    dataAiHint: "woman avatar"
+  },
+  {
+    id: "4",
+    name: "Michael Brown",
+    role: "Founder, SparkUp Ventures",
+    company: "SparkUp Ventures",
+    quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
+    avatarUrl: "https://placehold.co/60x60.png",
+    dataAiHint: "man avatar"
+  },
+  {
+    id: "5",
+    name: "Jessica Williams",
+    role: "Head of Digital, ConnectFlow",
+    company: "ConnectFlow",
+    quote: "Their team's dedication and problem-solving skills are top-notch. CodeCafe Lab is our go-to for any complex software development needs.",
+    avatarUrl: "https://placehold.co/60x60.png",
+    dataAiHint: "woman professional"
+  }
+];
+
+    

@@ -5,7 +5,7 @@ import AnimatedHeroText from '@/components/home/AnimatedHeroText';
 import YoutubeShortsSection from '@/components/home/YoutubeShortsSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA } from '@/lib/constants';
+import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
 import { ArrowRight, Bot, Users, Zap, FileText, Brain } from 'lucide-react';
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
@@ -211,24 +211,33 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonial Slider Placeholder */}
+      {/* What Our Clients Say Section */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {[1, 2].map((i) => (
-            <Card key={i} className="bg-secondary/50 p-6">
-              <CardContent className="p-0">
-                <div className="flex items-center mb-4">
-                  <Image src={`https://placehold.co/60x60.png`} alt={`Client ${i}`} width={60} height={60} className="rounded-full mr-4" data-ai-hint="person avatar" />
-                  <div>
-                    <h4 className="font-semibold">Client Name {i}</h4>
-                    <p className="text-sm text-muted-foreground">CEO, Company {i}</p>
+        <div className="relative w-full overflow-hidden group">
+          <div className="flex animate-marquee group-hover:pause whitespace-nowrap">
+            {[...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA].map((testimonial, index) => (
+              <Card key={`${testimonial.id}-${index}`} className="flex-shrink-0 w-80 md:w-96 mx-4 bg-secondary/50 p-6">
+                <CardContent className="p-0 flex flex-col h-full">
+                  <div className="flex items-center mb-4">
+                    <Image 
+                        src={testimonial.avatarUrl} 
+                        alt={testimonial.name} 
+                        width={60} 
+                        height={60} 
+                        className="rounded-full mr-4" 
+                        data-ai-hint={testimonial.dataAiHint} 
+                    />
+                    <div>
+                      <h4 className="font-semibold">{testimonial.name}</h4>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}, {testimonial.company}</p>
+                    </div>
                   </div>
-                </div>
-                <p className="text-muted-foreground italic">"CodeCafe Lab delivered an outstanding product that exceeded our expectations. Their team is professional, skilled, and a pleasure to work with."</p>
-              </CardContent>
-            </Card>
-          ))}
+                  <p className="text-muted-foreground italic flex-grow">"{testimonial.quote}"</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -289,3 +298,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    

@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -82,13 +83,20 @@ export default {
   				to: {
   					height: '0'
   				}
-  			}
+  			},
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' }, // Assumes content is duplicated
+        }
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+        marquee: 'marquee 40s linear infinite',
   		}
   	}
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
+    
