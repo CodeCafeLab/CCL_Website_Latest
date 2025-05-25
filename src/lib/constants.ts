@@ -4,7 +4,7 @@ import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
-  Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake
+  Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -26,15 +26,15 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     description: "Company mission, vision, values, founding story, leadership team, and journey."
   },
   {
-    href: "#", 
+    href: "#",
     label: "Pricing",
     icon: CircleDollarSign,
     description: "We have transparent pricing modules for individuals, Startups, Companies."
   },
   {
-    href: "/consultancy", 
+    href: "/consultancy",
     label: "Consultancy",
-    icon: MessageSquare, // Changed from Briefcase to avoid conflict
+    icon: MessageSquare,
     description: "We provide consultancy for recruitment also."
   },
   {
@@ -50,19 +50,19 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     description: "Current job openings, work culture, benefits, hiring process, and intern programs."
   },
   {
-    href: "#", 
+    href: "#",
     label: "Our Team",
     icon: Users2,
     description: "Photos, bios, and roles of key team members (adds a human touch)."
   },
   {
-    href: "#", 
+    href: "#",
     label: "Why Choose Us",
     icon: Award,
     description: "Key differentiators, client success stories, testimonials, and USPs."
   },
   {
-    href: "#", 
+    href: "#",
     label: "Partners & Affiliations",
     icon: Handshake,
     description: "Tech alliances, certifications, and strategic partners."
@@ -173,7 +173,7 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     subtitle: "(Parcel Delivery #3)",
     description: "Speed up your delivery, the smart way.",
     href: "#",
-    icon: Package, // Using Package for consistency with other delivery services
+    icon: Package,
   },
   {
     label: "Pulselytics",
@@ -181,6 +181,18 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     description: "Real-time analytics for your social presence.",
     href: "#",
     icon: BarChart3,
+  },
+  {
+    label: "Request a Demo",
+    description: "Lead capture page for potential clients to book live demos or trials.",
+    href: "#", // You might want to link this to /contact or a dedicated demo page
+    icon: CalendarPlus,
+  },
+  {
+    label: "Partner With Us",
+    description: "Channel partner or reseller opportunities for your products.",
+    href: "#", // You might want to link this to a partnership inquiry page
+    icon: Handshake,
   },
 ];
 
@@ -307,7 +319,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "Android App Development",
     slug: "android-app-development",
-    icon: Smartphone, 
+    icon: Smartphone,
     subServices: [],
     description: "Native Android applications built for performance and a seamless user experience on a wide range of devices.",
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=Android+App",
@@ -316,7 +328,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "iOS App Development",
     slug: "ios-app-development",
-    icon: Smartphone, 
+    icon: Smartphone,
     subServices: [],
     description: "Elegant and powerful iOS applications designed to meet Apple's high standards and delight users.",
     image: "https://placehold.co/600x400/ffc011/000000.png?text=iOS+App",
@@ -379,7 +391,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "AI Chatbot Development",
     slug: "ai-chatbot-development",
-    icon: MessageCircle, 
+    icon: MessageCircle,
     subServices: [],
     description: "Sophisticated AI-powered chatbots for customer service, engagement, and process automation.",
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Chatbots",
@@ -406,7 +418,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "ICO Development",
     slug: "ico-development",
-    icon: Gem, 
+    icon: Gem,
     subServices: [],
     description: "End-to-end Initial Coin Offering development services, from token creation to launch.",
     image: "https://placehold.co/600x400/ffc011/000000.png?text=ICO+Dev",
@@ -433,7 +445,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "NFT Development",
     slug: "nft-development",
-    icon: Gem, 
+    icon: Gem,
     subServices: [],
     description: "Creation of Non-Fungible Tokens (NFTs) and marketplaces for digital collectibles and assets.",
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=NFT+Dev",
@@ -460,7 +472,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "Real Estate Tokenization",
     slug: "real-estate-tokenization",
-    icon: Building2, 
+    icon: Building2,
     subServices: [],
     description: "Tokenizing real estate assets to enable fractional ownership and new investment opportunities.",
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Real+Estate+Tokens",
@@ -476,7 +488,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     dataAiHint: "cloud devops",
   },
   {
-    title: "Tech Consultancy", 
+    title: "Tech Consultancy",
     slug: "tech-consultancy",
     description: "Expert guidance to navigate complex technology challenges and strategize for digital transformation.",
     icon: Users,
