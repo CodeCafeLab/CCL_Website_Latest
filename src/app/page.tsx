@@ -46,7 +46,7 @@ export default function HomePage() {
               <Link href="/consultancy">Get a Quote <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/ai">Talk to Our AI <Bot className="ml-2 h-5 w-5" /></Link>
+              <Link href="/ai">Talk to Us <Bot className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
         </div>
