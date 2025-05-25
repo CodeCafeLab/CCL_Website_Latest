@@ -2,11 +2,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
-import YoutubeShortsSection from '@/components/home/YoutubeShortsSection'; // Added import
+import YoutubeShortsSection from '@/components/home/YoutubeShortsSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA } from '@/lib/constants';
-import { ArrowRight, Bot, Users, Zap, FileText } from 'lucide-react';
+import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA } from '@/lib/constants';
+import { ArrowRight, Bot, Users, Zap, FileText, Brain, Package, Server, Cloud, Palette, GitFork, Container, Share, FileCode, PenTool, Smartphone } from 'lucide-react'; // Added more icons for tech stack
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 
@@ -57,12 +57,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* YouTube Shorts Section - Added Here */}
+      {/* YouTube Shorts Section */}
       <YoutubeShortsSection />
 
       {/* Services Overview */}
       <section>
-        <h2 className="text-3xl font-bold text-center mb-12">Our Expertise</h2>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold">Our Expertise</h2>
+          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+            We offer a comprehensive suite of services to transform your ideas into reality, leveraging the latest technologies and agile methodologies for exceptional results.
+          </p>
+        </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredServices.map((service) => (
             <Card key={service.slug} className="hover:shadow-xl transition-shadow duration-300 flex flex-col">
@@ -135,6 +140,25 @@ export default function HomePage() {
             <Button asChild size="lg" variant="ghost" className="text-accent hover:text-accent/90 hover:bg-accent/10">
                 <Link href="/ai">Explore All AI Solutions <ArrowRight className="ml-2 h-5 w-5"/></Link>
             </Button>
+        </div>
+      </section>
+
+      {/* CodeCafe Lab Tech Stack Section */}
+      <section>
+        <div className="text-center mb-12">
+            <Brain className="h-12 w-12 text-primary mx-auto mb-4" />
+            <h2 className="text-3xl font-bold">CodeCafe Lab Tech Stack</h2>
+            <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+                We leverage a modern and versatile technology stack to build robust, scalable, and innovative solutions.
+            </p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
+            {TECH_STACK_DATA.map((tech) => (
+              <div key={tech.name} className="flex flex-col items-center p-4 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 aspect-[4/3] justify-center">
+                <tech.icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent mb-3" />
+                <p className="text-xs sm:text-sm font-medium text-center text-muted-foreground">{tech.name}</p>
+              </div>
+            ))}
         </div>
       </section>
 

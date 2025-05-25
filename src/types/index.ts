@@ -115,3 +115,8 @@ export interface YouTubeShortsCategory {
   categoryName: string;
   shorts: YouTubeShort[];
 }
+
+export interface TechStackItem {
+  name: string;
+  icon: LucideIcon;
+}

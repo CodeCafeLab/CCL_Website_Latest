@@ -1,12 +1,12 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, YouTubeShortsCategory } from '@/types';
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, YouTubeShortsCategory, TechStackItem } from '@/types'; // Added TechStackItem
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
   Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus,
-  PresentationChart, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig, PlayCircle
-} from 'lucide-react';
+  PresentationChart, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig, PlayCircle, Container, Share, Database, Settings2, Network, ServerCog, Shield, AppWindow, CodeXml, Cable, FileJson, TerminalSquare, FileCode
+} from 'lucide-react'; // Added more icons for tech stack and FileCode
 
 export const SITE_NAME = "CodeCafe Lab";
 
@@ -16,7 +16,7 @@ export const NAV_LINKS: NavItem[] = [
   { href: "/services", label: "Services", icon: Layers },
   { href: "/products", label: "Products", icon: Smartphone },
   { href: "/company", label: "Company", icon: Building2 },
-  { href: "/blog", label: "Resources", icon: FileText }, 
+  { href: "/blog", label: "Resources", icon: FileText },
 ];
 
 export const COMPANY_SUB_LINKS: NavItem[] = [
@@ -35,7 +35,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   {
     href: "/consultancy",
     label: "Consultancy",
-    icon: Briefcase, 
+    icon: Briefcase,
     description: "We provide consultancy for recruitment also"
   },
   {
@@ -745,4 +745,43 @@ export const YOUTUBE_SHORTS_DATA: YouTubeShortsCategory[] = [
       { id: "s9", title: "Innovation Hour Highlights", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "innovation ideas tech", duration: "1:05" },
     ]
   }
+];
+
+
+export const TECH_STACK_DATA: TechStackItem[] = [
+  { name: "Next.js", icon: Package },
+  { name: "React", icon: Package }, // Using generic 'Package' for React as specific logo isn't in Lucide
+  { name: "TypeScript", icon: FileCode },
+  { name: "Node.js", icon: Server },
+  { name: "Python", icon: FileCode },
+  { name: "AI / ML", icon: Brain },
+  { name: "Genkit", icon: Settings2 }, // Representing Genkit (AI Toolkit)
+  { name: "Tailwind CSS", icon: Palette },
+  { name: "Firebase", icon: Cloud },
+  { name: "Google Cloud", icon: Cloud },
+  { name: "AWS", icon: Cloud },
+  { name: "Docker", icon: Container },
+  { name: "Kubernetes", icon: Share }, // Using Share for Kubernetes (orchestration)
+  { name: "PostgreSQL", icon: Database },
+  { name: "MongoDB", icon: DatabaseZap },
+  { name: "Git", icon: GitMerge },
+  { name: "Figma", icon: PenTool },
+  { name: "Android", icon: Smartphone },
+  { name: "iOS", icon: Smartphone },
+  { name: "Java", icon: FileCode },
+  { name: "Kotlin", icon: FileCode },
+  { name: "Swift", icon: FileCode },
+  { name: "TensorFlow", icon: Cpu },
+  { name: "PyTorch", icon: Cpu },
+  { name: "HTML5", icon: CodeXml },
+  { name: "CSS3", icon: Palette },
+  { name: "JavaScript", icon: FileCode },
+  { name: "REST APIs", icon: Cable },
+  { name: "GraphQL", icon: FileJson },
+  { name: "DevOps", icon: TerminalSquare },
+  { name: "CI/CD", icon: ServerCog },
+  { name: "Cybersecurity", icon: Shield },
+  { name: "WebSockets", icon: Network },
+  { name: "Microservices", icon: LayoutGrid }, // Or AppWindow
+  { name: "Headless CMS", icon: AppWindow },
 ];
