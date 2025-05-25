@@ -222,9 +222,9 @@ export default function HomePage() {
             {[...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA].map((testimonial, index) => (
               <Card 
                 key={`${testimonial.id}-${index}`} 
-                className="flex-shrink-0 w-72 md:w-80 mx-4 bg-secondary/50 p-6 flex flex-col"
+                className="flex-shrink-0 w-72 md:w-80 mx-4 bg-card flex flex-col"
               >
-                <CardContent className="p-0 flex flex-col h-full">
+                <CardContent className="p-6 flex flex-col h-full">
                   <div className="flex items-center mb-4">
                     <Image 
                         src={testimonial.avatarUrl} 
@@ -236,10 +236,13 @@ export default function HomePage() {
                     />
                     <div>
                       <h4 className="font-semibold">{testimonial.name}</h4>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}{testimonial.company ? `, ${testimonial.company}` : ''}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {testimonial.role}
+                        {testimonial.company ? `, ${testimonial.company}` : ''}
+                      </p>
                     </div>
                   </div>
-                  <p className="text-muted-foreground italic flex-grow">"{testimonial.quote}"</p>
+                  <p className="text-muted-foreground italic flex-grow line-clamp-4">"{testimonial.quote}"</p>
                 </CardContent>
               </Card>
             ))}
