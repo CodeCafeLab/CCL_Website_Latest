@@ -4,9 +4,10 @@ import Link from 'next/link';
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { SERVICES_DATA, PRODUCTS_DATA } from '@/lib/constants';
-import { ArrowRight, Bot, Users, Zap } from 'lucide-react';
-import Image from 'next/image'; // Keep Image for other images on the page
+import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA } from '@/lib/constants';
+import { ArrowRight, Bot, Users, Zap, FileText } from 'lucide-react';
+import Image from 'next/image';
+import BlogPostCard from '@/components/blog/BlogPostCard';
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -21,6 +22,7 @@ export default function HomePage() {
   ];
 
   const featuredServices = SERVICES_DATA.slice(0, 5);
+  const featuredBlogPosts = BLOG_POSTS_DATA.slice(0, 3);
 
   return (
     <div className="space-y-16 md:space-y-24">
@@ -168,6 +170,31 @@ export default function HomePage() {
               data-ai-hint="company logo"
             />
           ))}
+        </div>
+      </section>
+
+      {/* Latest Blogs Section */}
+      <section>
+        <div className="text-center mb-12">
+            <FileText className="h-12 w-12 text-primary mx-auto mb-4" />
+            <h2 className="text-3xl font-bold">Latest From Our Blog</h2>
+            <p className="text-muted-foreground mt-2">Stay updated with our newest articles and insights.</p>
+        </div>
+        {featuredBlogPosts.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredBlogPosts.map((post) => (
+              <BlogPostCard key={post.id} post={post} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-muted-foreground">No blog posts available yet.</p>
+        )}
+        <div className="text-center mt-12">
+          <Button asChild size="lg" variant="outline" className="text-primary border-primary hover:bg-primary/10 hover:text-primary">
+            <Link href="/blog">
+              See All Articles <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
         </div>
       </section>
 
