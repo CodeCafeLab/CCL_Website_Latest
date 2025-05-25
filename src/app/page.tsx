@@ -213,7 +213,7 @@ export default function HomePage() {
 
       {/* Client Logos Section Placeholder */}
       <section className="mt-8 md:mt-12">
-        <h2 className="text-5xl text-center mb-12 font-brittany text-foreground">Trusted By</h2>
+        <h2 className="text-5xl text-center mb-12 font-brittany text-royal-shine">Trusted By</h2>
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
           {[...Array(5)].map((_, i) => (
             <Image

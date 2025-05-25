@@ -97,6 +97,13 @@
   }
 }
 
+@font-face {
+  font-family: 'Brittany';
+  src: url('/fonts/brittany.ttf') format('truetype'); /* Ensure your font file is at public/fonts/brittany.ttf */
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
   * {
     @apply border-border;

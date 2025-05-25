@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
   	extend: {
+      fontFamily: {
+        brittany: ['Brittany', 'cursive'], // Add Brittany font
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
