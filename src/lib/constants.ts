@@ -10,59 +10,59 @@ export const SITE_NAME = "CodeCafe Lab";
 
 export const NAV_LINKS: NavItem[] = [
   { href: "/", label: "Home", icon: HomeIcon },
+  { href: "/ai", label: "AI", icon: Bot },
   { href: "/services", label: "Services", icon: Layers },
   { href: "/company", label: "Company", icon: Building2 },
   { href: "/products", label: "Products", icon: Smartphone },
-  { href: "/ai", label: "AI", icon: Bot },
   { href: "/blog", label: "Resources", icon: FileText },
 ];
 
 export const COMPANY_SUB_LINKS: NavItem[] = [
-  { 
-    href: "/company", 
-    label: "About CodeCafe Lab", 
+  {
+    href: "/company",
+    label: "About CodeCafe Lab",
     icon: Info,
     description: "Company mission, vision, values, founding story, leadership team, and journey."
   },
-  { 
-    href: "#", // Replace with actual link for Pricing page
-    label: "Pricing", 
+  {
+    href: "#",
+    label: "Pricing",
     icon: DollarSign,
     description: "We have transparent pricing modules for individuals, Startups, Companies."
   },
-  { 
-    href: "#", // Replace with actual link for Consultancy page
-    label: "Consultancy", 
-    icon: Briefcase, // Using Briefcase as per previous discussions for careers/general business
+  {
+    href: "/consultancy",
+    label: "Consultancy",
+    icon: Briefcase,
     description: "We provide consultancy for recruitment also."
   },
-  { 
-    href: "/contact", 
-    label: "Contact Us", 
+  {
+    href: "/contact",
+    label: "Contact Us",
     icon: Mail,
     description: "Contact form, phone, email, office locations, Google Maps embed, and social links."
   },
-  { 
-    href: "/career", 
-    label: "Career", 
-    icon: Users, // Using Users as distinct from Briefcase
+  {
+    href: "/career",
+    label: "Career",
+    icon: Users,
     description: "Current job openings, work culture, benefits, hiring process, and intern programs."
   },
-  { 
-    href: "#", // Replace with actual link for Our Team page
-    label: "Our Team", 
+  {
+    href: "#",
+    label: "Our Team",
     icon: Users,
     description: "Photos, bios, and roles of key team members (adds a human touch)."
   },
-  { 
-    href: "#", // Replace with actual link for Why Choose Us page
-    label: "Why Choose Us", 
+  {
+    href: "#",
+    label: "Why Choose Us",
     icon: Star,
     description: "Key differentiators, client success stories, testimonials, and USPs."
   },
-  { 
-    href: "#", // Replace with actual link for Partners page
-    label: "Partners & Affiliations", 
+  {
+    href: "#",
+    label: "Partners & Affiliations",
     icon: LinkIcon,
     description: "Tech alliances, certifications, and strategic partners."
   },
@@ -519,3 +519,5 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
   },
 ];
+
+    
