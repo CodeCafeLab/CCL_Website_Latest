@@ -38,7 +38,8 @@ export default function Header() {
   }, []);
 
   const logoSrc = "/codecafe_logo_dark.png";
-  const logoAlt = `${SITE_NAME} Logo Dark`;
+  const logoAlt = `${SITE_NAME} Logo (Dark Mode)`;
+
 
   if (!isMounted) {
     return (
@@ -106,16 +107,6 @@ export default function Header() {
   const isCompanyLinkActive = (currentPathname: string) => {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
-
-  const handleServicesMenuTriggerEnter = () => {
-    if (!servicesMenuOpen) setServicesMenuOpen(true);
-    if (companyMenuOpen) setCompanyMenuOpen(false); 
-  };
-
-  const handleCompanyMenuTriggerEnter = () => {
-    if (!companyMenuOpen) setCompanyMenuOpen(true);
-    if (servicesMenuOpen) setServicesMenuOpen(false);
-  };
   
 
   return (
@@ -143,7 +134,9 @@ export default function Header() {
                     open={servicesMenuOpen}
                     onOpenChange={(open) => {
                         setServicesMenuOpen(open);
-                        if (open) setCompanyMenuOpen(false); 
+                        if (open) {
+                            setCompanyMenuOpen(false); 
+                        }
                     }}
                 >
                   <DropdownMenuTrigger asChild>
@@ -155,7 +148,9 @@ export default function Header() {
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={handleServicesMenuTriggerEnter}
+                      onMouseEnter={() => {
+                        setServicesMenuOpen(true);
+                      }}
                       aria-expanded={servicesMenuOpen}
                     >
                       {link.label}
@@ -166,7 +161,7 @@ export default function Header() {
                     className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border"
                     align="start"
                     onMouseLeave={() => setServicesMenuOpen(false)}
-                    onMouseEnter={handleServicesMenuTriggerEnter} 
+                    onMouseEnter={() => setServicesMenuOpen(true)} 
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                       {SERVICES_DATA.map((category: AppServiceMenuItem) => (
@@ -197,7 +192,9 @@ export default function Header() {
                     open={companyMenuOpen}
                     onOpenChange={(open) => {
                         setCompanyMenuOpen(open);
-                        if (open) setServicesMenuOpen(false);
+                        if (open) {
+                            setServicesMenuOpen(false);
+                        }
                     }}
                 >
                   <DropdownMenuTrigger asChild>
@@ -209,7 +206,9 @@ export default function Header() {
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={handleCompanyMenuTriggerEnter}
+                      onMouseEnter={() => {
+                        setCompanyMenuOpen(true);
+                      }}
                       aria-expanded={companyMenuOpen}
                     >
                       {link.label}
@@ -220,7 +219,7 @@ export default function Header() {
                     className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
                     align="start"
                     onMouseLeave={() => setCompanyMenuOpen(false)}
-                    onMouseEnter={handleCompanyMenuTriggerEnter} 
+                    onMouseEnter={() => setCompanyMenuOpen(true)} 
                   >
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
