@@ -21,7 +21,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ServiceMenuItem, SubService, NavItem } from '@/types';
 
 interface CompanySubItem {
@@ -36,16 +36,35 @@ const COMPANY_SUB_LINKS: CompanySubItem[] = [
   { href: "/contact", label: "Contact Us", icon: Mail },
 ];
 
+const HOVER_MENU_DELAY = 200; // milliseconds
+
 export default function Header() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
+  // State and refs for Services dropdown (desktop hover)
+  const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+  const servicesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // State and refs for Company dropdown (desktop hover)
+  const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
+  const companyMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     setIsMounted(true);
+    // Cleanup timers on component unmount
+    return () => {
+      if (servicesMenuTimerRef.current) {
+        clearTimeout(servicesMenuTimerRef.current);
+      }
+      if (companyMenuTimerRef.current) {
+        clearTimeout(companyMenuTimerRef.current);
+      }
+    };
   }, []);
 
-  const logoSrc = "/codecafe_logo_dark.png";
+  const logoSrc = "/codecafe_logo_dark.png"; // Always dark logo as per previous request
   const logoAlt = "CodeCafe Lab Logo Dark";
 
   if (!isMounted) {
@@ -67,13 +86,12 @@ export default function Header() {
   const renderSubServiceLink = (categorySlug: string, subService: SubService, isMobile: boolean = false) => {
     const href = `/services#${subService.slug}`;
     const commonClasses = "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors";
-    // Check if the current path is /services and if the hash matches the subService slug
     const isActive = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
 
     if (isMobile) {
       return (
         <Link
-          key={subService.slug} // Added key here for list rendering
+          key={subService.slug}
           href={href}
           onClick={closeSheet}
           className={cn(
@@ -90,15 +108,15 @@ export default function Header() {
 
     return (
       <DropdownMenuItem
-        key={subService.slug} // Added key here
+        key={subService.slug}
         asChild
-        className="p-0 focus:bg-accent focus:text-accent-foreground" // Let Radix handle focus style on item
+        className="p-0 focus:bg-accent focus:text-accent-foreground"
       >
         <Link
           href={href}
           className={cn(
             commonClasses,
-            "text-popover-foreground", // Base color for dropdown items
+            "text-popover-foreground",
             isActive
               ? "text-primary font-semibold"
               : "hover:text-primary"
@@ -114,6 +132,33 @@ export default function Header() {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
 
+  // Handlers for Services dropdown hover
+  const handleServicesMenuEnter = () => {
+    if (servicesMenuTimerRef.current) {
+      clearTimeout(servicesMenuTimerRef.current);
+    }
+    setServicesMenuOpen(true);
+  };
+  const handleServicesMenuLeave = () => {
+    servicesMenuTimerRef.current = setTimeout(() => {
+      setServicesMenuOpen(false);
+    }, HOVER_MENU_DELAY);
+  };
+
+  // Handlers for Company dropdown hover
+  const handleCompanyMenuEnter = () => {
+    if (companyMenuTimerRef.current) {
+      clearTimeout(companyMenuTimerRef.current);
+    }
+    setCompanyMenuOpen(true);
+  };
+  const handleCompanyMenuLeave = () => {
+    companyMenuTimerRef.current = setTimeout(() => {
+      setCompanyMenuOpen(false);
+    }, HOVER_MENU_DELAY);
+  };
+
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-24 items-center justify-between px-4">
@@ -125,7 +170,7 @@ export default function Header() {
             height={43}
             priority
             data-ai-hint="company logo"
-            key={logoSrc} // Unique key for Image if src changes
+            key={logoSrc}
           />
         </Link>
 
@@ -134,22 +179,30 @@ export default function Header() {
             if (link.label === "Services") {
               const isServicesActive = pathname.startsWith(link.href) || pathname === "/services";
               return (
-                <DropdownMenu key={link.href}>
+                <DropdownMenu key={link.href} open={servicesMenuOpen} onOpenChange={setServicesMenuOpen}>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
-                        isServicesActive
+                        isServicesActive || servicesMenuOpen
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
+                      onMouseEnter={handleServicesMenuEnter}
+                      onMouseLeave={handleServicesMenuLeave}
+                      // onClick={() => setServicesMenuOpen(!servicesMenuOpen)} // Already handled by onOpenChange
                     >
                       {link.label}
                       <ChevronDown className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border" align="start">
+                  <DropdownMenuContent 
+                    className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border" 
+                    align="start"
+                    onMouseEnter={handleServicesMenuEnter}
+                    onMouseLeave={handleServicesMenuLeave}
+                  >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                       {SERVICES_DATA.map((category) => (
                         <div key={category.slug}>
@@ -174,22 +227,30 @@ export default function Header() {
             if (link.label === "Company") {
               const companyActive = isCompanyLinkActive(pathname);
               return (
-                <DropdownMenu key={link.href}>
+                <DropdownMenu key={link.href} open={companyMenuOpen} onOpenChange={setCompanyMenuOpen}>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
-                        companyActive
+                        companyActive || companyMenuOpen
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
+                      onMouseEnter={handleCompanyMenuEnter}
+                      onMouseLeave={handleCompanyMenuLeave}
+                      // onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
                     >
                       {link.label}
                       <ChevronDown className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-80 p-2 bg-background shadow-xl rounded-lg border-border" align="start">
+                  <DropdownMenuContent 
+                    className="w-80 p-2 bg-background shadow-xl rounded-lg border-border" 
+                    align="start"
+                    onMouseEnter={handleCompanyMenuEnter}
+                    onMouseLeave={handleCompanyMenuLeave}
+                  >
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
                         <Link
@@ -210,7 +271,6 @@ export default function Header() {
                 </DropdownMenu>
               );
             }
-            // For regular Nav links including "Home"
             const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
             return (
               <Button asChild variant="ghost" key={link.href}>
@@ -337,7 +397,6 @@ export default function Header() {
                       </Accordion>
                     );
                   }
-                  // For regular Nav links in mobile sheet including "Home"
                   const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
                   return (
                     <Link
