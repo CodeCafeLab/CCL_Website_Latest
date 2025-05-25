@@ -285,18 +285,28 @@ export default function HomePage() {
       </section>
 
        {/* Call to Action section */}
-       <section className="text-center py-16 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl">
-        <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-        <h2 className="text-3xl font-bold mb-4">Ready to Brew Your Next Big Idea?</h2>
-        <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
-          Let&apos;s collaborate to build innovative solutions that drive your business forward.
-        </p>
-        <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-          <Link href="/contact">Start a Project <ArrowRight className="ml-2 h-5 w-5" /></Link>
-        </Button>
+       <section className="relative overflow-hidden text-center py-16 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
+          src="/coffee_with_codecafelab.mp4"
+        >
+          Your browser does not support the video tag.
+        </video>
+        <div className="relative z-10">
+          <Users className="h-12 w-12 text-primary mx-auto mb-4" />
+          <h2 className="text-3xl font-bold mb-4">Ready to Brew Your Next Big Idea?</h2>
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
+            Let&apos;s collaborate to build innovative solutions that drive your business forward.
+          </p>
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Link href="/contact">Start a Project <ArrowRight className="ml-2 h-5 w-5" /></Link>
+          </Button>
+        </div>
       </section>
     </div>
   );
 }
-
-    
