@@ -1,5 +1,5 @@
 
-import { Coffee, Github, Linkedin, Twitter } from "lucide-react";
+import { Coffee, Github, Linkedin, Twitter, Facebook, Briefcase, MessageSquare, Send } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE_NAME } from "@/lib/constants";
@@ -41,14 +41,23 @@ export default function Footer() {
               Brewing innovative software solutions with AI precision. Let&apos;s build something amazing together.
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-muted-foreground hover:text-primary transition-colors">
-                <Github className="h-6 w-6" />
-              </Link>
               <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin className="h-6 w-6" />
               </Link>
-              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" className="text-muted-foreground hover:text-primary transition-colors">
                 <Twitter className="h-6 w-6" />
+              </Link>
+              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Meta (Facebook)" className="text-muted-foreground hover:text-primary transition-colors">
+                <Facebook className="h-6 w-6" />
+              </Link>
+              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Upwork" className="text-muted-foreground hover:text-primary transition-colors">
+                <Briefcase className="h-6 w-6" />
+              </Link>
+              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground hover:text-primary transition-colors">
+                <MessageSquare className="h-6 w-6" />
+              </Link>
+              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-muted-foreground hover:text-primary transition-colors">
+                <Send className="h-6 w-6" />
               </Link>
             </div>
           </div>
