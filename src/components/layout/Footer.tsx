@@ -1,5 +1,7 @@
+
 import { Coffee, Github, Linkedin, Twitter } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { SITE_NAME } from "@/lib/constants";
 
 export default function Footer() {
@@ -25,9 +27,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-8">
           {/* Column 1: Brand & Social */}
           <div className="md:col-span-1 lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2 text-xl font-semibold text-primary">
-              <Coffee className="h-7 w-7" />
-              <span>{SITE_NAME}</span>
+            <Link href="/" className="inline-block" aria-label={`${SITE_NAME} Home`}>
+              <Image
+                src="/codecafe_logo_dark.png"
+                alt={`${SITE_NAME} Logo`}
+                width={150}
+                height={38}
+                priority 
+                data-ai-hint="company logo dark"
+              />
             </Link>
             <p className="text-sm text-muted-foreground max-w-sm">
               Brewing innovative software solutions with AI precision. Let&apos;s build something amazing together.
