@@ -33,7 +33,7 @@ export default function HomePage() {
   return (
     <div className="space-y-16 md:space-y-24">
       {/* Hero Section */}
-      <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden bg-card shadow-lg">
+      <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden shadow-lg">
         <video
           autoPlay
           loop
@@ -113,8 +113,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured AI Solutions */}
-      <section className="relative overflow-hidden p-8 md:p-12 rounded-xl shadow-lg">
+      {/* Featured AI Innovations */}
+      <section className="relative overflow-hidden bg-card p-8 md:p-12 rounded-xl shadow-lg">
         <video
           autoPlay
           loop
