@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon, Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, FileText, BarChartHorizontalBig, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon, Clock, Car, QrCode, Package, Home as HomeIcon, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, FileText, BarChartHorizontalBig, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS, ProductSubMenuItem as AppProductSubMenuItem, PRODUCT_SUB_LINKS, RESOURCES_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -75,93 +75,82 @@ export default function Header() {
     menuToControl: 'services' | 'company' | 'products' | 'resources',
     action: 'enter' | 'leave'
   ) => {
-    let setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    let otherSetOpens: React.Dispatch<React.SetStateAction<boolean>>[] = [];
-    let timerRef: React.MutableRefObject<NodeJS.Timeout | null>;
-    let clearOtherTimers: (()=>void)[] = [];
-  
-    if (menuToControl === 'services') {
-      setOpen = setServicesMenuOpen;
-      otherSetOpens = [setCompanyMenuOpen, setProductsMenuOpen, setResourcesMenuOpen];
-      timerRef = servicesMenuTimerRef;
-      if (companyMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(companyMenuTimerRef.current!));
-      if (productsMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(productsMenuTimerRef.current!));
-      if (resourcesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(resourcesMenuTimerRef.current!));
-    } else if (menuToControl === 'company') {
-      setOpen = setCompanyMenuOpen;
-      otherSetOpens = [setServicesMenuOpen, setProductsMenuOpen, setResourcesMenuOpen];
-      timerRef = companyMenuTimerRef;
-      if (servicesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(servicesMenuTimerRef.current!));
-      if (productsMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(productsMenuTimerRef.current!));
-      if (resourcesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(resourcesMenuTimerRef.current!));
-    } else if (menuToControl === 'products') {
-      setOpen = setProductsMenuOpen;
-      otherSetOpens = [setServicesMenuOpen, setCompanyMenuOpen, setResourcesMenuOpen];
-      timerRef = productsMenuTimerRef;
-      if (servicesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(servicesMenuTimerRef.current!));
-      if (companyMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(companyMenuTimerRef.current!));
-      if (resourcesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(resourcesMenuTimerRef.current!));
-    } else { // resources
-      setOpen = setResourcesMenuOpen;
-      otherSetOpens = [setServicesMenuOpen, setCompanyMenuOpen, setProductsMenuOpen];
-      timerRef = resourcesMenuTimerRef;
-      if (servicesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(servicesMenuTimerRef.current!));
-      if (companyMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(companyMenuTimerRef.current!));
-      if (productsMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(productsMenuTimerRef.current!));
+    const setMenuStateFunctions = {
+        services: setServicesMenuOpen,
+        company: setCompanyMenuOpen,
+        products: setProductsMenuOpen,
+        resources: setResourcesMenuOpen,
+    };
+    const menuTimerRefs = {
+        services: servicesMenuTimerRef,
+        company: companyMenuTimerRef,
+        products: productsMenuTimerRef,
+        resources: resourcesMenuTimerRef,
+    };
+
+    const currentSetOpen = setMenuStateFunctions[menuToControl];
+    const currentTimerRef = menuTimerRefs[menuToControl];
+
+    if (currentTimerRef.current) {
+        clearTimeout(currentTimerRef.current);
+        currentTimerRef.current = null;
     }
-  
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  
+
     if (action === 'enter') {
-      setOpen(true);
-      otherSetOpens.forEach(setFn => setFn(false));
-      clearOtherTimers.forEach(clearFn => clearFn());
+        currentSetOpen(true);
+        // Close other menus
+        Object.keys(setMenuStateFunctions).forEach((key) => {
+            if (key !== menuToControl) {
+                setMenuStateFunctions[key as keyof typeof setMenuStateFunctions](false);
+                if (menuTimerRefs[key as keyof typeof menuTimerRefs].current) {
+                    clearTimeout(menuTimerRefs[key as keyof typeof menuTimerRefs].current!);
+                    menuTimerRefs[key as keyof typeof menuTimerRefs].current = null;
+                }
+            }
+        });
     } else { // action === 'leave'
-      timerRef.current = setTimeout(() => {
-        setOpen(false);
-        timerRef.current = null;
-      }, HOVER_MENU_CLOSE_DELAY);
+        currentTimerRef.current = setTimeout(() => {
+            currentSetOpen(false);
+            currentTimerRef.current = null;
+        }, HOVER_MENU_CLOSE_DELAY);
     }
   };
   
   const createOpenChangeHandler = (
     menuToControl: 'services' | 'company' | 'products' | 'resources'
   ) => (open: boolean) => {
-    if (menuToControl === 'services') {
-      setServicesMenuOpen(open);
-      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-      if (open) {
-        setCompanyMenuOpen(false); if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-        setProductsMenuOpen(false); if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-        setResourcesMenuOpen(false); if (resourcesMenuTimerRef.current) clearTimeout(resourcesMenuTimerRef.current);
-      }
-    } else if (menuToControl === 'company') {
-      setCompanyMenuOpen(open);
-      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-      if (open) {
-        setServicesMenuOpen(false); if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-        setProductsMenuOpen(false); if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-        setResourcesMenuOpen(false); if (resourcesMenuTimerRef.current) clearTimeout(resourcesMenuTimerRef.current);
-      }
-    } else if (menuToControl === 'products') {
-      setProductsMenuOpen(open);
-      if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-      if (open) {
-        setServicesMenuOpen(false); if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-        setCompanyMenuOpen(false); if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-        setResourcesMenuOpen(false); if (resourcesMenuTimerRef.current) clearTimeout(resourcesMenuTimerRef.current);
-      }
-    } else { // resources
-        setResourcesMenuOpen(open);
-        if (resourcesMenuTimerRef.current) clearTimeout(resourcesMenuTimerRef.current);
-        if (open) {
-            setServicesMenuOpen(false); if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-            setCompanyMenuOpen(false); if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-            setProductsMenuOpen(false); if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-        }
+    const setMenuStateFunctions = {
+        services: setServicesMenuOpen,
+        company: setCompanyMenuOpen,
+        products: setProductsMenuOpen,
+        resources: setResourcesMenuOpen,
+    };
+    const menuTimerRefs = {
+        services: servicesMenuTimerRef,
+        company: companyMenuTimerRef,
+        products: productsMenuTimerRef,
+        resources: resourcesMenuTimerRef,
+    };
+
+    const currentSetOpen = setMenuStateFunctions[menuToControl];
+    const currentTimerRef = menuTimerRefs[menuToControl];
+
+    currentSetOpen(open);
+    if (currentTimerRef.current) {
+        clearTimeout(currentTimerRef.current);
+        currentTimerRef.current = null;
+    }
+
+    if (open) { // If this menu is opening, ensure others are closed
+        Object.keys(setMenuStateFunctions).forEach((key) => {
+            if (key !== menuToControl) {
+                setMenuStateFunctions[key as keyof typeof setMenuStateFunctions](false);
+                if (menuTimerRefs[key as keyof typeof menuTimerRefs].current) {
+                    clearTimeout(menuTimerRefs[key as keyof typeof menuTimerRefs].current!);
+                    menuTimerRefs[key as keyof typeof menuTimerRefs].current = null;
+                }
+            }
+        });
     }
   };
   
@@ -174,8 +163,6 @@ export default function Header() {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
   const isResourcesLinkActive = (currentPathname: string) => {
-    // "Resources" main link itself points to /blog.
-    // Check if current path is /blog or any of the sublink hrefs (if they are not just #)
     if (currentPathname === '/blog' || currentPathname.startsWith('/blog/')) return true;
     return RESOURCES_SUB_LINKS.some(subLink => subLink.href !== "#" && (currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/')));
   };
@@ -199,7 +186,7 @@ export default function Header() {
         <div className="flex items-center flex-grow justify-center"> 
             <nav className="hidden md:flex items-center space-x-1">
             {NAV_LINKS.map((link) => {
-                const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
+                const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href) && link.href !== "/blog" && !pathname.startsWith('/blog/'));
                 
                 if (link.label === "Services") {
                 const isServicesActive = (pathname.startsWith(link.href) || pathname === "/services") || servicesMenuOpen;
@@ -499,14 +486,15 @@ export default function Header() {
             </nav>
         </div>
 
-        <div className="hidden md:flex items-center ml-4 group">
+        {/* This div for Talk to Us button was removed as per user request */}
+        {/* <div className="hidden md:flex items-center ml-4 group">
             <Button asChild className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Link href="/contact">
                     Talk to Us
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200 ease-in-out" />
                 </Link>
             </Button>
-        </div>
+        </div> */}
 
 
         <div className="flex items-center gap-4 md:hidden">
@@ -532,7 +520,7 @@ export default function Header() {
               </SheetHeader>
               <nav className="flex flex-col space-y-1 p-4">
                 {NAV_LINKS.map((link) => {
-                  const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
+                  const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href) && link.href !== "/blog" && !pathname.startsWith('/blog/'));
                   if (link.label === "Services") {
                     const isServicesActive = pathname.startsWith(link.href) || pathname === "/services";
                     return (
@@ -732,7 +720,7 @@ export default function Header() {
                                 <div>
                                     <span className="font-medium text-primary">{subLink.label}</span>
                                     {subLink.description && (
-                                        <p className="text-xs text-muted-foreground/80 mt-0.5 whitespace-normal">
+                                        <p className="text-xs text-muted-foreground/80 mt-1 whitespace-normal">
                                             {subLink.description}
                                         </p>
                                     )}
@@ -771,3 +759,4 @@ export default function Header() {
     </header>
   );
 }
+
