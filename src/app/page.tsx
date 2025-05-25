@@ -114,37 +114,49 @@ export default function HomePage() {
       </section>
 
       {/* Featured AI Solutions */}
-      <section className="bg-card p-8 md:p-12 rounded-xl shadow-lg">
-        <div className="text-center mb-12">
-            <Zap className="h-12 w-12 text-accent mx-auto mb-4" />
-            <h2 className="text-3xl font-bold">Featured AI Innovations</h2>
-            <p className="text-muted-foreground mt-2">Explore our cutting-edge AI-powered products.</p>
-        </div>
-        <div className="grid md:grid-cols-2 gap-8">
-          {PRODUCTS_DATA.slice(0, 2).map((product) => (
-             <Card key={product.id} className="flex flex-col md:flex-row items-center gap-6 p-6 hover:shadow-xl transition-shadow duration-300">
-              <Image
-                src={product.imageUrl}
-                alt={product.name}
-                width={150}
-                height={100}
-                className="rounded-md object-cover w-full md:w-[150px] h-auto md:h-[100px]"
-                data-ai-hint={product.dataAiHint}
-              />
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-primary">{product.name}</h3>
-                <p className="text-sm text-muted-foreground mt-1 mb-3">{product.description}</p>
-                <Button variant="outline" asChild size="sm">
-                  <Link href={`/products#${product.id}`}>Discover <Bot className="ml-2 h-4 w-4" /></Link>
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-            <Button asChild size="lg" variant="ghost" className="text-accent hover:text-accent/90 hover:bg-accent/10">
-                <Link href="/ai">Explore All AI Solutions <ArrowRight className="ml-2 h-5 w-5"/></Link>
-            </Button>
+      <section className="relative overflow-hidden bg-card p-8 md:p-12 rounded-xl shadow-lg">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
+          src="/Featured AI Innovations.mp4"
+        >
+          Your browser does not support the video tag.
+        </video>
+        <div className="relative z-10">
+          <div className="text-center mb-12">
+              <Zap className="h-12 w-12 text-accent mx-auto mb-4" />
+              <h2 className="text-3xl font-bold">Featured AI Innovations</h2>
+              <p className="text-muted-foreground mt-2">Explore our cutting-edge AI-powered products.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {PRODUCTS_DATA.slice(0, 2).map((product) => (
+               <Card key={product.id} className="flex flex-col md:flex-row items-center gap-6 p-6 hover:shadow-xl transition-shadow duration-300 bg-background/80 backdrop-blur-sm">
+                <Image
+                  src={product.imageUrl}
+                  alt={product.name}
+                  width={150}
+                  height={100}
+                  className="rounded-md object-cover w-full md:w-[150px] h-auto md:h-[100px]"
+                  data-ai-hint={product.dataAiHint}
+                />
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-primary">{product.name}</h3>
+                  <p className="text-sm text-muted-foreground mt-1 mb-3">{product.description}</p>
+                  <Button variant="outline" asChild size="sm">
+                    <Link href={`/products#${product.id}`}>Discover <Bot className="ml-2 h-4 w-4" /></Link>
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+              <Button asChild size="lg" variant="ghost" className="text-accent hover:text-accent/90 hover:bg-accent/10">
+                  <Link href="/ai">Explore All AI Solutions <ArrowRight className="ml-2 h-5 w-5"/></Link>
+              </Button>
+          </div>
         </div>
       </section>
 
