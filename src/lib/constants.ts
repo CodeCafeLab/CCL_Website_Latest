@@ -34,7 +34,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   {
     href: "/consultancy",
     label: "Consultancy",
-    icon: MessageSquare,
+    icon: MessageSquare, // Changed from Briefcase to MessageSquare as per an earlier request
     description: "We provide consultancy for recruitment also."
   },
   {
@@ -64,7 +64,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   {
     href: "#",
     label: "Partners & Affiliations",
-    icon: Handshake,
+    icon: Handshake, // Changed from LinkIcon to Handshake
     description: "Tech alliances, certifications, and strategic partners."
   },
 ];
@@ -181,18 +181,6 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     description: "Real-time analytics for your social presence.",
     href: "#",
     icon: BarChart3,
-  },
-  {
-    label: "Request a Demo",
-    description: "Lead capture page for potential clients to book live demos or trials.",
-    href: "#", // You might want to link this to /contact or a dedicated demo page
-    icon: CalendarPlus,
-  },
-  {
-    label: "Partner With Us",
-    description: "Channel partner or reseller opportunities for your products.",
-    href: "#", // You might want to link this to a partnership inquiry page
-    icon: Handshake,
   },
 ];
 
