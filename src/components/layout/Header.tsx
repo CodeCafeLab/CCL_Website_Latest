@@ -78,15 +78,13 @@ export default function Header() {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
-      setOpen(true);
-      if (otherSetOpen) { 
-        otherSetOpen(false);
-        if (otherTimerRef.current) {
-          clearTimeout(otherTimerRef.current);
-          otherTimerRef.current = null;
-        }
+      if (otherTimerRef.current) { // Clear timer for the other menu if it exists
+        clearTimeout(otherTimerRef.current);
+        otherTimerRef.current = null;
       }
-    } else { 
+      setOpen(true);
+      otherSetOpen(false); // Explicitly close the other menu
+    } else { // action === 'leave'
       timerRef.current = setTimeout(() => {
         setOpen(false);
         timerRef.current = null;
@@ -143,7 +141,7 @@ export default function Header() {
           />
         </Link>
 
-        <div className="flex items-center flex-grow justify-end"> {/* Flex container for nav and button */}
+        <div className="flex items-center flex-grow justify-end"> 
             <nav className="hidden md:flex items-center space-x-1">
             {NAV_LINKS.map((link) => {
                 if (link.label === "Services") {
@@ -175,7 +173,7 @@ export default function Header() {
                         className="w-screen max-w-none p-0" 
                         onMouseEnter={() => handleMenuInteraction('services', 'enter')}
                         onMouseLeave={() => handleMenuInteraction('services', 'leave')}
-                        sideOffset={15} // Increased offset for better visibility
+                        sideOffset={15} 
                     >
                         <div className="container mx-auto py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-h-[75vh] overflow-y-auto">
                         {SERVICES_DATA.map((category: AppServiceMenuItem) => (
@@ -252,7 +250,7 @@ export default function Header() {
                         align="start"
                         onMouseEnter={() => handleMenuInteraction('company', 'enter')}
                         onMouseLeave={() => handleMenuInteraction('company', 'leave')}
-                        sideOffset={15} // Increased offset
+                        sideOffset={15} 
                     >
                         {COMPANY_SUB_LINKS.map((subLink) => (
                         <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
@@ -293,15 +291,18 @@ export default function Header() {
             })}
             </nav>
 
-            <div className="hidden md:flex items-center ml-4"> {/* Added ml-4 for spacing */}
-                <Button asChild>
-                    <Link href="/contact">Talk to Us</Link>
+            <div className="hidden md:flex items-center ml-4 group">
+                <Button asChild className="rounded-full group">
+                    <Link href="/contact">
+                        Talk to Us
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200 ease-in-out" />
+                    </Link>
                 </Button>
             </div>
         </div>
 
 
-        <div className="flex items-center gap-4 md:hidden"> {/* Mobile menu trigger - kept separate */}
+        <div className="flex items-center gap-4 md:hidden">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon">
@@ -460,3 +461,4 @@ export default function Header() {
     </header>
   );
 }
+
