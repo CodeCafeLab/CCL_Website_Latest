@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, MessageSquare as ChatIcon } from "lucide-react"; // Renamed MessageSquare to ChatIcon to avoid conflict
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, MessageSquare as ChatIcon, CalendarPlus } from "lucide-react"; // Renamed MessageSquare to ChatIcon to avoid conflict
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS, PRODUCT_SUB_LINKS, ProductSubMenuItem as AppProductSubMenuItem } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -74,7 +74,7 @@ export default function Header() {
     let otherSetOpens: React.Dispatch<React.SetStateAction<boolean>>[] = [];
     let timerRef: React.MutableRefObject<NodeJS.Timeout | null>;
     let otherTimerRefs: React.MutableRefObject<NodeJS.Timeout | null>[] = [];
-
+  
     if (menuToControl === 'services') {
       setOpen = setServicesMenuOpen;
       otherSetOpens = [setCompanyMenuOpen, setProductsMenuOpen];
@@ -92,6 +92,7 @@ export default function Header() {
       otherTimerRefs = [servicesMenuTimerRef, companyMenuTimerRef];
     }
   
+    // Clear its own timer first
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -99,6 +100,7 @@ export default function Header() {
   
     if (action === 'enter') {
       setOpen(true);
+      // Close other menus and clear their timers
       otherSetOpens.forEach(setFn => setFn(false));
       otherTimerRefs.forEach(ref => {
         if (ref.current) {
@@ -116,33 +118,33 @@ export default function Header() {
   
   const onServicesOpenChange = (open: boolean) => {
     setServicesMenuOpen(open);
-    if (servicesMenuTimerRef.current) { 
-        clearTimeout(servicesMenuTimerRef.current);
-        servicesMenuTimerRef.current = null;
+    if (servicesMenuTimerRef.current) {
+      clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
     }
-    if (open) { 
-        setCompanyMenuOpen(false); 
-        setProductsMenuOpen(false);
-        if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-        if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-        companyMenuTimerRef.current = null;
-        productsMenuTimerRef.current = null;
+    if (open) {
+      setCompanyMenuOpen(false);
+      setProductsMenuOpen(false);
+      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+      if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
+      productsMenuTimerRef.current = null;
     }
   };
   
   const onCompanyOpenChange = (open: boolean) => {
     setCompanyMenuOpen(open);
-    if (companyMenuTimerRef.current) { 
-        clearTimeout(companyMenuTimerRef.current);
-        companyMenuTimerRef.current = null;
+    if (companyMenuTimerRef.current) {
+      clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
     }
-    if (open) { 
-        setServicesMenuOpen(false); 
-        setProductsMenuOpen(false);
-        if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-        if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-        servicesMenuTimerRef.current = null;
-        productsMenuTimerRef.current = null;
+    if (open) {
+      setServicesMenuOpen(false);
+      setProductsMenuOpen(false);
+      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+      if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
+      productsMenuTimerRef.current = null;
     }
   };
 
@@ -187,7 +189,7 @@ export default function Header() {
                 const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
                 
                 if (link.label === "Services") {
-                const isServicesActive = pathname.startsWith(link.href) || pathname === "/services" || servicesMenuOpen;
+                const isServicesActive = (pathname.startsWith(link.href) || pathname === "/services") || servicesMenuOpen;
                 return (
                     <DropdownMenu
                         key={link.href}
@@ -216,7 +218,6 @@ export default function Header() {
                         onMouseEnter={() => handleMenuInteraction('services', 'enter')}
                         onMouseLeave={() => handleMenuInteraction('services', 'leave')}
                         sideOffset={15} 
-                        align="start"
                     >
                         <div className="container mx-auto py-4 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
                           {SERVICES_DATA.map((category: AppServiceMenuItem) => (
@@ -227,13 +228,13 @@ export default function Header() {
                               </h4>
                               <ul className="space-y-1">
                                 {category.subServices.slice(0, 4).map((subService) => {
-                                  const href = `/services#${category.slug}-${subService.slug}`;
+                                  const href = `/services#${subService.slug}`;
                                   return (
                                     <li key={subService.slug} className="group">
                                       <Link
                                         href={href}
                                         className={cn(
-                                          "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-popover-foreground hover:text-white"
+                                          "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-foreground/80 hover:text-white"
                                         )}
                                         onClick={() => setServicesMenuOpen(false)}
                                       >
@@ -249,7 +250,7 @@ export default function Header() {
                                       className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
                                       onClick={() => setServicesMenuOpen(false)}
                                     >
-                                      See All <ArrowRight className="h-4 w-4" />
+                                      See All <ArrowRight className="ml-1 h-4 w-4" />
                                     </Link>
                                   </li>
                                 )}
@@ -288,18 +289,17 @@ export default function Header() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         className="w-96 p-2 bg-background shadow-xl rounded-lg border-border"
-                        align="start"
                         onMouseEnter={() => handleMenuInteraction('company', 'enter')}
                         onMouseLeave={() => handleMenuInteraction('company', 'leave')}
                         sideOffset={15} 
                     >
                         {COMPANY_SUB_LINKS.map((subLink) => (
-                        <DropdownMenuItem key={subLink.href} asChild className="p-0 rounded-md">
+                        <DropdownMenuItem key={subLink.href} asChild className="p-0 rounded-md hover:bg-muted/30 focus:bg-muted/30">
                             <Link
                                 href={subLink.href}
                                 onClick={() => setCompanyMenuOpen(false)}
                                 className={cn(
-                                "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 focus:bg-muted/30 hover:bg-muted/30",
+                                "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3",
                                 (pathname === subLink.href || pathname.startsWith(subLink.href + '/')) && "font-semibold"
                                 )}
                             >
@@ -320,7 +320,7 @@ export default function Header() {
                 );
                 }
                 if (link.label === "Products") {
-                  const isProductsActive = pathname.startsWith(link.href) || pathname === "/products" || productsMenuOpen;
+                  const isProductsActive = (pathname.startsWith(link.href) || pathname === "/products") || productsMenuOpen;
                   return (
                     <DropdownMenu
                       key={link.href}
@@ -345,39 +345,40 @@ export default function Header() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
-                        className="w-[480px] p-2 bg-background shadow-xl rounded-lg border-border max-h-[75vh] overflow-y-auto"
-                        align="start"
+                        className="w-screen max-w-none p-0"
                         onMouseEnter={() => handleMenuInteraction('products', 'enter')}
                         onMouseLeave={() => handleMenuInteraction('products', 'leave')}
                         sideOffset={15}
                       >
-                        {PRODUCT_SUB_LINKS.map((subLink) => (
-                          <DropdownMenuItem key={subLink.label} asChild className="p-0 rounded-md">
-                            <Link
-                              href={subLink.href}
-                              onClick={() => setProductsMenuOpen(false)}
-                              className={cn(
-                                "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 focus:bg-muted/30 hover:bg-muted/30",
-                                (pathname === subLink.href) && "font-semibold" // Assuming direct links for products
-                              )}
-                            >
-                              {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />}
-                              <div className="flex-1">
-                                <span className="font-medium text-primary">{subLink.label}</span>
-                                {subLink.subtitle && (
-                                  <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
-                                    {subLink.subtitle}
-                                  </p>
+                        <div className="container mx-auto py-4 px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
+                          {PRODUCT_SUB_LINKS.map((subLink) => (
+                            <div key={subLink.label} className="p-0 rounded-md hover:bg-muted/30 focus-within:bg-muted/30">
+                                <Link
+                                href={subLink.href}
+                                onClick={() => setProductsMenuOpen(false)}
+                                className={cn(
+                                    "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 rounded-md",
+                                    (pathname === subLink.href) && "font-semibold" // Assuming direct links for products
                                 )}
-                                {subLink.description && (
-                                  <p className="text-xs text-muted-foreground/80 whitespace-normal">
-                                    {subLink.description}
-                                  </p>
-                                )}
-                              </div>
-                            </Link>
-                          </DropdownMenuItem>
-                        ))}
+                                >
+                                {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />}
+                                <div className="flex-1">
+                                    <span className="font-medium text-primary">{subLink.label}</span>
+                                    {subLink.subtitle && (
+                                    <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
+                                        {subLink.subtitle}
+                                    </p>
+                                    )}
+                                    {subLink.description && (
+                                    <p className="text-xs text-muted-foreground/80 whitespace-normal">
+                                        {subLink.description}
+                                    </p>
+                                    )}
+                                </div>
+                                </Link>
+                            </div>
+                          ))}
+                        </div>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   );
@@ -529,7 +530,7 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3 text-foreground/80",
+                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/')) && "font-semibold",
                                   "hover:bg-muted/30 focus:bg-muted/30"
                                 )}
@@ -575,7 +576,7 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3 text-foreground/80",
+                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3",
                                   (pathname === subLink.href) && "font-semibold",
                                   "hover:bg-muted/30 focus:bg-muted/30"
                                 )}
