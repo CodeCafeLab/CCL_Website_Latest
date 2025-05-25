@@ -2,7 +2,8 @@
 import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory } from '@/types';
 import { 
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, 
-  Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig
+  Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
+  Info, Briefcase, Mail // Added Info, Briefcase, Mail
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -14,6 +15,12 @@ export const NAV_LINKS: NavItem[] = [
   { href: "/products", label: "Products", icon: Smartphone },
   { href: "/ai", label: "AI", icon: Bot },
   { href: "/blog", label: "Resources", icon: FileText },
+];
+
+export const COMPANY_SUB_LINKS: NavItem[] = [
+  { href: "/company", label: "About CodeCafe Lab", icon: Info },
+  { href: "/career", label: "Career", icon: Briefcase },
+  { href: "/contact", label: "Contact Us", icon: Mail },
 ];
 
 // New structured SERVICES_DATA for multi-level menu
@@ -433,3 +440,6 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
   },
 ];
+
+
+    

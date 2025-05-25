@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
-import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME } from "@/lib/constants"; // Renamed to avoid conflict
+import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -24,17 +24,6 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import type { SubService } from '@/types';
 
-interface CompanySubItem {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-}
-
-const COMPANY_SUB_LINKS: CompanySubItem[] = [
-  { href: "/company", label: "About CodeCafe Lab", icon: Info },
-  { href: "/career", label: "Career", icon: Briefcase },
-  { href: "/contact", label: "Contact Us", icon: Mail },
-];
 
 export default function Header() {
   const pathname = usePathname();
@@ -118,6 +107,17 @@ export default function Header() {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
 
+  const handleServicesMenuTriggerEnter = () => {
+    if (!servicesMenuOpen) setServicesMenuOpen(true);
+    if (companyMenuOpen) setCompanyMenuOpen(false); 
+  };
+
+  const handleCompanyMenuTriggerEnter = () => {
+    if (!companyMenuOpen) setCompanyMenuOpen(true);
+    if (servicesMenuOpen) setServicesMenuOpen(false);
+  };
+  
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-24 items-center justify-between px-4">
@@ -141,18 +141,21 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={servicesMenuOpen}
-                    onOpenChange={setServicesMenuOpen}
+                    onOpenChange={(open) => {
+                        setServicesMenuOpen(open);
+                        if (open) setCompanyMenuOpen(false); 
+                    }}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                         isServicesActive || servicesMenuOpen
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={() => setServicesMenuOpen(true)}
+                      onMouseEnter={handleServicesMenuTriggerEnter}
                       aria-expanded={servicesMenuOpen}
                     >
                       {link.label}
@@ -163,6 +166,7 @@ export default function Header() {
                     className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border"
                     align="start"
                     onMouseLeave={() => setServicesMenuOpen(false)}
+                    onMouseEnter={handleServicesMenuTriggerEnter} 
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                       {SERVICES_DATA.map((category: AppServiceMenuItem) => (
@@ -191,18 +195,21 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={companyMenuOpen}
-                    onOpenChange={setCompanyMenuOpen}
+                    onOpenChange={(open) => {
+                        setCompanyMenuOpen(open);
+                        if (open) setServicesMenuOpen(false);
+                    }}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                         companyActive || companyMenuOpen
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={() => setCompanyMenuOpen(true)}
+                      onMouseEnter={handleCompanyMenuTriggerEnter}
                       aria-expanded={companyMenuOpen}
                     >
                       {link.label}
@@ -213,6 +220,7 @@ export default function Header() {
                     className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
                     align="start"
                     onMouseLeave={() => setCompanyMenuOpen(false)}
+                    onMouseEnter={handleCompanyMenuTriggerEnter} 
                   >
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
@@ -240,7 +248,7 @@ export default function Header() {
                 <Link
                   href={link.href}
                   className={cn(
-                    "transition-colors px-3 py-2 text-sm font-medium",
+                    "transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                     isActive
                       ? "text-primary font-semibold"
                       : "text-foreground/60 hover:text-primary"
@@ -283,10 +291,10 @@ export default function Header() {
                         <AccordionItem value="services-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                               isServicesActive
                                 ? "text-primary font-semibold"
-                                : "text-foreground hover:text-primary"
+                                : "text-foreground" 
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -299,8 +307,8 @@ export default function Header() {
                               {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
-                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline",
-                                    "text-foreground/80 hover:text-primary [&[data-state=open]]:text-primary"
+                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-primary [&[data-state=open]]:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
+                                    "text-foreground/80"
                                   )}>
                                     <div className="flex items-center gap-2">
                                       {category.icon && <category.icon className="h-4 w-4" />}
@@ -327,10 +335,10 @@ export default function Header() {
                         <AccordionItem value="company-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                               companyActive
                                 ? "text-primary font-semibold"
-                                : "text-foreground hover:text-primary"
+                                : "text-foreground"
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -345,7 +353,7 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2",
+                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                     ? "text-primary font-semibold"
                                     : "text-foreground/80 hover:text-primary"
@@ -367,7 +375,7 @@ export default function Header() {
                       href={link.href}
                       onClick={closeSheet}
                       className={cn(
-                        "block px-3 py-2 rounded-md text-base font-medium transition-colors",
+                        "block px-3 py-2 rounded-md text-base font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
                         isActive
                           ? "text-primary font-semibold"
                           : "text-foreground hover:text-primary"
@@ -388,5 +396,5 @@ export default function Header() {
     </header>
   );
 }
-
+    
     
