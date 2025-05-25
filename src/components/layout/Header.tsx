@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -52,6 +52,7 @@ export default function Header() {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
+          {/* Placeholder for logo to maintain height */}
           <div style={{ width: 171, height: 43 }} />
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
@@ -78,15 +79,14 @@ export default function Header() {
         timerRef.current = null;
       }
       setOpen(true);
-      // Ensure the other menu is closed when this one opens via hover
-      if (otherSetOpen) { // Check if otherSetOpen is defined
+      if (otherSetOpen) { 
         otherSetOpen(false);
         if (otherTimerRef.current) {
           clearTimeout(otherTimerRef.current);
           otherTimerRef.current = null;
         }
       }
-    } else { // action === 'leave'
+    } else { 
       timerRef.current = setTimeout(() => {
         setOpen(false);
         timerRef.current = null;
@@ -96,11 +96,11 @@ export default function Header() {
   
   const onServicesOpenChange = (open: boolean) => {
     setServicesMenuOpen(open);
-    if (servicesMenuTimerRef.current) { // Clear timer if Radix closes it or user clicks
+    if (servicesMenuTimerRef.current) { 
         clearTimeout(servicesMenuTimerRef.current);
         servicesMenuTimerRef.current = null;
     }
-    if (open) { // If services menu is opening, ensure company menu is closed
+    if (open) { 
         setCompanyMenuOpen(false);
         if (companyMenuTimerRef.current) {
             clearTimeout(companyMenuTimerRef.current);
@@ -111,11 +111,11 @@ export default function Header() {
   
   const onCompanyOpenChange = (open: boolean) => {
     setCompanyMenuOpen(open);
-    if (companyMenuTimerRef.current) { // Clear timer if Radix closes it or user clicks
+    if (companyMenuTimerRef.current) { 
         clearTimeout(companyMenuTimerRef.current);
         companyMenuTimerRef.current = null;
     }
-    if (open) { // If company menu is opening, ensure services menu is closed
+    if (open) { 
         setServicesMenuOpen(false);
         if (servicesMenuTimerRef.current) {
             clearTimeout(servicesMenuTimerRef.current);
@@ -123,57 +123,6 @@ export default function Header() {
         }
     }
   };
-
-  const renderSubServiceLink = (subService: SubService, isMobile: boolean = false, parentSlug: string) => {
-    const href = `/services#${parentSlug}-${subService.slug}`;
-    const commonClasses = "block w-full text-left px-3 py-1.5 text-sm rounded-md transition-colors";
-    
-    const isActiveServiceLink = typeof window !== 'undefined' && window.location.hash === `#${parentSlug}-${subService.slug}` && pathname === '/services';
-
-    if (isMobile) {
-      return (
-        <div key={subService.slug} className="ml-3 py-1">
-          <Link
-            href={href}
-            onClick={closeSheet}
-            className={cn(
-              "block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              isActiveServiceLink
-                ? "text-primary font-semibold"
-                : "text-foreground/80 hover:text-white"
-            )}
-          >
-            {subService.title}
-          </Link>
-          {/* Sub-service description removed for mobile */}
-        </div>
-      );
-    }
-    // Desktop sub-service rendering (used for Company menu, Services menu renders directly)
-    return (
-      <DropdownMenuItem
-        key={subService.slug}
-        asChild
-        className="p-0 focus:bg-accent focus:text-accent-foreground group"
-      >
-        <Link
-          href={href}
-          className={cn(
-            commonClasses, "hover:bg-accent/50",
-            isActiveServiceLink
-              ? "text-primary font-semibold" 
-              : "text-popover-foreground hover:text-white"
-          )}
-        >
-          <div>
-            {subService.title}
-             {/* Sub-service description removed for desktop */}
-          </div>
-        </Link>
-      </DropdownMenuItem>
-    );
-  };
-
 
   const isCompanyLinkActive = (currentPathname: string) => {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
@@ -235,15 +184,15 @@ export default function Header() {
                             {category.title}
                           </h4>
                           <ul className="space-y-1">
-                            {category.subServices.map((subService) => {
+                            {category.subServices.slice(0, 4).map((subService) => {
                                const href = `/services#${category.slug}-${subService.slug}`;
                                const isActiveServiceLink = typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services';
                               return (
-                                <li key={subService.slug} className="px-3 py-1 group">
-                                  <Link
+                                <li key={subService.slug} className="group">
+                                   <Link
                                     href={href}
                                     className={cn(
-                                      "block text-sm font-medium rounded-md transition-colors",
+                                      "block text-sm font-medium rounded-md transition-colors px-3 py-1.5",
                                       isActiveServiceLink
                                         ? "text-primary" 
                                         : "text-popover-foreground hover:text-white" 
@@ -251,10 +200,19 @@ export default function Header() {
                                   >
                                     {subService.title}
                                   </Link>
-                                  {/* Sub-service description removed */}
                                 </li>
                               );
                             })}
+                             {category.subServices.length > 4 && (
+                                <li className="group">
+                                  <Link
+                                    href={`/services#${category.slug}`}
+                                    className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
+                                  >
+                                    See All <ArrowRight className="h-4 w-4" />
+                                  </Link>
+                                </li>
+                              )}
                           </ul>
                         </div>
                       ))}
@@ -387,9 +345,9 @@ export default function Header() {
                                       {category.title}
                                     </div>
                                   </AccordionTrigger>
-                                  <AccordionContent className="pt-1 pb-0 pl-0 space-y-0.5">
-                                    {category.subServices.map((subService) => (
-                                       <div key={subService.slug} className="ml-3 py-1">
+                                  <AccordionContent className="pt-1 pb-0 pl-3 space-y-0.5">
+                                    {category.subServices.slice(0,4).map((subService) => (
+                                       <div key={subService.slug} className="py-1">
                                        <Link
                                          href={`/services#${category.slug}-${subService.slug}`}
                                          onClick={closeSheet}
@@ -402,9 +360,19 @@ export default function Header() {
                                        >
                                          {subService.title}
                                        </Link>
-                                       {/* Sub-service description removed */}
                                      </div>
                                     ))}
+                                    {category.subServices.length > 4 && (
+                                      <div className="py-1">
+                                        <Link
+                                          href={`/services#${category.slug}`}
+                                          onClick={closeSheet}
+                                          className="block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-primary font-semibold hover:text-white flex items-center gap-1"
+                                        >
+                                          See All <ArrowRight className="h-4 w-4" />
+                                        </Link>
+                                      </div>
+                                    )}
                                   </AccordionContent>
                                 </AccordionItem>
                               ))}
