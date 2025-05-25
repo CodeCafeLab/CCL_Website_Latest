@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -35,25 +35,23 @@ export default function Header() {
 
   const servicesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
   const companyMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const HOVER_MENU_CLOSE_DELAY = 200; // milliseconds
+  const HOVER_MENU_CLOSE_DELAY = 200; 
 
   useEffect(() => {
     setIsMounted(true);
-    // Cleanup timers on unmount
     return () => {
       if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
       if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
     };
   }, []);
 
-  const logoSrc = "/codecafe_logo_dark.png"; // Site is dark mode only
+  const logoSrc = "/codecafe_logo_dark.png";
   const logoAlt = `${SITE_NAME} Logo (Dark Mode)`;
 
   if (!isMounted) {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          {/* Placeholder for logo to maintain height */}
           <div style={{ width: 171, height: 43 }} />
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
@@ -65,21 +63,24 @@ export default function Header() {
 
   const closeSheet = () => setIsSheetOpen(false);
 
-  const handleMenuInteraction = (menuToUpdate: 'services' | 'company', action: 'enter' | 'leave') => {
-    const setOpen = menuToUpdate === 'services' ? setServicesMenuOpen : setCompanyMenuOpen;
-    const otherSetOpen = menuToUpdate === 'services' ? setCompanyMenuOpen : setServicesMenuOpen;
-    const timerRef = menuToUpdate === 'services' ? servicesMenuTimerRef : companyMenuTimerRef;
-    const otherTimerRef = menuToUpdate === 'services' ? companyMenuTimerRef : servicesMenuTimerRef;
-  
+  const handleMenuInteraction = (
+    menuToControl: 'services' | 'company',
+    action: 'enter' | 'leave'
+  ) => {
+    const setOpen = menuToControl === 'services' ? setServicesMenuOpen : setCompanyMenuOpen;
+    const otherSetOpen = menuToControl === 'services' ? setCompanyMenuOpen : setServicesMenuOpen;
+    const timerRef = menuToControl === 'services' ? servicesMenuTimerRef : companyMenuTimerRef;
+    const otherTimerRef = menuToControl === 'services' ? companyMenuTimerRef : servicesMenuTimerRef;
+
     if (action === 'enter') {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
       setOpen(true);
-      otherSetOpen(false); // Close the other menu
-      if (otherTimerRef.current) {
-        clearTimeout(otherTimerRef.current); // Clear other menu's close timer
+      otherSetOpen(false); // Close other menu
+      if (otherTimerRef.current) { // Clear other menu's close timer
+        clearTimeout(otherTimerRef.current);
         otherTimerRef.current = null;
       }
     } else { // action === 'leave'
@@ -93,34 +94,38 @@ export default function Header() {
   const onServicesOpenChange = (open: boolean) => {
     setServicesMenuOpen(open);
     if (open) {
-      setCompanyMenuOpen(false);
-      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-      companyMenuTimerRef.current = null;
+      setCompanyMenuOpen(false); // Ensure company menu is closed
+      if (companyMenuTimerRef.current) {
+        clearTimeout(companyMenuTimerRef.current);
+        companyMenuTimerRef.current = null;
+      }
     }
-    if (!open && servicesMenuTimerRef.current) {
-        clearTimeout(servicesMenuTimerRef.current);
-        servicesMenuTimerRef.current = null;
+    if (!open && servicesMenuTimerRef.current) { // Clear timer if Radix closes it
+      clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
     }
   };
   
   const onCompanyOpenChange = (open: boolean) => {
     setCompanyMenuOpen(open);
     if (open) {
-      setServicesMenuOpen(false);
-      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-      servicesMenuTimerRef.current = null;
+      setServicesMenuOpen(false); // Ensure services menu is closed
+      if (servicesMenuTimerRef.current) {
+        clearTimeout(servicesMenuTimerRef.current);
+        servicesMenuTimerRef.current = null;
+      }
     }
-    if (!open && companyMenuTimerRef.current) {
-        clearTimeout(companyMenuTimerRef.current);
-        companyMenuTimerRef.current = null;
+    if (!open && companyMenuTimerRef.current) { // Clear timer if Radix closes it
+      clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
     }
   };
 
-  const renderSubServiceLink = (subService: SubService, isMobile: boolean = false) => {
-    const href = `/services#${subService.slug}`;
+  const renderSubServiceLink = (subService: SubService, isMobile: boolean = false, parentSlug: string) => {
+    const href = `/services#${parentSlug}-${subService.slug}`;
     const commonClasses = "block w-full text-left px-3 py-1.5 text-sm rounded-md transition-colors";
     
-    const isActiveServiceLink = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
+    const isActiveServiceLink = typeof window !== 'undefined' && window.location.hash === `#${parentSlug}-${subService.slug}` && pathname === '/services';
 
     if (isMobile) {
       return (
@@ -129,8 +134,7 @@ export default function Header() {
             href={href}
             onClick={closeSheet}
             className={cn(
-              "block w-full text-left text-sm rounded-md transition-colors group",
-              "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              "block w-full text-left text-sm rounded-md transition-colors group outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               isActiveServiceLink
                 ? "text-primary font-semibold"
                 : "text-foreground/80 hover:text-white"
@@ -139,22 +143,22 @@ export default function Header() {
             {subService.title}
           </Link>
           {subService.description && (
-            <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">{subService.description}</p>
+            <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">&mdash; {subService.description}</p>
           )}
         </div>
       );
     }
-
+    // Desktop sub-service rendering (used for Company menu, Services menu renders directly)
     return (
       <DropdownMenuItem
         key={subService.slug}
         asChild
-        className="p-0 focus:bg-accent focus:text-accent-foreground group" // Added group for description hover
+        className="p-0 focus:bg-accent focus:text-accent-foreground group"
       >
         <Link
           href={href}
           className={cn(
-            commonClasses, "hover:bg-accent/50", // Added hover background for better UX
+            commonClasses, "hover:bg-accent/50",
             isActiveServiceLink
               ? "text-primary font-semibold" 
               : "text-popover-foreground hover:text-white"
@@ -163,7 +167,7 @@ export default function Header() {
           <div>
             {subService.title}
             {subService.description && (
-              <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">{subService.description}</p>
+              <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">&mdash; {subService.description}</p>
             )}
           </div>
         </Link>
@@ -224,19 +228,36 @@ export default function Header() {
                     onMouseLeave={() => handleMenuInteraction('services', 'leave')}
                     sideOffset={5} 
                   >
-                    <div className="container mx-auto py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+                    <div className="container mx-auto py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-h-[75vh] overflow-y-auto">
                       {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                         <div key={category.slug}>
-                          <h4 className="font-semibold text-base mb-3 flex items-center gap-2 text-primary px-3 py-1">
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
                             {category.icon && <category.icon className="h-5 w-5" />}
                             {category.title}
                           </h4>
                           <ul className="space-y-1">
-                            {category.subServices.map((subService) => (
-                              <li key={subService.slug}>
-                                {renderSubServiceLink(subService, false)}
-                              </li>
-                            ))}
+                            {category.subServices.map((subService) => {
+                               const href = `/services#${category.slug}-${subService.slug}`;
+                               const isActiveServiceLink = typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services';
+                              return (
+                                <li key={subService.slug} className="px-3 py-1 group">
+                                  <Link
+                                    href={href}
+                                    className={cn(
+                                      "block text-sm font-medium rounded-md transition-colors",
+                                      isActiveServiceLink
+                                        ? "text-primary" 
+                                        : "text-popover-foreground hover:text-white" 
+                                    )}
+                                  >
+                                    {subService.title}
+                                  </Link>
+                                  {subService.description && (
+                                    <p className="text-xs text-muted-foreground/80 mt-0.5 group-hover:text-white/90 transition-colors">&mdash; {subService.description}</p>
+                                  )}
+                                </li>
+                              );
+                            })}
                           </ul>
                         </div>
                       ))}
@@ -369,9 +390,9 @@ export default function Header() {
                                       {category.title}
                                     </div>
                                   </AccordionTrigger>
-                                  <AccordionContent className="pt-1 pb-0 pl-0 space-y-0.5"> {/* Adjusted pl and space */}
+                                  <AccordionContent className="pt-1 pb-0 pl-0 space-y-0.5">
                                     {category.subServices.map((subService) => (
-                                      renderSubServiceLink(subService, true)
+                                      renderSubServiceLink(subService, true, category.slug)
                                     ))}
                                   </AccordionContent>
                                 </AccordionItem>
@@ -450,3 +471,4 @@ export default function Header() {
     </header>
   );
 }
+
