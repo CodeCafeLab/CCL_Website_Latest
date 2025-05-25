@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, HomeIcon, Layers, Building2, Smartphone, Bot, FileText, Info, Briefcase, Mail } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -67,14 +67,15 @@ export default function Header() {
 
   // --- Services Menu Handlers ---
   const handleServicesTriggerEnter = () => {
+    if (companyMenuTimerRef.current) {
+      clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
+    }
+    setCompanyMenuOpen(false); // Close other menu
+
     if (servicesMenuTimerRef.current) {
       clearTimeout(servicesMenuTimerRef.current);
       servicesMenuTimerRef.current = null;
-    }
-    if (companyMenuTimerRef.current) { // Close other menu
-      clearTimeout(companyMenuTimerRef.current);
-      companyMenuTimerRef.current = null;
-      setCompanyMenuOpen(false);
     }
     setServicesMenuOpen(true);
   };
@@ -105,7 +106,7 @@ export default function Header() {
     if (open) {
       if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
       setCompanyMenuOpen(false); // Ensure other menu is closed
-    } else {
+    } else { // Menu is closing
       if (servicesMenuTimerRef.current) {
         clearTimeout(servicesMenuTimerRef.current);
         servicesMenuTimerRef.current = null;
@@ -115,14 +116,15 @@ export default function Header() {
 
   // --- Company Menu Handlers ---
   const handleCompanyTriggerEnter = () => {
+    if (servicesMenuTimerRef.current) {
+      clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
+    }
+    setServicesMenuOpen(false); // Close other menu
+
     if (companyMenuTimerRef.current) {
       clearTimeout(companyMenuTimerRef.current);
       companyMenuTimerRef.current = null;
-    }
-    if (servicesMenuTimerRef.current) { // Close other menu
-      clearTimeout(servicesMenuTimerRef.current);
-      servicesMenuTimerRef.current = null;
-      setServicesMenuOpen(false);
     }
     setCompanyMenuOpen(true);
   };
@@ -153,7 +155,7 @@ export default function Header() {
     if (open) {
       if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
       setServicesMenuOpen(false); // Ensure other menu is closed
-    } else {
+    } else { // Menu is closing
       if (companyMenuTimerRef.current) {
         clearTimeout(companyMenuTimerRef.current);
         companyMenuTimerRef.current = null;
@@ -176,7 +178,7 @@ export default function Header() {
           onClick={closeSheet}
           className={cn(
             commonClasses,
-            "outline-none", // Removed focus-visible for sub-items as well if needed, or keep for accessibility. Keeping for now for sub-items.
+            "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             isActiveServiceLink
               ? "text-primary font-semibold"
               : "text-foreground/80 hover:text-primary"
@@ -244,7 +246,7 @@ export default function Header() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none", // Removed focus-visible ring classes
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0", 
                         servicesMenuOpen || isServicesActive
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
@@ -296,7 +298,7 @@ export default function Header() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none", // Removed focus-visible ring classes
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                         companyMenuOpen || companyActive
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
@@ -385,7 +387,7 @@ export default function Header() {
                         <AccordionItem value="services-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                               isServicesActive
                                 ? "text-primary font-semibold"
                                 : "text-foreground" 
@@ -401,7 +403,7 @@ export default function Header() {
                               {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
-                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-primary [&[data-state=open]]:text-primary outline-none",
+                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-primary [&[data-state=open]]:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                     "text-foreground/80"
                                   )}>
                                     <div className="flex items-center gap-2">
@@ -429,7 +431,7 @@ export default function Header() {
                         <AccordionItem value="company-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                               companyActive
                                 ? "text-primary font-semibold"
                                 : "text-foreground"
@@ -447,7 +449,7 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 outline-none",
+                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                     ? "text-primary font-semibold"
                                     : "text-foreground/80 hover:text-primary"
