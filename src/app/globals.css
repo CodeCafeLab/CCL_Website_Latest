@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -179,6 +180,26 @@
     animation-duration: 10s; /* Slightly different duration for variation */
     animation-delay: -5s; /* Offset animation start */
   }
+
+  .text-royal-shine {
+    @apply font-bold tracking-wider; /* For a more impactful "royal" look */
+    
+    color: hsl(var(--primary)); /* Fallback color for browsers not supporting background-clip */
+    background-image: linear-gradient(
+      -225deg,
+      hsl(var(--primary)) 0%,        /* Theme's primary color (yellow) */
+      hsl(46, 100%, 85%) 25%,        /* Very Light Gold for shine */
+      hsl(46, 100%, 70%) 50%,        /* Lighter version of primary for body of shine */
+      hsl(46, 100%, 85%) 75%,        /* Very Light Gold for shine */
+      hsl(var(--primary)) 100%       /* Theme's primary color (yellow) */
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent; /* Makes the text itself transparent */
+    text-fill-color: transparent; /* Standard property */
+    animation: text-gradient-shine-animation 3s linear infinite;
+  }
 }
 
 @keyframes pulse-glow {
@@ -193,5 +214,11 @@
   100% {
     transform: scale(0.9);
     opacity: 0.3;
+  }
+}
+
+@keyframes text-gradient-shine-animation {
+  to {
+    background-position: 200% center;
   }
 }
