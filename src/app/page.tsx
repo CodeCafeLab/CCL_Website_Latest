@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA } from '@/lib/constants';
 import { ArrowRight, Bot, Users, Zap } from 'lucide-react';
 import Image from 'next/image'; // Keep Image for other images on the page
@@ -19,6 +19,8 @@ export default function HomePage() {
     "Innovative Solutions for a Digital World",
     "Your Partner in Tech Excellence",
   ];
+
+  const featuredServices = SERVICES_DATA.slice(0, 5);
 
   return (
     <div className="space-y-16 md:space-y-24">
@@ -56,22 +58,42 @@ export default function HomePage() {
       <section>
         <h2 className="text-3xl font-bold text-center mb-12">Our Expertise</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SERVICES_DATA.slice(0, 3).map((service) => (
-            <Card key={service.slug} className="hover:shadow-xl transition-shadow duration-300">
+          {featuredServices.map((service) => (
+            <Card key={service.slug} className="hover:shadow-xl transition-shadow duration-300 flex flex-col">
               <CardHeader>
                 <div className="flex items-center gap-4 mb-2">
                   <service.icon className="h-10 w-10 text-primary" />
                   <CardTitle className="text-2xl">{service.title}</CardTitle>
                 </div>
               </CardHeader>
-              <CardContent>
-                <CardDescription>{service.subServices.length > 0 ? service.subServices[0].description : 'Explore our expert services.'}</CardDescription>
+              <CardContent className="flex-grow">
+                <CardDescription>{service.description || 'Explore our expert services.'}</CardDescription>
+              </CardContent>
+              <CardFooter>
                 <Button variant="link" asChild className="mt-4 px-0 text-primary">
                   <Link href={`/services#${service.slug}`}>Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
                 </Button>
-              </CardContent>
+              </CardFooter>
             </Card>
           ))}
+          {/* See All Services Card */}
+          <Card className="flex flex-col items-center justify-between p-6 text-center bg-card hover:shadow-xl transition-shadow duration-300 h-full border-2 border-primary/30">
+            <CardHeader className="p-2">
+              <CardTitle className="text-2xl text-primary">Explore All Services</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow flex flex-col items-center justify-center p-2">
+              <p className="text-muted-foreground mb-4">
+                Dive deeper into our comprehensive range of solutions.
+              </p>
+            </CardContent>
+            <CardFooter className="p-2 w-full">
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
+                <Link href="/services">
+                  See All <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </section>
 
