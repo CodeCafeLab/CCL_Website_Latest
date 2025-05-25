@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge } from "lucide-react"; // Renamed MessageSquare to ChatIcon to avoid conflict
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon, Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare, Wrench, Truck, MonitorSmartphone, BarChart3 } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS, PRODUCT_SUB_LINKS, ProductSubMenuItem as AppProductSubMenuItem } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -73,19 +73,26 @@ export default function Header() {
     let setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     let otherSetOpens: React.Dispatch<React.SetStateAction<boolean>>[] = [];
     let timerRef: React.MutableRefObject<NodeJS.Timeout | null>;
+    let clearOtherTimers: (()=>void)[] = [];
   
     if (menuToControl === 'services') {
       setOpen = setServicesMenuOpen;
       otherSetOpens = [setCompanyMenuOpen, setProductsMenuOpen];
       timerRef = servicesMenuTimerRef;
+      if (companyMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(companyMenuTimerRef.current!));
+      if (productsMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(productsMenuTimerRef.current!));
     } else if (menuToControl === 'company') {
       setOpen = setCompanyMenuOpen;
       otherSetOpens = [setServicesMenuOpen, setProductsMenuOpen];
       timerRef = companyMenuTimerRef;
+      if (servicesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(servicesMenuTimerRef.current!));
+      if (productsMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(productsMenuTimerRef.current!));
     } else { // products
       setOpen = setProductsMenuOpen;
       otherSetOpens = [setServicesMenuOpen, setCompanyMenuOpen];
       timerRef = productsMenuTimerRef;
+      if (servicesMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(servicesMenuTimerRef.current!));
+      if (companyMenuTimerRef.current) clearOtherTimers.push(() => clearTimeout(companyMenuTimerRef.current!));
     }
   
     if (timerRef.current) {
@@ -96,11 +103,7 @@ export default function Header() {
     if (action === 'enter') {
       setOpen(true);
       otherSetOpens.forEach(setFn => setFn(false));
-      // Clear timers for other menus explicitly if they exist
-      if (menuToControl !== 'services' && servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-      if (menuToControl !== 'company' && companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-      if (menuToControl !== 'products' && productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
-
+      clearOtherTimers.forEach(clearFn => clearFn());
     } else { // action === 'leave'
       timerRef.current = setTimeout(() => {
         setOpen(false);
@@ -110,29 +113,35 @@ export default function Header() {
   };
   
   const createOpenChangeHandler = (
-    setThisMenuOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    setOtherMenuOpen1: React.Dispatch<React.SetStateAction<boolean>>,
-    setOtherMenuOpen2: React.Dispatch<React.SetStateAction<boolean>>,
-    thisTimerRef: React.MutableRefObject<NodeJS.Timeout | null>
+    menuToControl: 'services' | 'company' | 'products'
   ) => (open: boolean) => {
-    setThisMenuOpen(open);
-    if (thisTimerRef.current) {
-      clearTimeout(thisTimerRef.current);
-      thisTimerRef.current = null;
-    }
-    if (open) {
-      setOtherMenuOpen1(false);
-      setOtherMenuOpen2(false);
-      // Also clear other timers if they exist
-       if (servicesMenuTimerRef.current && thisTimerRef !== servicesMenuTimerRef) clearTimeout(servicesMenuTimerRef.current);
-       if (companyMenuTimerRef.current && thisTimerRef !== companyMenuTimerRef) clearTimeout(companyMenuTimerRef.current);
-       if (productsMenuTimerRef.current && thisTimerRef !== productsMenuTimerRef) clearTimeout(productsMenuTimerRef.current);
+    if (menuToControl === 'services') {
+      setServicesMenuOpen(open);
+      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+      if (open) {
+        setCompanyMenuOpen(false); if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+        setProductsMenuOpen(false); if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
+      }
+    } else if (menuToControl === 'company') {
+      setCompanyMenuOpen(open);
+      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+      if (open) {
+        setServicesMenuOpen(false); if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+        setProductsMenuOpen(false); if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
+      }
+    } else { // products
+      setProductsMenuOpen(open);
+      if (productsMenuTimerRef.current) clearTimeout(productsMenuTimerRef.current);
+      if (open) {
+        setServicesMenuOpen(false); if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+        setCompanyMenuOpen(false); if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+      }
     }
   };
-
-  const onServicesOpenChange = createOpenChangeHandler(setServicesMenuOpen, setCompanyMenuOpen, setProductsMenuOpen, servicesMenuTimerRef);
-  const onCompanyOpenChange = createOpenChangeHandler(setCompanyMenuOpen, setServicesMenuOpen, setProductsMenuOpen, companyMenuTimerRef);
-  const onProductsOpenChange = createOpenChangeHandler(setProductsMenuOpen, setServicesMenuOpen, setCompanyMenuOpen, productsMenuTimerRef);
+  
+  const onServicesOpenChange = createOpenChangeHandler('services');
+  const onCompanyOpenChange = createOpenChangeHandler('company');
+  const onProductsOpenChange = createOpenChangeHandler('products');
 
   const isCompanyLinkActive = (currentPathname: string) => {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
@@ -189,7 +198,7 @@ export default function Header() {
                         onMouseLeave={() => handleMenuInteraction('services', 'leave')}
                         sideOffset={15} 
                     >
-                        <div className="container mx-auto py-4 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
+                        <div className="py-4 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
                           {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                             <div key={category.slug}>
                               <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
@@ -320,7 +329,7 @@ export default function Header() {
                         onMouseLeave={() => handleMenuInteraction('products', 'leave')}
                         sideOffset={15}
                       >
-                        <div className="container mx-auto py-6 px-4 md:px-8 grid lg:grid-cols-4 gap-x-8 gap-y-6 max-h-[80vh] overflow-y-auto">
+                        <div className="py-6 px-6 grid lg:grid-cols-4 gap-x-8 gap-y-6 max-h-[80vh] overflow-y-auto">
                           <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
                             {PRODUCT_SUB_LINKS.map((subLink) => (
                               <div key={subLink.label} className="p-0 rounded-md hover:bg-muted/30 focus-within:bg-muted/30">
@@ -328,7 +337,7 @@ export default function Header() {
                                   href={subLink.href}
                                   onClick={() => setProductsMenuOpen(false)}
                                   className={cn(
-                                      "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 rounded-md",
+                                      "block w-full h-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 rounded-md", // Added h-full
                                       (pathname === subLink.href) && "font-semibold" 
                                   )}
                                   >
@@ -621,3 +630,4 @@ export default function Header() {
     </header>
   );
 }
+
