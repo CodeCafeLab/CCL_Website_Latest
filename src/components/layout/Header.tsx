@@ -52,7 +52,8 @@ export default function Header() {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          <div style={{ width: 171, height: 43 }} /> {/* Placeholder for logo size */}
+          {/* Placeholder for logo size to prevent layout shift */}
+          <div style={{ width: 171, height: 43 }} />
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
           </Button>
@@ -66,17 +67,21 @@ export default function Header() {
   const renderSubServiceLink = (categorySlug: string, subService: SubService, isMobile: boolean = false) => {
     const href = `/services#${subService.slug}`;
     const commonClasses = "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors";
-    const activeClass = "bg-white text-black";
-    const hoverClass = "hover:bg-white hover:text-black";
-    const inactiveClass = "text-foreground/80";
+    // Check if the current path is /services and if the hash matches the subService slug
     const isActive = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
 
     if (isMobile) {
       return (
         <Link
+          key={subService.slug} // Added key here for list rendering
           href={href}
           onClick={closeSheet}
-          className={cn(commonClasses, isActive ? activeClass : cn(inactiveClass, hoverClass))}
+          className={cn(
+            commonClasses,
+            isActive
+              ? "text-primary font-semibold"
+              : "text-foreground/80 hover:text-primary"
+          )}
         >
           {subService.title}
         </Link>
@@ -85,10 +90,20 @@ export default function Header() {
 
     return (
       <DropdownMenuItem
+        key={subService.slug} // Added key here
         asChild
-        className={cn("p-0 focus:bg-transparent focus:text-black", isActive ? activeClass : cn("focus:bg-white focus:text-black", hoverClass))}
+        className="p-0 focus:bg-accent focus:text-accent-foreground" // Let Radix handle focus style on item
       >
-        <Link href={href} className={cn(commonClasses, "text-popover-foreground", isActive ? activeClass : hoverClass)}>
+        <Link
+          href={href}
+          className={cn(
+            commonClasses,
+            "text-popover-foreground", // Base color for dropdown items
+            isActive
+              ? "text-primary font-semibold"
+              : "hover:text-primary"
+          )}
+        >
           {subService.title}
         </Link>
       </DropdownMenuItem>
@@ -110,13 +125,14 @@ export default function Header() {
             height={43}
             priority
             data-ai-hint="company logo"
-            key={logoSrc}
+            key={logoSrc} // Unique key for Image if src changes
           />
         </Link>
 
         <nav className="hidden md:flex items-center space-x-1">
           {NAV_LINKS.map((link) => {
             if (link.label === "Services") {
+              const isServicesActive = pathname.startsWith(link.href) || pathname === "/services";
               return (
                 <DropdownMenu key={link.href}>
                   <DropdownMenuTrigger asChild>
@@ -124,9 +140,9 @@ export default function Header() {
                       variant="ghost"
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
-                        pathname.startsWith(link.href) || pathname === "/services"
-                          ? "bg-white text-black"
-                          : "text-foreground/60 hover:bg-white hover:text-black"
+                        isServicesActive
+                          ? "text-primary font-semibold"
+                          : "text-foreground/60 hover:text-primary"
                       )}
                     >
                       {link.label}
@@ -156,6 +172,7 @@ export default function Header() {
               );
             }
             if (link.label === "Company") {
+              const companyActive = isCompanyLinkActive(pathname);
               return (
                 <DropdownMenu key={link.href}>
                   <DropdownMenuTrigger asChild>
@@ -163,9 +180,9 @@ export default function Header() {
                       variant="ghost"
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium",
-                        isCompanyLinkActive(pathname)
-                          ? "bg-white text-black"
-                          : "text-foreground/60 hover:bg-white hover:text-black"
+                        companyActive
+                          ? "text-primary font-semibold"
+                          : "text-foreground/60 hover:text-primary"
                       )}
                     >
                       {link.label}
@@ -174,8 +191,16 @@ export default function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-64 p-2 bg-background shadow-xl rounded-lg border-border" align="start">
                     {COMPANY_SUB_LINKS.map((subLink) => (
-                      <DropdownMenuItem key={subLink.href} asChild className={cn("p-0 focus:bg-transparent focus:text-black", pathname === subLink.href ? "bg-white text-black" : "focus:bg-white focus:text-black hover:bg-white hover:text-black")}>
-                        <Link href={subLink.href} className="block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2">
+                      <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
+                        <Link
+                          href={subLink.href}
+                          className={cn(
+                            "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
+                            pathname === subLink.href
+                              ? "text-primary font-semibold"
+                              : "hover:text-primary"
+                          )}
+                        >
                           <subLink.icon className="h-4 w-4" />
                           {subLink.label}
                         </Link>
@@ -185,15 +210,17 @@ export default function Header() {
                 </DropdownMenu>
               );
             }
+            // For regular Nav links including "Home"
+            const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
             return (
               <Button asChild variant="ghost" key={link.href}>
                 <Link
                   href={link.href}
                   className={cn(
                     "transition-colors px-3 py-2 text-sm font-medium",
-                    pathname === link.href
-                      ? "bg-white text-black"
-                      : "text-foreground/60 hover:bg-white hover:text-black"
+                    isActive
+                      ? "text-primary font-semibold"
+                      : "text-foreground/60 hover:text-primary"
                   )}
                 >
                   {link.label}
@@ -227,15 +254,16 @@ export default function Header() {
               <nav className="flex flex-col space-y-1 p-4">
                 {NAV_LINKS.map((link) => {
                   if (link.label === "Services") {
+                    const isServicesActive = pathname.startsWith(link.href) || pathname === "/services";
                     return (
                       <Accordion type="single" collapsible key={link.href} className="w-full">
                         <AccordionItem value="services-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:bg-white hover:text-black",
-                              pathname.startsWith(link.href) || pathname === "/services"
-                                ? "bg-white text-black"
-                                : "text-foreground"
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
+                              isServicesActive
+                                ? "text-primary font-semibold"
+                                : "text-foreground hover:text-primary"
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -248,8 +276,8 @@ export default function Header() {
                               {SERVICES_DATA.map((category) => (
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
-                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:bg-white hover:text-black",
-                                    "text-foreground/80 [&[data-state=open]]:bg-white/90 [&[data-state=open]]:text-black"
+                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline",
+                                    "text-foreground/80 hover:text-primary [&[data-state=open]]:text-primary"
                                   )}>
                                     <div className="flex items-center gap-2">
                                       {category.icon && <category.icon className="h-4 w-4" />}
@@ -270,15 +298,16 @@ export default function Header() {
                     );
                   }
                   if (link.label === "Company") {
+                    const companyActive = isCompanyLinkActive(pathname);
                     return (
                        <Accordion type="single" collapsible key={link.href} className="w-full">
                         <AccordionItem value="company-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:bg-white hover:text-black",
-                              isCompanyLinkActive(pathname)
-                                ? "bg-white text-black"
-                                : "text-foreground"
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline",
+                              companyActive
+                                ? "text-primary font-semibold"
+                                : "text-foreground hover:text-primary"
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -295,8 +324,8 @@ export default function Header() {
                                 className={cn(
                                   "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2",
                                   pathname === subLink.href
-                                    ? "bg-white text-black"
-                                    : "text-foreground/80 hover:bg-white hover:text-black"
+                                    ? "text-primary font-semibold"
+                                    : "text-foreground/80 hover:text-primary"
                                 )}
                               >
                                 <subLink.icon className="h-4 w-4" />
@@ -308,6 +337,8 @@ export default function Header() {
                       </Accordion>
                     );
                   }
+                  // For regular Nav links in mobile sheet including "Home"
+                  const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href));
                   return (
                     <Link
                       key={link.href}
@@ -315,9 +346,9 @@ export default function Header() {
                       onClick={closeSheet}
                       className={cn(
                         "block px-3 py-2 rounded-md text-base font-medium transition-colors",
-                        pathname === link.href
-                          ? "bg-white text-black"
-                          : "text-foreground hover:bg-white hover:text-black"
+                        isActive
+                          ? "text-primary font-semibold"
+                          : "text-foreground hover:text-primary"
                       )}
                     >
                       <div className="flex items-center gap-3">
