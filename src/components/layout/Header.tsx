@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, DollarSign, Users, Star, Link as LinkIcon } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, DollarSign, Users, Star, Link as LinkIcon, HomeIcon, Layers, Building2, FileText, Bot, Smartphone, Lightbulb, Globe, Server, Brain, GitMerge } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -39,13 +39,13 @@ export default function Header() {
 
   useEffect(() => {
     setIsMounted(true);
+    // Cleanup timers on component unmount
     return () => {
       if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
       if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
     };
   }, []);
 
-  // Dark mode is default, so always use dark logo
   const logoSrc = "/codecafe_logo_dark.png"; 
   const logoAlt = `${SITE_NAME} Logo (Dark Mode)`;
 
@@ -53,7 +53,6 @@ export default function Header() {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          {/* Placeholder for logo to maintain height */}
           <div style={{ width: 171, height: 43 }} />
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
@@ -67,12 +66,22 @@ export default function Header() {
 
   const handleMenuInteraction = (
     menuToControl: 'services' | 'company',
-    action: 'enter' | 'leave'
+    action: 'enter' | 'leave',
+    forceClose: boolean = false
   ) => {
     const setOpen = menuToControl === 'services' ? setServicesMenuOpen : setCompanyMenuOpen;
     const otherSetOpen = menuToControl === 'services' ? setCompanyMenuOpen : setServicesMenuOpen;
     const timerRef = menuToControl === 'services' ? servicesMenuTimerRef : companyMenuTimerRef;
     const otherTimerRef = menuToControl === 'services' ? companyMenuTimerRef : servicesMenuTimerRef;
+
+    if (forceClose) {
+        setOpen(false);
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+        return;
+    }
   
     if (action === 'enter') {
       if (timerRef.current) {
@@ -100,7 +109,7 @@ export default function Header() {
         servicesMenuTimerRef.current = null;
     }
     if (open) { 
-        setCompanyMenuOpen(false);
+        setCompanyMenuOpen(false); // Ensure company menu is closed
         if (companyMenuTimerRef.current) {
             clearTimeout(companyMenuTimerRef.current);
             companyMenuTimerRef.current = null;
@@ -115,7 +124,7 @@ export default function Header() {
         companyMenuTimerRef.current = null;
     }
     if (open) { 
-        setServicesMenuOpen(false);
+        setServicesMenuOpen(false); // Ensure services menu is closed
         if (servicesMenuTimerRef.current) {
             clearTimeout(servicesMenuTimerRef.current);
             servicesMenuTimerRef.current = null;
@@ -138,7 +147,7 @@ export default function Header() {
             height={43}
             priority
             data-ai-hint="company logo dark"
-            key={logoSrc} // Re-keying if src changes, though it's static dark now
+            key={logoSrc} 
           />
         </Link>
 
@@ -176,7 +185,7 @@ export default function Header() {
                         onMouseLeave={() => handleMenuInteraction('services', 'leave')}
                         sideOffset={15} 
                     >
-                        <div className="container mx-auto py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-h-[75vh] overflow-y-auto">
+                        <div className="container mx-auto py-4 px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
                         {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                             <div key={category.slug}>
                             <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
@@ -186,8 +195,6 @@ export default function Header() {
                             <ul className="space-y-1">
                                 {category.subServices.slice(0, 4).map((subService) => {
                                 const href = `/services#${category.slug}-${subService.slug}`;
-                                // Active state for sub-services is tricky with hash links, consider if needed.
-                                // For now, no special active state for sub-service links themselves.
                                 return (
                                     <li key={subService.slug} className="group">
                                       <Link
@@ -195,7 +202,7 @@ export default function Header() {
                                           className={cn(
                                           "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-popover-foreground hover:text-white" 
                                           )}
-                                          onClick={() => setServicesMenuOpen(false)} // Close menu on click
+                                          onClick={() => handleMenuInteraction('services', 'leave', true)} // Close menu on click
                                       >
                                           {subService.title}
                                       </Link>
@@ -207,7 +214,7 @@ export default function Header() {
                                     <Link
                                         href={`/services#${category.slug}`}
                                         className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
-                                        onClick={() => setServicesMenuOpen(false)} // Close menu on click
+                                        onClick={() => handleMenuInteraction('services', 'leave', true)} // Close menu on click
                                     >
                                         See All <ArrowRight className="h-4 w-4" />
                                     </Link>
@@ -257,12 +264,12 @@ export default function Header() {
                         <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground rounded-md hover:bg-accent">
                             <Link
                                 href={subLink.href}
-                                onClick={() => setCompanyMenuOpen(false)} // Close menu on click
+                                onClick={() => handleMenuInteraction('company', 'leave', true)} // Close menu on click
                                 className={cn(
                                 "block w-full text-left px-3 py-2.5 text-sm transition-colors text-popover-foreground flex items-start gap-3",
                                 (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                 ? "text-primary font-semibold" 
-                                : "hover:text-white" 
+                                : "hover:text-primary"  // Changed from hover:text-white
                                 )}
                             >
                             {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0" />}
@@ -301,7 +308,7 @@ export default function Header() {
             </nav>
 
             <div className="hidden md:flex items-center ml-4 group">
-                <Button asChild className="rounded-full group">
+                <Button asChild className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground">
                     <Link href="/contact">
                         Talk to Us
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200 ease-in-out" />
@@ -430,7 +437,7 @@ export default function Header() {
                                   "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3 outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                     ? "text-primary font-semibold" 
-                                    : "text-foreground/80 hover:text-white" 
+                                    : "text-foreground/80 hover:text-primary" // Changed from hover:text-white
                                 )}
                               >
                                 {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0" />}
