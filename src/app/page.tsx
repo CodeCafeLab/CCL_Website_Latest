@@ -6,7 +6,7 @@ import YoutubeShortsSection from '@/components/home/YoutubeShortsSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA } from '@/lib/constants';
-import { ArrowRight, Bot, Users, Zap, FileText, Brain, Package, Server, Cloud, Palette, GitFork, Container, Share, FileCode, PenTool, Smartphone } from 'lucide-react'; // Added more icons for tech stack
+import { ArrowRight, Bot, Users, Zap, FileText, Brain } from 'lucide-react';
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 
@@ -25,6 +25,10 @@ export default function HomePage() {
   const featuredServices = SERVICES_DATA.slice(0, 5);
   const featuredBlogPosts = BLOG_POSTS_DATA.slice(0, 3);
 
+  const numTechStackRows = 3;
+  const itemsPerTechStackRow = Math.ceil(TECH_STACK_DATA.length / numTechStackRows);
+
+
   return (
     <div className="space-y-16 md:space-y-24">
       {/* Hero Section */}
@@ -34,7 +38,7 @@ export default function HomePage() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-40 dark:opacity-40"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
           src="/codecafelab_herobgvideo.mp4"
         >
           Your browser does not support the video tag.
@@ -152,11 +156,18 @@ export default function HomePage() {
                 We leverage a modern and versatile technology stack to build robust, scalable, and innovative solutions.
             </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
-            {TECH_STACK_DATA.map((tech) => (
-              <div key={tech.name} className="flex flex-col items-center p-4 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 aspect-[4/3] justify-center">
-                <tech.icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent mb-3" />
-                <p className="text-xs sm:text-sm font-medium text-center text-muted-foreground">{tech.name}</p>
+        <div className="space-y-6">
+            {[...Array(numTechStackRows)].map((_, rowIndex) => (
+              <div key={rowIndex} className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
+                {TECH_STACK_DATA.slice(rowIndex * itemsPerTechStackRow, (rowIndex + 1) * itemsPerTechStackRow).map((tech) => (
+                  <div 
+                    key={tech.name} 
+                    className="flex-shrink-0 w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <tech.icon className="h-10 w-10 text-accent mb-2" />
+                    <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                  </div>
+                ))}
               </div>
             ))}
         </div>
