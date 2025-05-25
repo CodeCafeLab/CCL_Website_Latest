@@ -212,7 +212,7 @@ export default function HomePage() {
       </section>
 
       {/* Client Logos Section Placeholder */}
-      <section>
+      <section className="mt-8 md:mt-12">
         <h2 className="text-5xl text-center mb-12 text-royal-shine font-brittany">Trusted By</h2>
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
           {[...Array(5)].map((_, i) => (
