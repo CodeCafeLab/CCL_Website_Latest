@@ -41,16 +41,16 @@ export default function Footer() {
               Brewing innovative software solutions with AI precision. Let&apos;s build something amazing together.
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://www.linkedin.com/in/codecafe-lab-890038256/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin className="h-6 w-6" />
               </Link>
-              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://twitter.com/CodecafeL8514" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" className="text-muted-foreground hover:text-primary transition-colors">
                 <Twitter className="h-6 w-6" />
               </Link>
-              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Meta (Facebook)" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://www.facebook.com/p/CodeCafe-Lab-100084294096806/" target="_blank" rel="noopener noreferrer" aria-label="Meta (Facebook)" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook className="h-6 w-6" />
               </Link>
-              <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://www.instagram.com/codecafelab4u/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground hover:text-primary transition-colors">
                 <Instagram className="h-6 w-6" />
               </Link>
               <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground hover:text-primary transition-colors">
@@ -58,6 +58,9 @@ export default function Footer() {
               </Link>
               <Link href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-muted-foreground hover:text-primary transition-colors">
                 <Send className="h-6 w-6" />
+              </Link>
+              <Link href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-muted-foreground hover:text-primary transition-colors">
+                <Github className="h-6 w-6" />
               </Link>
             </div>
           </div>
