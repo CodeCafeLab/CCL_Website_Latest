@@ -54,7 +54,7 @@ export default function Header() {
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
           {/* Placeholder for logo to maintain height */}
-          <div style={{ width: 171, height: 43 }} /> 
+          <div style={{ width: 171, height: 43 }} />
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
           </Button>
@@ -65,43 +65,38 @@ export default function Header() {
 
   const closeSheet = () => setIsSheetOpen(false);
 
-  const handleMenuInteraction = (menuToOpen: 'services' | 'company', open: boolean) => {
-    if (menuToOpen === 'services') {
-      if (open) {
-        if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-        servicesMenuTimerRef.current = null;
-        setServicesMenuOpen(true);
-        if (companyMenuOpen) { // Ensure other menu is closed
-          if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-          setCompanyMenuOpen(false);
-        }
-      } else { // Schedule close
-        servicesMenuTimerRef.current = setTimeout(() => {
-          setServicesMenuOpen(false);
-        }, HOVER_MENU_CLOSE_DELAY);
+  const handleMenuInteraction = (menuToOpen: 'services' | 'company', action: 'enter' | 'leave') => {
+    const setOpen = menuToOpen === 'services' ? setServicesMenuOpen : setCompanyMenuOpen;
+    const otherSetOpen = menuToOpen === 'services' ? setCompanyMenuOpen : setServicesMenuOpen;
+    const timerRef = menuToOpen === 'services' ? servicesMenuTimerRef : companyMenuTimerRef;
+    const otherTimerRef = menuToOpen === 'services' ? companyMenuTimerRef : servicesMenuTimerRef;
+
+    if (action === 'enter') {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
-    } else if (menuToOpen === 'company') {
-      if (open) {
-        if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-        companyMenuTimerRef.current = null;
-        setCompanyMenuOpen(true);
-        if (servicesMenuOpen) { // Ensure other menu is closed
-          if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-          setServicesMenuOpen(false);
-        }
-      } else { // Schedule close
-        companyMenuTimerRef.current = setTimeout(() => {
-          setCompanyMenuOpen(false);
-        }, HOVER_MENU_CLOSE_DELAY);
+      // Open current menu and ensure the other is closed
+      setOpen(true);
+      otherSetOpen(false);
+      if (otherTimerRef.current) {
+        clearTimeout(otherTimerRef.current);
+        otherTimerRef.current = null;
       }
+    } else { // action === 'leave'
+      timerRef.current = setTimeout(() => {
+        setOpen(false);
+        timerRef.current = null;
+      }, HOVER_MENU_CLOSE_DELAY);
     }
   };
-
+  
   const onServicesOpenChange = (open: boolean) => {
     setServicesMenuOpen(open);
     if (open) {
-      setCompanyMenuOpen(false); // Ensure company menu is closed if services opens via click/Radix
+      setCompanyMenuOpen(false); // Ensure company menu is closed
       if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
     }
     if (!open && servicesMenuTimerRef.current) { // Clear timer if Radix closes it
         clearTimeout(servicesMenuTimerRef.current);
@@ -112,15 +107,15 @@ export default function Header() {
   const onCompanyOpenChange = (open: boolean) => {
     setCompanyMenuOpen(open);
     if (open) {
-      setServicesMenuOpen(false); // Ensure services menu is closed if company opens via click/Radix
+      setServicesMenuOpen(false); // Ensure services menu is closed
       if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
     }
     if (!open && companyMenuTimerRef.current) { // Clear timer if Radix closes it
         clearTimeout(companyMenuTimerRef.current);
         companyMenuTimerRef.current = null;
     }
   };
-
 
   const renderSubServiceLink = (subService: SubService, isMobile: boolean = false) => {
     const href = `/services#${subService.slug}`;
@@ -160,7 +155,7 @@ export default function Header() {
             "text-popover-foreground",
             isActiveServiceLink
               ? "text-primary font-semibold"
-              : "hover:text-white"
+              : "hover:text-white" // Hover text white
           )}
         >
           {subService.title}
@@ -169,11 +164,9 @@ export default function Header() {
     );
   };
 
-
   const isCompanyLinkActive = (currentPathname: string) => {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
-  
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -206,11 +199,11 @@ export default function Header() {
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0", 
                         isServicesActive
-                          ? "text-primary font-semibold"
-                          : "text-foreground/60 hover:text-white"
+                          ? "text-primary font-semibold" // Active text primary
+                          : "text-foreground/60 hover:text-white" // Hover text white
                       )}
-                      onMouseEnter={() => handleMenuInteraction('services', true)}
-                      onMouseLeave={() => handleMenuInteraction('services', false)}
+                      onMouseEnter={() => handleMenuInteraction('services', 'enter')}
+                      onMouseLeave={() => handleMenuInteraction('services', 'leave')}
                       aria-expanded={servicesMenuOpen}
                     >
                       {link.label}
@@ -218,12 +211,12 @@ export default function Header() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
-                    className="w-[1080px] p-4 bg-background shadow-xl rounded-lg border-border"
-                    align="start"
-                    onMouseEnter={() => handleMenuInteraction('services', true)}
-                    onMouseLeave={() => handleMenuInteraction('services', false)}
+                    className="w-screen max-w-none p-0" // Full width, no padding on content box
+                    onMouseEnter={() => handleMenuInteraction('services', 'enter')}
+                    onMouseLeave={() => handleMenuInteraction('services', 'leave')}
+                    sideOffset={5} // Adjust as needed for vertical spacing
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-4">
+                    <div className="container mx-auto py-4 px-4 md:px-8 grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-4"> {/* Centered content with padding */}
                       {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                         <div key={category.slug}>
                           <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
@@ -258,11 +251,11 @@ export default function Header() {
                       className={cn(
                         "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                         companyActive
-                          ? "text-primary font-semibold"
-                          : "text-foreground/60 hover:text-white"
+                          ? "text-primary font-semibold" // Active text primary
+                          : "text-foreground/60 hover:text-white" // Hover text white
                       )}
-                      onMouseEnter={() => handleMenuInteraction('company', true)}
-                      onMouseLeave={() => handleMenuInteraction('company', false)}
+                      onMouseEnter={() => handleMenuInteraction('company', 'enter')}
+                      onMouseLeave={() => handleMenuInteraction('company', 'leave')}
                       aria-expanded={companyMenuOpen}
                     >
                       {link.label}
@@ -272,8 +265,8 @@ export default function Header() {
                   <DropdownMenuContent
                     className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
                     align="start"
-                    onMouseEnter={() => handleMenuInteraction('company', true)}
-                    onMouseLeave={() => handleMenuInteraction('company', false)}
+                    onMouseEnter={() => handleMenuInteraction('company', 'enter')}
+                    onMouseLeave={() => handleMenuInteraction('company', 'leave')}
                   >
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
@@ -282,8 +275,8 @@ export default function Header() {
                           className={cn(
                             "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
                             (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
-                              ? "text-primary font-semibold"
-                              : "hover:text-white"
+                              ? "text-primary font-semibold" // Active text primary
+                              : "hover:text-white" // Hover text white
                           )}
                         >
                           <subLink.icon className="h-4 w-4" />
@@ -303,8 +296,8 @@ export default function Header() {
                   className={cn(
                     "transition-colors px-3 py-2 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                     isActive
-                      ? "text-primary font-semibold"
-                      : "text-foreground/60 hover:text-white"
+                      ? "text-primary font-semibold" // Active text primary
+                      : "text-foreground/60 hover:text-white" // Hover text white
                   )}
                 >
                   {link.label}
@@ -315,7 +308,6 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          {/* ThemeToggle removed */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon">
@@ -347,8 +339,8 @@ export default function Header() {
                             className={cn(
                               "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-white outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                               isServicesActive
-                                ? "text-primary font-semibold"
-                                : "text-foreground hover:text-white" 
+                                ? "text-primary font-semibold" // Active text primary
+                                : "text-foreground hover:text-white" // Hover text white
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -362,7 +354,7 @@ export default function Header() {
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
                                     "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-white [&[data-state=open]]:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                                    "text-foreground/80 hover:text-white"
+                                    "text-foreground/80 hover:text-white" // Hover text white
                                   )}>
                                     <div className="flex items-center gap-2">
                                       {category.icon && <category.icon className="h-4 w-4" />}
@@ -391,8 +383,8 @@ export default function Header() {
                             className={cn(
                               "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-white outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                               companyActive
-                                ? "text-primary font-semibold"
-                                : "text-foreground hover:text-white"
+                                ? "text-primary font-semibold" // Active text primary
+                                : "text-foreground hover:text-white" // Hover text white
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -409,8 +401,8 @@ export default function Header() {
                                 className={cn(
                                   "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
-                                    ? "text-primary font-semibold"
-                                    : "text-foreground/80 hover:text-white"
+                                    ? "text-primary font-semibold" // Active text primary
+                                    : "text-foreground/80 hover:text-white" // Hover text white
                                 )}
                               >
                                 <subLink.icon className="h-4 w-4" />
@@ -431,8 +423,8 @@ export default function Header() {
                       className={cn(
                         "block px-3 py-2 rounded-md text-base font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         isActive
-                          ? "text-primary font-semibold"
-                          : "text-foreground hover:text-white"
+                          ? "text-primary font-semibold" // Active text primary
+                          : "text-foreground hover:text-white" // Hover text white
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -450,5 +442,3 @@ export default function Header() {
     </header>
   );
 }
-    
-    
