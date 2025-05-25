@@ -42,7 +42,7 @@ export default function YoutubeShortsSection() {
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
           <Youtube className="h-10 w-10 text-primary" />
-          Quick Insights: Our Shorts
+          Hey ! See, Whats Cooking in our Lab
         </h2>
         <p className="text-muted-foreground">Catch up with our latest tips, demos, and behind-the-scenes moments.</p>
       </div>
