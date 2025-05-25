@@ -66,8 +66,7 @@ export default function Header() {
 
   const handleMenuInteraction = (
     menuToControl: 'services' | 'company',
-    action: 'enter' | 'leave',
-    forceClose: boolean = false
+    action: 'enter' | 'leave'
   ) => {
     const setOpen = menuToControl === 'services' ? setServicesMenuOpen : setCompanyMenuOpen;
     const otherSetOpen = menuToControl === 'services' ? setCompanyMenuOpen : setServicesMenuOpen;
@@ -79,13 +78,9 @@ export default function Header() {
       timerRef.current = null;
     }
   
-    if (forceClose) {
-        setOpen(false);
-        return;
-    }
-  
     if (action === 'enter') {
       setOpen(true);
+      // Ensure the other menu is closed and its timer is cleared
       otherSetOpen(false); 
       if (otherTimerRef.current) {
         clearTimeout(otherTimerRef.current);
@@ -199,7 +194,7 @@ export default function Header() {
                                           className={cn(
                                           "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-popover-foreground hover:text-white" 
                                           )}
-                                          onClick={() => handleMenuInteraction('services', 'leave', true)} 
+                                          onClick={() => setServicesMenuOpen(false)} 
                                       >
                                           {subService.title}
                                       </Link>
@@ -211,7 +206,7 @@ export default function Header() {
                                     <Link
                                         href={`/services#${category.slug}`}
                                         className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
-                                        onClick={() => handleMenuInteraction('services', 'leave', true)} 
+                                        onClick={() => setServicesMenuOpen(false)}
                                     >
                                         See All <ArrowRight className="h-4 w-4" />
                                     </Link>
@@ -258,12 +253,12 @@ export default function Header() {
                         sideOffset={15} 
                     >
                         {COMPANY_SUB_LINKS.map((subLink) => (
-                        <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent rounded-md hover:bg-accent">
+                        <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-muted/30 rounded-md hover:bg-muted/30">
                             <Link
                                 href={subLink.href}
-                                onClick={() => handleMenuInteraction('company', 'leave', true)}
+                                onClick={() => setCompanyMenuOpen(false)}
                                 className={cn(
-                                "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 text-popover-foreground",
+                                "block w-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3",
                                 (pathname === subLink.href || pathname.startsWith(subLink.href + '/')) && "font-semibold"
                                 )}
                             >
@@ -429,9 +424,9 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3 outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground/80",
+                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3 text-foreground/80",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/')) && "font-semibold",
-                                  "hover:bg-accent"
+                                  "hover:bg-muted/30 focus:bg-muted/30"
                                 )}
                               >
                                 {subLink.icon && <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />}
