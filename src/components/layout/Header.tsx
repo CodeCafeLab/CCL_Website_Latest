@@ -51,6 +51,7 @@ export default function Header() {
 
   useEffect(() => {
     setIsMounted(true);
+    // Cleanup timers on component unmount
     return () => {
       if (servicesMenuTimerRef.current) {
         clearTimeout(servicesMenuTimerRef.current);
@@ -85,7 +86,9 @@ export default function Header() {
   const renderSubServiceLink = (subService: SubService, isMobile: boolean = false) => {
     const href = `/services#${subService.slug}`;
     const commonClasses = "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors";
-    const isActive = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
+    
+    // Check for active link based on hash for services page
+    const isActiveServiceLink = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
 
     if (isMobile) {
       return (
@@ -95,7 +98,7 @@ export default function Header() {
           onClick={closeSheet}
           className={cn(
             commonClasses,
-            isActive
+            isActiveServiceLink
               ? "text-primary font-semibold"
               : "text-foreground/80 hover:text-primary"
           )}
@@ -116,7 +119,7 @@ export default function Header() {
           className={cn(
             commonClasses,
             "text-popover-foreground",
-            isActive
+            isActiveServiceLink
               ? "text-primary font-semibold"
               : "hover:text-primary"
           )}
@@ -132,14 +135,13 @@ export default function Header() {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
 
+  // Services Menu Hover Logic
   const handleServicesMenuEnter = () => {
     if (servicesMenuTimerRef.current) {
       clearTimeout(servicesMenuTimerRef.current);
       servicesMenuTimerRef.current = null;
     }
-    if (!servicesMenuOpen) {
-      setServicesMenuOpen(true);
-    }
+    setServicesMenuOpen(true);
   };
   const handleServicesMenuLeave = () => {
     if (servicesMenuTimerRef.current) {
@@ -152,17 +154,16 @@ export default function Header() {
     }, HOVER_MENU_DELAY);
   };
 
+  // Company Menu Hover Logic
   const handleCompanyMenuEnter = () => {
     if (companyMenuTimerRef.current) {
       clearTimeout(companyMenuTimerRef.current);
       companyMenuTimerRef.current = null;
     }
-    if (!companyMenuOpen) {
-      setCompanyMenuOpen(true);
-    }
+    setCompanyMenuOpen(true);
   };
   const handleCompanyMenuLeave = () => {
-    if (companyMenuTimerRef.current) {
+     if (companyMenuTimerRef.current) {
         clearTimeout(companyMenuTimerRef.current);
         companyMenuTimerRef.current = null;
     }
@@ -196,7 +197,13 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={servicesMenuOpen}
-                    onOpenChange={setServicesMenuOpen}
+                    onOpenChange={(isOpenByRadix) => {
+                        setServicesMenuOpen(isOpenByRadix);
+                        if (!isOpenByRadix && servicesMenuTimerRef.current) {
+                            clearTimeout(servicesMenuTimerRef.current);
+                            servicesMenuTimerRef.current = null;
+                        }
+                    }}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -248,7 +255,13 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={companyMenuOpen}
-                    onOpenChange={setCompanyMenuOpen}
+                     onOpenChange={(isOpenByRadix) => {
+                        setCompanyMenuOpen(isOpenByRadix);
+                        if (!isOpenByRadix && companyMenuTimerRef.current) {
+                            clearTimeout(companyMenuTimerRef.current);
+                            companyMenuTimerRef.current = null;
+                        }
+                    }}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -279,7 +292,7 @@ export default function Header() {
                           href={subLink.href}
                           className={cn(
                             "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors text-popover-foreground flex items-center gap-2",
-                            pathname === subLink.href
+                            (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                               ? "text-primary font-semibold"
                               : "hover:text-primary"
                           )}
@@ -405,7 +418,7 @@ export default function Header() {
                                 onClick={closeSheet}
                                 className={cn(
                                   "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2",
-                                  pathname === subLink.href
+                                  (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                     ? "text-primary font-semibold"
                                     : "text-foreground/80 hover:text-primary"
                                 )}
