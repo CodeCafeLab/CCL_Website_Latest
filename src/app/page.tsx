@@ -149,8 +149,8 @@ export default function HomePage() {
       </section>
 
       {/* CodeCafe Lab Tech Stack Section */}
-      <section className="ai-glow-bg py-16 md:py-24">
-        <div className="relative z-10 container mx-auto"> {/* Removed px-4 from here */}
+      <section className="ai-glow-bg pt-8 pb-16 md:pt-12 md:pb-24">
+        <div className="relative z-10 container mx-auto">
             <div className="text-center mb-12">
                 <Brain className="h-12 w-12 text-primary mx-auto mb-4" />
                 <h2 className="text-3xl font-bold">CodeCafe Lab Tech Stack</h2>
