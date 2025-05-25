@@ -53,7 +53,8 @@ export default function Header() {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          <div style={{ width: 171, height: 43 }} />
+          {/* Placeholder for logo to maintain height */}
+          <div style={{ width: 171, height: 43 }} /> 
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
           </Button>
@@ -66,10 +67,15 @@ export default function Header() {
 
   // --- Services Menu Handlers ---
   const handleServicesTriggerEnter = () => {
-    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-    setCompanyMenuOpen(false);
-
-    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+    if (servicesMenuTimerRef.current) {
+      clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
+    }
+    if (companyMenuTimerRef.current) { // Close other menu
+      clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
+      setCompanyMenuOpen(false);
+    }
     setServicesMenuOpen(true);
   };
 
@@ -81,9 +87,10 @@ export default function Header() {
   };
 
   const handleServicesContentEnter = () => {
-    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-     // Keep open if mouse enters content, ensures it stays open if Radix hasn't closed it
-    if(!servicesMenuOpen) setServicesMenuOpen(true);
+    if (servicesMenuTimerRef.current) {
+      clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
+    }
   };
 
   const handleServicesContentLeave = () => {
@@ -92,23 +99,31 @@ export default function Header() {
       setServicesMenuOpen(false);
     }, HOVER_MENU_CLOSE_DELAY);
   };
-
+  
   const onServicesOpenChange = (open: boolean) => {
     setServicesMenuOpen(open);
     if (open) {
       if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-      setCompanyMenuOpen(false);
+      setCompanyMenuOpen(false); // Ensure other menu is closed
     } else {
-      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+      if (servicesMenuTimerRef.current) {
+        clearTimeout(servicesMenuTimerRef.current);
+        servicesMenuTimerRef.current = null;
+      }
     }
   };
 
   // --- Company Menu Handlers ---
   const handleCompanyTriggerEnter = () => {
-    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-    setServicesMenuOpen(false);
-
-    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    if (companyMenuTimerRef.current) {
+      clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
+    }
+    if (servicesMenuTimerRef.current) { // Close other menu
+      clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null;
+      setServicesMenuOpen(false);
+    }
     setCompanyMenuOpen(true);
   };
 
@@ -120,8 +135,10 @@ export default function Header() {
   };
 
   const handleCompanyContentEnter = () => {
-    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
-    if(!companyMenuOpen) setCompanyMenuOpen(true);
+     if (companyMenuTimerRef.current) {
+      clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null;
+    }
   };
 
   const handleCompanyContentLeave = () => {
@@ -135,9 +152,12 @@ export default function Header() {
     setCompanyMenuOpen(open);
     if (open) {
       if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
-      setServicesMenuOpen(false);
+      setServicesMenuOpen(false); // Ensure other menu is closed
     } else {
-      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+      if (companyMenuTimerRef.current) {
+        clearTimeout(companyMenuTimerRef.current);
+        companyMenuTimerRef.current = null;
+      }
     }
   };
 
@@ -156,7 +176,7 @@ export default function Header() {
           onClick={closeSheet}
           className={cn(
             commonClasses,
-            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
+            "outline-none", // Removed focus-visible for sub-items as well if needed, or keep for accessibility. Keeping for now for sub-items.
             isActiveServiceLink
               ? "text-primary font-semibold"
               : "text-foreground/80 hover:text-primary"
@@ -224,8 +244,8 @@ export default function Header() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
-                        isServicesActive || servicesMenuOpen
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none", // Removed focus-visible ring classes
+                        servicesMenuOpen || isServicesActive
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
@@ -276,8 +296,8 @@ export default function Header() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
-                        companyActive || companyMenuOpen
+                        "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium outline-none", // Removed focus-visible ring classes
+                        companyMenuOpen || companyActive
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
@@ -335,7 +355,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          {/* Removed ThemeToggle as per previous request for dark-mode only */}
+          {/* ThemeToggle removed */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon">
@@ -365,7 +385,7 @@ export default function Header() {
                         <AccordionItem value="services-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none",
                               isServicesActive
                                 ? "text-primary font-semibold"
                                 : "text-foreground" 
@@ -381,7 +401,7 @@ export default function Header() {
                               {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
-                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-primary [&[data-state=open]]:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
+                                    "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline hover:text-primary [&[data-state=open]]:text-primary outline-none",
                                     "text-foreground/80"
                                   )}>
                                     <div className="flex items-center gap-2">
@@ -409,7 +429,7 @@ export default function Header() {
                         <AccordionItem value="company-main" className="border-b-0">
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
+                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline hover:text-primary outline-none",
                               companyActive
                                 ? "text-primary font-semibold"
                                 : "text-foreground"
@@ -427,7 +447,7 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
+                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors flex items-center gap-2 outline-none",
                                   (pathname === subLink.href || pathname.startsWith(subLink.href + '/'))
                                     ? "text-primary font-semibold"
                                     : "text-foreground/80 hover:text-primary"
@@ -449,7 +469,7 @@ export default function Header() {
                       href={link.href}
                       onClick={closeSheet}
                       className={cn(
-                        "block px-3 py-2 rounded-md text-base font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none",
+                        "block px-3 py-2 rounded-md text-base font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         isActive
                           ? "text-primary font-semibold"
                           : "text-foreground hover:text-primary"
