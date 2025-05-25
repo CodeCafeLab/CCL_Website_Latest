@@ -25,9 +25,10 @@ export default function HomePage() {
   const featuredServices = SERVICES_DATA.slice(0, 5);
   const featuredBlogPosts = BLOG_POSTS_DATA.slice(0, 3);
 
-  const techStackRow1Count = 15;
-  const techStackRow2Count = 12;
-  const techStackRow3Count = TECH_STACK_DATA.length - (techStackRow1Count + techStackRow2Count);
+  const techStackRow1Count = 10;
+  const techStackRow2Count = 9;
+  const techStackRow3Count = 8;
+  // const techStackRow4Count = TECH_STACK_DATA.length - (techStackRow1Count + techStackRow2Count + techStackRow3Count);
 
 
   return (
@@ -164,9 +165,9 @@ export default function HomePage() {
                   {TECH_STACK_DATA.slice(0, techStackRow1Count).map((tech, itemIndex) => (
                     <div 
                       key={tech.name} 
-                      className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                      className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
                     >
-                      <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
                       <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
                     </div>
                   ))}
@@ -176,21 +177,33 @@ export default function HomePage() {
                   {TECH_STACK_DATA.slice(techStackRow1Count, techStackRow1Count + techStackRow2Count).map((tech, itemIndex) => (
                     <div 
                       key={tech.name} 
-                      className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                      className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
                     >
-                      <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
                       <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
                     </div>
                   ))}
                 </div>
                 {/* Row 3 */}
                 <div className="flex flex-wrap justify-center items-center gap-4">
-                  {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count).map((tech, itemIndex) => (
+                  {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count, techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
                     <div 
                       key={tech.name} 
-                      className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                      className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
                     >
-                      <tech.icon className={`h-10 w-10 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
+                    </div>
+                  ))}
+                </div>
+                {/* Row 4 */}
+                <div className="flex flex-wrap justify-center items-center gap-4">
+                  {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
+                    <div 
+                      key={tech.name} 
+                      className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+                    >
+                      <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
                       <p className="text-xs font-medium text-center text-muted-foreground">{tech.name}</p>
                     </div>
                   ))}
