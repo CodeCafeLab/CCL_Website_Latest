@@ -211,8 +211,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* What Our Clients Say Section */}
+      {/* Client Logos Section Placeholder */}
       <section>
+        <h2 className="text-3xl text-center mb-12 text-royal-shine">Trusted By</h2>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+          {[...Array(5)].map((_, i) => (
+            <Image
+              key={i}
+              src={`https://placehold.co/120x60/ffffff/cccccc.png?text=Client${i+1}`}
+              alt={`Client Logo ${i+1}`}
+              width={120}
+              height={60}
+              className="opacity-70 hover:opacity-100 transition-opacity duration-300"
+              data-ai-hint="company logo"
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* What Our Clients Say Section */}
+      <section className="mt-8 md:mt-12">
         <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
         <div className="relative w-full overflow-hidden group">
           <div 
@@ -255,24 +273,6 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Client Logos Section Placeholder */}
-      <section>
-        <h2 className="text-3xl text-center mb-12 text-royal-shine">Trusted By</h2>
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-          {[...Array(5)].map((_, i) => (
-            <Image
-              key={i}
-              src={`https://placehold.co/120x60/ffffff/cccccc.png?text=Client${i+1}`}
-              alt={`Client Logo ${i+1}`}
-              width={120}
-              height={60}
-              className="opacity-70 hover:opacity-100 transition-opacity duration-300"
-              data-ai-hint="company logo"
-            />
-          ))}
         </div>
       </section>
 
