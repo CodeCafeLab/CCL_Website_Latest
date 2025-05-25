@@ -12,8 +12,8 @@ export const NAV_LINKS: NavItem[] = [
   { href: "/", label: "Home", icon: HomeIcon },
   { href: "/ai", label: "AI", icon: Bot },
   { href: "/services", label: "Services", icon: Layers },
-  { href: "/company", label: "Company", icon: Building2 },
   { href: "/products", label: "Products", icon: Smartphone },
+  { href: "/company", label: "Company", icon: Building2 },
   { href: "/blog", label: "Resources", icon: FileText },
 ];
 
@@ -25,13 +25,13 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     description: "Company mission, vision, values, founding story, leadership team, and journey."
   },
   {
-    href: "#",
+    href: "#", // Placeholder, update with actual page URL
     label: "Pricing",
     icon: DollarSign,
     description: "We have transparent pricing modules for individuals, Startups, Companies."
   },
   {
-    href: "/consultancy",
+    href: "/consultancy", // Assuming this exists or will be created
     label: "Consultancy",
     icon: Briefcase,
     description: "We provide consultancy for recruitment also."
@@ -49,19 +49,19 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     description: "Current job openings, work culture, benefits, hiring process, and intern programs."
   },
   {
-    href: "#",
+    href: "#", // Placeholder
     label: "Our Team",
     icon: Users,
     description: "Photos, bios, and roles of key team members (adds a human touch)."
   },
   {
-    href: "#",
+    href: "#", // Placeholder
     label: "Why Choose Us",
     icon: Star,
     description: "Key differentiators, client success stories, testimonials, and USPs."
   },
   {
-    href: "#",
+    href: "#", // Placeholder
     label: "Partners & Affiliations",
     icon: LinkIcon,
     description: "Tech alliances, certifications, and strategic partners."
