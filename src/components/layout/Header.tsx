@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -21,7 +21,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { SubService } from '@/types';
 
 
@@ -33,19 +33,26 @@ export default function Header() {
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
 
+  const servicesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const companyMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const HOVER_MENU_CLOSE_DELAY = 200; // milliseconds
+
   useEffect(() => {
     setIsMounted(true);
+    // Cleanup timers on unmount
+    return () => {
+      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    };
   }, []);
 
   const logoSrc = "/codecafe_logo_dark.png";
   const logoAlt = `${SITE_NAME} Logo (Dark Mode)`;
 
-
   if (!isMounted) {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          {/* Placeholder for logo dimensions to prevent layout shift */}
           <div style={{ width: 171, height: 43 }} />
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
@@ -56,6 +63,84 @@ export default function Header() {
   }
 
   const closeSheet = () => setIsSheetOpen(false);
+
+  // --- Services Menu Handlers ---
+  const handleServicesTriggerEnter = () => {
+    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    setCompanyMenuOpen(false);
+
+    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+    setServicesMenuOpen(true);
+  };
+
+  const handleServicesTriggerLeave = () => {
+    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+    servicesMenuTimerRef.current = setTimeout(() => {
+      setServicesMenuOpen(false);
+    }, HOVER_MENU_CLOSE_DELAY);
+  };
+
+  const handleServicesContentEnter = () => {
+    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+     // Keep open if mouse enters content, ensures it stays open if Radix hasn't closed it
+    if(!servicesMenuOpen) setServicesMenuOpen(true);
+  };
+
+  const handleServicesContentLeave = () => {
+    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+    servicesMenuTimerRef.current = setTimeout(() => {
+      setServicesMenuOpen(false);
+    }, HOVER_MENU_CLOSE_DELAY);
+  };
+
+  const onServicesOpenChange = (open: boolean) => {
+    setServicesMenuOpen(open);
+    if (open) {
+      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+      setCompanyMenuOpen(false);
+    } else {
+      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+    }
+  };
+
+  // --- Company Menu Handlers ---
+  const handleCompanyTriggerEnter = () => {
+    if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+    setServicesMenuOpen(false);
+
+    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    setCompanyMenuOpen(true);
+  };
+
+  const handleCompanyTriggerLeave = () => {
+    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    companyMenuTimerRef.current = setTimeout(() => {
+      setCompanyMenuOpen(false);
+    }, HOVER_MENU_CLOSE_DELAY);
+  };
+
+  const handleCompanyContentEnter = () => {
+    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    if(!companyMenuOpen) setCompanyMenuOpen(true);
+  };
+
+  const handleCompanyContentLeave = () => {
+    if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    companyMenuTimerRef.current = setTimeout(() => {
+      setCompanyMenuOpen(false);
+    }, HOVER_MENU_CLOSE_DELAY);
+  };
+  
+  const onCompanyOpenChange = (open: boolean) => {
+    setCompanyMenuOpen(open);
+    if (open) {
+      if (servicesMenuTimerRef.current) clearTimeout(servicesMenuTimerRef.current);
+      setServicesMenuOpen(false);
+    } else {
+      if (companyMenuTimerRef.current) clearTimeout(companyMenuTimerRef.current);
+    }
+  };
+
 
   const renderSubServiceLink = (subService: SubService, isMobile: boolean = false) => {
     const href = `/services#${subService.slug}`;
@@ -133,10 +218,7 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={servicesMenuOpen}
-                    onOpenChange={(open) => {
-                        setServicesMenuOpen(open);
-                        if (open) setCompanyMenuOpen(false);
-                    }}
+                    onOpenChange={onServicesOpenChange}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -147,10 +229,8 @@ export default function Header() {
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={() => {
-                        setServicesMenuOpen(true);
-                        setCompanyMenuOpen(false);
-                      }}
+                      onMouseEnter={handleServicesTriggerEnter}
+                      onMouseLeave={handleServicesTriggerLeave}
                       aria-expanded={servicesMenuOpen}
                     >
                       {link.label}
@@ -160,11 +240,8 @@ export default function Header() {
                   <DropdownMenuContent
                     className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border"
                     align="start"
-                    onMouseLeave={() => setServicesMenuOpen(false)}
-                    onMouseEnter={() => {
-                        setServicesMenuOpen(true);
-                        setCompanyMenuOpen(false);
-                    }}
+                    onMouseEnter={handleServicesContentEnter}
+                    onMouseLeave={handleServicesContentLeave}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                       {SERVICES_DATA.map((category: AppServiceMenuItem) => (
@@ -193,10 +270,7 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={companyMenuOpen}
-                    onOpenChange={(open) => {
-                        setCompanyMenuOpen(open);
-                        if (open) setServicesMenuOpen(false);
-                    }}
+                    onOpenChange={onCompanyOpenChange}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -207,10 +281,8 @@ export default function Header() {
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={() => {
-                        setCompanyMenuOpen(true);
-                        setServicesMenuOpen(false);
-                      }}
+                      onMouseEnter={handleCompanyTriggerEnter}
+                      onMouseLeave={handleCompanyTriggerLeave}
                       aria-expanded={companyMenuOpen}
                     >
                       {link.label}
@@ -220,11 +292,8 @@ export default function Header() {
                   <DropdownMenuContent
                     className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
                     align="start"
-                    onMouseLeave={() => setCompanyMenuOpen(false)}
-                    onMouseEnter={() => {
-                        setCompanyMenuOpen(true);
-                        setServicesMenuOpen(false);
-                    }}
+                    onMouseEnter={handleCompanyContentEnter}
+                    onMouseLeave={handleCompanyContentLeave}
                   >
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
@@ -266,6 +335,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
+          {/* Removed ThemeToggle as per previous request for dark-mode only */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon">
