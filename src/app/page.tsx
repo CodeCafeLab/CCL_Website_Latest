@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,7 +25,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden bg-card shadow-lg">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-5"
+          className="absolute inset-0 bg-cover bg-center opacity-40 dark:opacity-40"
           style={{ backgroundImage: "url('/codecafelab_herobg.png')", backgroundBlendMode: 'multiply' }}
         ></div>
         <div className="relative z-10 container mx-auto px-4">
