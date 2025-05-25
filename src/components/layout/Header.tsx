@@ -21,7 +21,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import type { SubService } from '@/types';
 
 interface CompanySubItem {
@@ -36,32 +36,16 @@ const COMPANY_SUB_LINKS: CompanySubItem[] = [
   { href: "/contact", label: "Contact Us", icon: Mail },
 ];
 
-const HOVER_MENU_DELAY = 200; // milliseconds
-
 export default function Header() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
-  const servicesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
-
   const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
-  const companyMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
-    // Cleanup timers on component unmount
-    return () => {
-      if (servicesMenuTimerRef.current) {
-        clearTimeout(servicesMenuTimerRef.current);
-        servicesMenuTimerRef.current = null;
-      }
-      if (companyMenuTimerRef.current) {
-        clearTimeout(companyMenuTimerRef.current);
-        companyMenuTimerRef.current = null;
-      }
-    };
   }, []);
 
   const logoSrc = "/codecafe_logo_dark.png";
@@ -87,7 +71,6 @@ export default function Header() {
     const href = `/services#${subService.slug}`;
     const commonClasses = "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors";
     
-    // Check for active link based on hash for services page
     const isActiveServiceLink = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
 
     if (isMobile) {
@@ -135,45 +118,6 @@ export default function Header() {
     return COMPANY_SUB_LINKS.some(subLink => currentPathname === subLink.href || currentPathname.startsWith(subLink.href + '/'));
   };
 
-  // Services Menu Hover Logic
-  const handleServicesMenuEnter = () => {
-    if (servicesMenuTimerRef.current) {
-      clearTimeout(servicesMenuTimerRef.current);
-      servicesMenuTimerRef.current = null;
-    }
-    setServicesMenuOpen(true);
-  };
-  const handleServicesMenuLeave = () => {
-    if (servicesMenuTimerRef.current) {
-        clearTimeout(servicesMenuTimerRef.current);
-        servicesMenuTimerRef.current = null;
-    }
-    servicesMenuTimerRef.current = setTimeout(() => {
-      setServicesMenuOpen(false);
-      servicesMenuTimerRef.current = null;
-    }, HOVER_MENU_DELAY);
-  };
-
-  // Company Menu Hover Logic
-  const handleCompanyMenuEnter = () => {
-    if (companyMenuTimerRef.current) {
-      clearTimeout(companyMenuTimerRef.current);
-      companyMenuTimerRef.current = null;
-    }
-    setCompanyMenuOpen(true);
-  };
-  const handleCompanyMenuLeave = () => {
-     if (companyMenuTimerRef.current) {
-        clearTimeout(companyMenuTimerRef.current);
-        companyMenuTimerRef.current = null;
-    }
-    companyMenuTimerRef.current = setTimeout(() => {
-      setCompanyMenuOpen(false);
-      companyMenuTimerRef.current = null;
-    }, HOVER_MENU_DELAY);
-  };
-
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-24 items-center justify-between px-4">
@@ -197,13 +141,7 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={servicesMenuOpen}
-                    onOpenChange={(isOpenByRadix) => {
-                        setServicesMenuOpen(isOpenByRadix);
-                        if (!isOpenByRadix && servicesMenuTimerRef.current) {
-                            clearTimeout(servicesMenuTimerRef.current);
-                            servicesMenuTimerRef.current = null;
-                        }
-                    }}
+                    onOpenChange={setServicesMenuOpen}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -214,8 +152,7 @@ export default function Header() {
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={handleServicesMenuEnter}
-                      onMouseLeave={handleServicesMenuLeave}
+                      onMouseEnter={() => setServicesMenuOpen(true)}
                       aria-expanded={servicesMenuOpen}
                     >
                       {link.label}
@@ -225,8 +162,7 @@ export default function Header() {
                   <DropdownMenuContent
                     className="w-[720px] p-4 bg-background shadow-xl rounded-lg border-border"
                     align="start"
-                    onMouseEnter={handleServicesMenuEnter}
-                    onMouseLeave={handleServicesMenuLeave}
+                    onMouseLeave={() => setServicesMenuOpen(false)}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                       {SERVICES_DATA.map((category: AppServiceMenuItem) => (
@@ -255,13 +191,7 @@ export default function Header() {
                 <DropdownMenu
                     key={link.href}
                     open={companyMenuOpen}
-                     onOpenChange={(isOpenByRadix) => {
-                        setCompanyMenuOpen(isOpenByRadix);
-                        if (!isOpenByRadix && companyMenuTimerRef.current) {
-                            clearTimeout(companyMenuTimerRef.current);
-                            companyMenuTimerRef.current = null;
-                        }
-                    }}
+                    onOpenChange={setCompanyMenuOpen}
                 >
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -272,8 +202,7 @@ export default function Header() {
                           ? "text-primary font-semibold"
                           : "text-foreground/60 hover:text-primary"
                       )}
-                      onMouseEnter={handleCompanyMenuEnter}
-                      onMouseLeave={handleCompanyMenuLeave}
+                      onMouseEnter={() => setCompanyMenuOpen(true)}
                       aria-expanded={companyMenuOpen}
                     >
                       {link.label}
@@ -283,8 +212,7 @@ export default function Header() {
                   <DropdownMenuContent
                     className="w-80 p-2 bg-background shadow-xl rounded-lg border-border"
                     align="start"
-                    onMouseEnter={handleCompanyMenuEnter}
-                    onMouseLeave={handleCompanyMenuLeave}
+                    onMouseLeave={() => setCompanyMenuOpen(false)}
                   >
                     {COMPANY_SUB_LINKS.map((subLink) => (
                       <DropdownMenuItem key={subLink.href} asChild className="p-0 focus:bg-accent focus:text-accent-foreground">
@@ -460,3 +388,5 @@ export default function Header() {
     </header>
   );
 }
+
+    
