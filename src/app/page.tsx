@@ -114,7 +114,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured AI Solutions */}
-      <section className="relative overflow-hidden bg-card p-8 md:p-12 rounded-xl shadow-lg">
+      <section className="relative overflow-hidden p-8 md:p-12 rounded-xl shadow-lg">
         <video
           autoPlay
           loop
