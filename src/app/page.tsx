@@ -23,10 +23,9 @@ export default function HomePage() {
     <div className="space-y-16 md:space-y-24">
       {/* Hero Section */}
       <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden bg-card shadow-lg">
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-5" 
-          style={{ backgroundImage: "url('https://placehold.co/1200x600/000000/ffffff.png?text=Tech+Background')", backgroundBlendMode: 'multiply' }}
-          data-ai-hint="tech background"
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-5"
+          style={{ backgroundImage: "url('/codecafelab_herobg.png')", backgroundBlendMode: 'multiply' }}
         ></div>
         <div className="relative z-10 container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
@@ -79,12 +78,12 @@ export default function HomePage() {
         <div className="grid md:grid-cols-2 gap-8">
           {PRODUCTS_DATA.slice(0, 2).map((product) => (
              <Card key={product.id} className="flex flex-col md:flex-row items-center gap-6 p-6 hover:shadow-xl transition-shadow duration-300">
-              <Image 
-                src={product.imageUrl} 
-                alt={product.name} 
-                width={150} 
-                height={100} 
-                className="rounded-md object-cover w-full md:w-[150px] h-auto md:h-[100px]" 
+              <Image
+                src={product.imageUrl}
+                alt={product.name}
+                width={150}
+                height={100}
+                className="rounded-md object-cover w-full md:w-[150px] h-auto md:h-[100px]"
                 data-ai-hint={product.dataAiHint}
               />
               <div className="flex-1">
@@ -130,14 +129,14 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold text-center mb-12">Trusted By</h2>
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
           {[...Array(5)].map((_, i) => (
-            <Image 
-              key={i} 
-              src={`https://placehold.co/120x60/ffffff/cccccc.png?text=Client${i+1}`} 
-              alt={`Client Logo ${i+1}`} 
-              width={120} 
-              height={60} 
+            <Image
+              key={i}
+              src={`https://placehold.co/120x60/ffffff/cccccc.png?text=Client${i+1}`}
+              alt={`Client Logo ${i+1}`}
+              width={120}
+              height={60}
               className="opacity-70 hover:opacity-100 transition-opacity duration-300"
-              data-ai-hint="company logo" 
+              data-ai-hint="company logo"
             />
           ))}
         </div>
