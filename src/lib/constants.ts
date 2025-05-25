@@ -790,47 +790,52 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "1",
     name: "Sarah Miller",
-    role: "CEO, Innovatech Solutions",
+    role: "CEO",
     company: "Innovatech Solutions",
     quote: "CodeCafe Lab transformed our vision into a reality with their exceptional AI expertise. Their team is not only skilled but also incredibly responsive and collaborative.",
     avatarUrl: "https://placehold.co/60x60.png",
-    dataAiHint: "woman portrait"
+    dataAiHint: "woman portrait",
+    rating: 5,
   },
   {
     id: "2",
     name: "John Davis",
-    role: "CTO, QuantumLeap AI",
+    role: "CTO",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
-    dataAiHint: "man portrait"
+    dataAiHint: "man portrait",
+    rating: 5,
   },
   {
     id: "3",
     name: "Emily Carter",
-    role: "Product Manager, NextGen Apps",
+    role: "Product Manager",
     company: "NextGen Apps",
     quote: "The mobile app developed by CodeCafe Lab exceeded all our expectations in terms of design, functionality, and performance. Highly recommended!",
     avatarUrl: "https://placehold.co/60x60.png",
-    dataAiHint: "woman avatar"
+    dataAiHint: "woman avatar",
+    rating: 4,
   },
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder, SparkUp Ventures",
+    role: "Founder",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
-    dataAiHint: "man avatar"
+    dataAiHint: "man avatar",
+    rating: 5,
   },
   {
     id: "5",
     name: "Jessica Williams",
-    role: "Head of Digital, ConnectFlow",
+    role: "Head of Digital",
     company: "ConnectFlow",
     quote: "Their team's dedication and problem-solving skills are top-notch. CodeCafe Lab is our go-to for any complex software development needs.",
     avatarUrl: "https://placehold.co/60x60.png",
-    dataAiHint: "woman professional"
+    dataAiHint: "woman professional",
+    rating: 4,
   }
 ];
 

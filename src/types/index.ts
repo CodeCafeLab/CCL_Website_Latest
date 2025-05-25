@@ -74,6 +74,7 @@ export interface Testimonial {
   quote: string;
   avatarUrl: string;
   dataAiHint: string;
+  rating: number; // Added rating
 }
 
 export interface ClientLogo {

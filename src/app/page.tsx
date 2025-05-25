@@ -6,7 +6,7 @@ import YoutubeShortsSection from '@/components/home/YoutubeShortsSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
-import { ArrowRight, Bot, Users, Zap, FileText, Brain } from 'lucide-react';
+import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star } from 'lucide-react'; // Added Star
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 
@@ -242,7 +242,15 @@ export default function HomePage() {
                       </p>
                     </div>
                   </div>
-                  <p className="text-muted-foreground italic flex-grow line-clamp-4">"{testimonial.quote}"</p>
+                  <div className="flex mb-3">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-5 w-5 ${i < testimonial.rating ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-muted-foreground italic flex-grow line-clamp-3">"{testimonial.quote}"</p>
                 </CardContent>
               </Card>
             ))}
