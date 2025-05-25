@@ -4,8 +4,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail } from "lucide-react";
-import { NAV_LINKS, SERVICES_DATA } from "@/lib/constants";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, HomeIcon, Layers, Building2, Bot, FileText, Smartphone } from "lucide-react";
+import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem } from "@/lib/constants"; // Renamed to avoid conflict
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
-import type { ServiceMenuItem, SubService, NavItem } from '@/types';
+import type { SubService, NavItem } from '@/types'; // Keep existing types
 
 interface CompanySubItem {
   href: string;
@@ -64,14 +64,13 @@ export default function Header() {
     };
   }, []);
 
-  const logoSrc = "/codecafe_logo_dark.png"; // Always dark logo as per previous request
+  const logoSrc = "/codecafe_logo_dark.png"; 
   const logoAlt = "CodeCafe Lab Logo Dark";
 
   if (!isMounted) {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-24 items-center justify-between px-4">
-          {/* Placeholder for logo size to prevent layout shift */}
           <div style={{ width: 171, height: 43 }} />
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
@@ -83,7 +82,7 @@ export default function Header() {
 
   const closeSheet = () => setIsSheetOpen(false);
 
-  const renderSubServiceLink = (categorySlug: string, subService: SubService, isMobile: boolean = false) => {
+  const renderSubServiceLink = (subService: SubService, isMobile: boolean = false) => {
     const href = `/services#${subService.slug}`;
     const commonClasses = "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors";
     const isActive = pathname === '/services' && typeof window !== 'undefined' && window.location.hash === `#${subService.slug}`;
@@ -136,6 +135,7 @@ export default function Header() {
   const handleServicesMenuEnter = () => {
     if (servicesMenuTimerRef.current) {
       clearTimeout(servicesMenuTimerRef.current);
+      servicesMenuTimerRef.current = null; // Crucial: Reset timer ref
     }
     setServicesMenuOpen(true);
   };
@@ -149,6 +149,7 @@ export default function Header() {
   const handleCompanyMenuEnter = () => {
     if (companyMenuTimerRef.current) {
       clearTimeout(companyMenuTimerRef.current);
+      companyMenuTimerRef.current = null; // Crucial: Reset timer ref
     }
     setCompanyMenuOpen(true);
   };
@@ -169,7 +170,7 @@ export default function Header() {
             width={171}
             height={43}
             priority
-            data-ai-hint="company logo"
+            data-ai-hint="company logo dark"
             key={logoSrc}
           />
         </Link>
@@ -191,7 +192,14 @@ export default function Header() {
                       )}
                       onMouseEnter={handleServicesMenuEnter}
                       onMouseLeave={handleServicesMenuLeave}
-                      // onClick={() => setServicesMenuOpen(!servicesMenuOpen)} // Already handled by onOpenChange
+                      onClick={() => {
+                          if (servicesMenuTimerRef.current) {
+                              clearTimeout(servicesMenuTimerRef.current);
+                              servicesMenuTimerRef.current = null;
+                          }
+                          setServicesMenuOpen(!servicesMenuOpen);
+                      }}
+                      aria-expanded={servicesMenuOpen}
                     >
                       {link.label}
                       <ChevronDown className="h-4 w-4" />
@@ -204,7 +212,7 @@ export default function Header() {
                     onMouseLeave={handleServicesMenuLeave}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
-                      {SERVICES_DATA.map((category) => (
+                      {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                         <div key={category.slug}>
                           <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
                             {category.icon && <category.icon className="h-5 w-5" />}
@@ -213,7 +221,7 @@ export default function Header() {
                           <ul className="space-y-1">
                             {category.subServices.map((subService) => (
                               <li key={subService.slug}>
-                                {renderSubServiceLink(category.slug, subService, false)}
+                                {renderSubServiceLink(subService, false)}
                               </li>
                             ))}
                           </ul>
@@ -239,7 +247,14 @@ export default function Header() {
                       )}
                       onMouseEnter={handleCompanyMenuEnter}
                       onMouseLeave={handleCompanyMenuLeave}
-                      // onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
+                      onClick={() => {
+                        if (companyMenuTimerRef.current) {
+                            clearTimeout(companyMenuTimerRef.current);
+                            companyMenuTimerRef.current = null;
+                        }
+                        setCompanyMenuOpen(!companyMenuOpen);
+                      }}
+                      aria-expanded={companyMenuOpen}
                     >
                       {link.label}
                       <ChevronDown className="h-4 w-4" />
@@ -291,6 +306,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
+          {/* ThemeToggle is removed as per previous request for dark mode only */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon">
@@ -302,11 +318,11 @@ export default function Header() {
               <SheetHeader className="p-4 border-b border-border">
                 <SheetTitle className="flex items-center gap-2">
                   <Image
-                    src={logoSrc}
+                    src={logoSrc} // Use dark logo consistently
                     alt={logoAlt}
                     width={140}
                     height={35}
-                    data-ai-hint="company logo"
+                    data-ai-hint="company logo dark"
                     key={`sheet-${logoSrc}`}
                   />
                 </SheetTitle>
@@ -333,7 +349,7 @@ export default function Header() {
                           </AccordionTrigger>
                           <AccordionContent className="pt-1 pb-0 pl-2 space-y-1">
                             <Accordion type="multiple" className="w-full">
-                              {SERVICES_DATA.map((category) => (
+                              {SERVICES_DATA.map((category: AppServiceMenuItem) => (
                                 <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
                                   <AccordionTrigger className={cn(
                                     "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline",
@@ -346,7 +362,7 @@ export default function Header() {
                                   </AccordionTrigger>
                                   <AccordionContent className="pt-1 pb-0 pl-4 space-y-1">
                                     {category.subServices.map((subService) => (
-                                      renderSubServiceLink(category.slug, subService, true)
+                                      renderSubServiceLink(subService, true)
                                     ))}
                                   </AccordionContent>
                                 </AccordionItem>
