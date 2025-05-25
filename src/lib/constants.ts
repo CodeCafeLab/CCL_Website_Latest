@@ -3,7 +3,7 @@ import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCa
 import { 
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, 
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
-  Info, Briefcase, Mail // Added Info, Briefcase, Mail
+  Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -23,71 +23,105 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   { href: "/contact", label: "Contact Us", icon: Mail },
 ];
 
-// New structured SERVICES_DATA for multi-level menu
 export const SERVICES_DATA: ServiceMenuItem[] = [
   {
     title: "Ideation & Design",
     slug: "ideation-design",
-    icon: Lightbulb,
+    icon: Lightbulb, // Icon for Ideation & Design
     subServices: [
-      { title: "UI/UX Design", slug: "ui-ux-design" },
-      { title: "Product Roadmap", slug: "product-roadmap" },
+      { title: "UI/UX Design", slug: "ui-ux-design", description: "— Wireframes, prototypes, high-fidelity designs, and usability testing." },
+      { title: "Product Roadmap", slug: "product-roadmap", description: "— Planning MVP, scaling strategy, feature prioritization, and timelines." },
+      { title: "Design Thinking Workshops", slug: "design-thinking-workshops", description: "— Interactive sessions to identify user pain points and innovation opportunities." },
+      { title: "User Research & Personas", slug: "user-research-personas", description: "— Target audience analysis, interviews, persona creation, and behavior mapping." },
+      { title: "Brand Identity Design", slug: "brand-identity-design", description: "— Logo, color schemes, typography, and brand guidelines for digital presence." },
+      { title: "Information Architecture", slug: "information-architecture", description: "— Sitemap creation, navigation planning, and content hierarchy." },
+      { title: "Prototyping & Wireframing", slug: "prototyping-wireframing", description: "— Clickable prototypes and low-fidelity screens to validate ideas quickly." },
+      { title: "Competitor Analysis", slug: "competitor-analysis", description: "— Market research and UX/UI comparisons for competitive differentiation." },
     ],
   },
   {
     title: "Mobile App Development",
     slug: "mobile-app-development",
-    icon: Smartphone,
+    icon: Smartphone, // Icon for Mobile App Development
     subServices: [
-      { title: "Android App Development", slug: "android-app-development" },
-      { title: "iOS App Development", slug: "ios-app-development" },
-      { title: "Cross-Platform App Development", slug: "cross-platform-app-development" },
+      { title: "Android App Development", slug: "android-app-development", description: "— Native Android apps using Java/Kotlin for performance and scalability." },
+      { title: "iOS App Development", slug: "ios-app-development", description: "— Native iPhone/iPad apps built with Swift for Apple ecosystems." },
+      { title: "Cross-Platform App Development", slug: "cross-platform-app-development", description: "— Apps using React Native, Flutter, or Xamarin for both iOS and Android." },
+      { title: "Progressive Web Apps (PWA)", slug: "progressive-web-apps", description: "— Web apps with native-like experiences for mobile browsers." },
+      { title: "Mobile App UI/UX Design", slug: "mobile-app-ui-ux-design", description: "— Custom user interface design and mobile-specific UX strategy." },
+      { title: "App Testing & QA", slug: "app-testing-qa", description: "— Functional, performance, and user testing for bug-free launches." },
+      { title: "App Deployment & Launch", slug: "app-deployment-launch", description: "— Publishing to Google Play Store & Apple App Store with compliance." },
+      { title: "App Maintenance & Support", slug: "app-maintenance-support", description: "— Post-launch updates, monitoring, and feature improvements." },
     ],
   },
   {
     title: "Web Development",
     slug: "web-development",
-    icon: Code, // Using 'Code' as 'Globe' was used for 'Web App Development' before
+    icon: Globe, // Icon for Web Development (was Code, changing to Globe for variety)
     subServices: [
-      { title: "Website Development", slug: "website-development" },
-      { title: "Web App Development", slug: "web-app-development" },
+      { title: "Website Development", slug: "website-development", description: "— Responsive business websites, portfolios, landing pages, and CMS sites." },
+      { title: "Web App Development", slug: "web-app-development", description: "— Custom web applications for internal tools, SaaS, dashboards, and portals." },
+      { title: "E-Commerce Development", slug: "e-commerce-development", description: "— Online store setup with WooCommerce, Shopify, or custom-built solutions." },
+      { title: "Frontend Development", slug: "frontend-development", description: "— React, Next.js, Vue.js, and modern JavaScript frameworks." },
+      { title: "Backend Development", slug: "backend-development", description: "— Node.js, Laravel, Python/Django, and scalable API development." },
+      { title: "CMS & Custom Admin Panels", slug: "cms-custom-admin-panels", description: "— WordPress, Strapi, Headless CMSs, or fully custom admin interfaces." },
+      { title: "API Integration & Development", slug: "api-integration-development-web", description: "— RESTful APIs, GraphQL, and third-party API integrations." }, // Added -web to slug for uniqueness
+      { title: "Performance Optimization", slug: "performance-optimization", description: "— Speed, SEO, accessibility, and Core Web Vitals improvements." },
+      { title: "Web Hosting & Deployment", slug: "web-hosting-deployment", description: "— Scalable hosting setup on AWS, Vercel, Netlify, DigitalOcean, etc." },
+    ],
+  },
+  {
+    title: "Software Development", // Reordered to match user list (was after AI)
+    slug: "software-development",
+    icon: Server, // Icon for Software Development
+    subServices: [
+      { title: "Custom Software Development", slug: "custom-software-development", description: "— Tailored solutions built from scratch to meet unique business needs." },
+      { title: "Enterprise Software Development", slug: "enterprise-software-development", description: "— Large-scale software systems for operations, management, or data processing." },
+      { title: "SaaS Product Development", slug: "saas-product-development", description: "— Cloud-based, multi-tenant platforms for subscription-based services." },
+      { title: "ERP & CRM Solutions", slug: "erp-crm-solutions", description: "— Internal tools for enterprise resource planning and customer relationship management." },
+      { title: "Legacy Software Modernization", slug: "legacy-software-modernization", description: "— Rebuilding or upgrading outdated systems using modern technologies." },
+      { title: "Desktop Application Development", slug: "desktop-application-development", description: "— Software for Windows, macOS, or Linux platforms." },
+      { title: "API Development & Integration", slug: "api-development-integration-software", description: "— Scalable RESTful or GraphQL APIs and third-party service integrations." }, // Added -software to slug
+      { title: "Software Testing & QA", slug: "software-testing-qa", description: "— Manual and automated testing for functionality, performance, and security." },
+      { title: "Software Maintenance & Support", slug: "software-maintenance-support", description: "— Ongoing upgrades, troubleshooting, and performance monitoring." },
     ],
   },
   {
     title: "AI Development",
     slug: "ai-development",
-    icon: Cpu,
+    icon: Brain, // Icon for AI Development (was Cpu)
     subServices: [
-      { title: "AI Consulting", slug: "ai-consulting" },
-      { title: "AI Agent Development", slug: "ai-agent-development" },
-      { title: "Adaptive AI Development", slug: "adaptive-ai-development" },
-      { title: "AI Chatbot Development", slug: "ai-chatbot-development" },
+      { title: "AI Consulting", slug: "ai-consulting", description: "— Strategy, feasibility analysis, and roadmap creation for AI implementation." },
+      { title: "AI Agent Development", slug: "ai-agent-development", description: "— Autonomous agents for customer support, operations, or task automation." },
+      { title: "AI Chatbot Development", slug: "ai-chatbot-development", description: "— Conversational AI bots using GPT, Dialogflow, or Rasa for websites and apps." },
+      { title: "Adaptive AI Systems", slug: "adaptive-ai-systems", description: "— Self-learning and behavior-adjusting systems for real-time environments." },
+      { title: "Natural Language Processing (NLP)", slug: "natural-language-processing", description: "— Text classification, sentiment analysis, summarization, and language models." },
+      { title: "Computer Vision Solutions", slug: "computer-vision-solutions", description: "— Object detection, face recognition, OCR, and visual analytics." },
+      { title: "Predictive Analytics", slug: "predictive-analytics", description: "— Forecasting trends and behaviors using AI-based statistical models." },
+      { title: "Voice AI & Speech Recognition", slug: "voice-ai-speech-recognition", description: "— Voice-based assistants and speech-to-text systems." },
+      { title: "Recommendation Systems", slug: "recommendation-systems", description: "— Personalized content, product, or service suggestions using AI." },
+      { title: "AI Model Deployment & MLOps", slug: "ai-model-deployment-mlops", description: "— Scalable AI pipeline management with tools like TensorFlow Serving or SageMaker." },
     ],
   },
   {
-    title: "Software Development",
-    slug: "software-development",
-    icon: Server,
+    title: "Blockchain Development", // Renamed from "Blockchain Services"
+    slug: "blockchain-development",
+    icon: GitMerge, // Icon for Blockchain Development (was Gem)
     subServices: [
-      { title: "Custom Software Development", slug: "custom-software-development" },
-      { title: "Enterprise Software Development", slug: "enterprise-software-development" },
-    ],
-  },
-  {
-    title: "Blockchain Services",
-    slug: "blockchain-services",
-    icon: Gem,
-    subServices: [
-      { title: "ICO Development", slug: "ico-development" },
-      { title: "Wallet Development", slug: "wallet-development" },
-      { title: "Smart Contract Development", slug: "smart-contract-development" },
-      { title: "NFT Development", slug: "nft-development" },
-      { title: "DeFi Development", slug: "defi-development" },
-      { title: "Asset Tokenization", slug: "asset-tokenization" },
-      { title: "Real Estate Tokenization", slug: "real-estate-tokenization" },
+      { title: "ICO Development", slug: "ico-development", description: "— Launch support for Initial Coin Offerings, including smart contracts and whitepapers." },
+      { title: "Smart Contract Development", slug: "smart-contract-development", description: "— Ethereum, BSC, or Polygon-based contracts for DeFi, NFTs, DAOs, etc." },
+      { title: "Wallet Development", slug: "wallet-development", description: "— Secure multi-currency crypto wallets for web and mobile (custodial/non-custodial)." },
+      { title: "NFT Development", slug: "nft-development", description: "— End-to-end NFT marketplace and token creation services (ERC-721, ERC-1155)." },
+      { title: "DeFi Development", slug: "defi-development", description: "— Decentralized finance platforms for lending, staking, yield farming, and exchanges." },
+      { title: "Asset Tokenization", slug: "asset-tokenization", description: "— Convert physical/digital assets (e.g., gold, equity) into blockchain-based tokens." },
+      { title: "Real Estate Tokenization", slug: "real-estate-tokenization", description: "— Fractional ownership models using smart contracts for property investment." },
+      { title: "Blockchain Consulting", slug: "blockchain-consulting", description: "— Use-case evaluation, platform selection, compliance strategy, and architecture." },
+      { title: "Private & Consortium Blockchain", slug: "private-consortium-blockchain", description: "— Permissioned blockchain networks for enterprises using Hyperledger or Quorum." },
+      { title: "dApp Development", slug: "dapp-development", description: "— Decentralized application design with Web3 integrations and wallet connectivity." },
     ],
   },
 ];
+
 
 // For the main /services page, you might want a flat list or a different structure.
 // This is the old flat structure, kept for reference or if needed on the services page itself.

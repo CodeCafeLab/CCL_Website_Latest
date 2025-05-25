@@ -9,7 +9,7 @@ export interface NavItem {
 export interface SubService {
   title: string;
   slug: string; // e.g., "ui-ux-design"
-  description?: string;
+  description?: string; // Short descriptive line for the sub-service
 }
 
 export interface ServiceMenuItem {
