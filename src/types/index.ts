@@ -5,23 +5,23 @@ export interface NavItem {
   href: string;
   label: string;
   icon?: LucideIcon;
-  description?: string; // Added for company submenu descriptions
+  description?: string; 
 }
 
 export interface SubService {
   title: string;
-  slug: string; // e.g., "ui-ux-design"
-  description?: string; // Short descriptive line for the sub-service
+  slug: string; 
+  description?: string; 
 }
 
 export interface ServiceMenuItem {
   title: string;
-  slug: string; // e.g., "ideation-design"
+  slug: string; 
   icon: LucideIcon;
   subServices: SubService[];
-  description?: string; // Optional: for the main service page if needed
-  image?: string; // Optional: for the main service page if needed
-  dataAiHint?: string; // Optional: for the main service page if needed
+  description?: string; 
+  image?: string; 
+  dataAiHint?: string; 
 }
 
 export interface Product {
@@ -32,6 +32,14 @@ export interface Product {
   imageUrl: string;
   dataAiHint: string;
   demoUrl: string;
+}
+
+export interface ProductSubMenuItem {
+  href: string;
+  label: string;
+  subtitle?: string;
+  description: string;
+  icon?: LucideIcon;
 }
 
 export interface TimelineEvent {
@@ -51,10 +59,10 @@ export interface BlogPost {
   title: string;
   date: string;
   excerpt: string;
-  category: string; // category id
+  category: string; 
   imageUrl: string;
   dataAiHint: string;
-  content: string; // Markdown or HTML
+  content: string; 
   tags?: string[];
 }
 
@@ -88,7 +96,7 @@ export interface OpenPosition {
   id: string;
   title: string;
   location: string;
-  type: string; // Full-time, Part-time, Contract
+  type: string; 
   description: string;
   applyUrl: string;
 }

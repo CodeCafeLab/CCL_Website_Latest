@@ -1,9 +1,10 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory } from '@/types';
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem } from '@/types';
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
-  Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon
+  Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
+  Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -25,15 +26,15 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     description: "Company mission, vision, values, founding story, leadership team, and journey."
   },
   {
-    href: "#", // Placeholder, update with actual page URL
+    href: "#", 
     label: "Pricing",
-    icon: DollarSign,
+    icon: CircleDollarSign,
     description: "We have transparent pricing modules for individuals, Startups, Companies."
   },
   {
-    href: "/consultancy", // Assuming this exists or will be created
+    href: "/consultancy", 
     label: "Consultancy",
-    icon: Briefcase,
+    icon: MessageSquare, // Changed from Briefcase to avoid conflict
     description: "We provide consultancy for recruitment also."
   },
   {
@@ -45,28 +46,144 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
   {
     href: "/career",
     label: "Career",
-    icon: Users,
+    icon: Briefcase,
     description: "Current job openings, work culture, benefits, hiring process, and intern programs."
   },
   {
-    href: "#", // Placeholder
+    href: "#", 
     label: "Our Team",
-    icon: Users,
+    icon: Users2,
     description: "Photos, bios, and roles of key team members (adds a human touch)."
   },
   {
-    href: "#", // Placeholder
+    href: "#", 
     label: "Why Choose Us",
-    icon: Star,
+    icon: Award,
     description: "Key differentiators, client success stories, testimonials, and USPs."
   },
   {
-    href: "#", // Placeholder
+    href: "#", 
     label: "Partners & Affiliations",
-    icon: LinkIcon,
+    icon: Handshake,
     description: "Tech alliances, certifications, and strategic partners."
   },
 ];
+
+export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
+  {
+    label: "Trackzy",
+    subtitle: "(CCL Time Tracker)",
+    description: "Smart time tracking for productive teams.",
+    href: "#",
+    icon: Clock,
+  },
+  {
+    label: "AutoCleanse",
+    subtitle: "(Doorstep Car Cleaning Service)",
+    description: "Doorstep car wash, zero hassle.",
+    href: "#",
+    icon: Car,
+  },
+  {
+    label: "QConnect",
+    subtitle: "(Scan & Connect)",
+    description: "Scan the QR. Connect instantly.",
+    href: "#",
+    icon: QrCode,
+  },
+  {
+    label: "SwiftDrop",
+    subtitle: "(Parcel Delivery #1)",
+    description: "Next-gen parcel delivery at your command.",
+    href: "#",
+    icon: Package,
+  },
+  {
+    label: "Neighbory",
+    subtitle: "(Society Management)",
+    description: "Simplifying society and community living.",
+    href: "#",
+    icon: Home,
+  },
+  {
+    label: "ClientNest",
+    subtitle: "(CRM)",
+    description: "CRM that grows with your business.",
+    href: "#",
+    icon: Briefcase,
+  },
+  {
+    label: "EduFlow",
+    subtitle: "(School Management)",
+    description: "Everything your school needs, in one place.",
+    href: "#",
+    icon: School,
+  },
+  {
+    label: "DineOS",
+    subtitle: "(Restra)",
+    description: "Modern software for modern restaurants.",
+    href: "#",
+    icon: ChefHat,
+  },
+  {
+    label: "WizZap",
+    subtitle: "(WhatsApp Automation)",
+    description: "Automated WhatsApp messaging for smart outreach.",
+    href: "#",
+    icon: MessageSquare,
+  },
+  {
+    label: "TeamSage",
+    subtitle: "(HRMS)",
+    description: "Smart HRMS for growing teams.",
+    href: "#",
+    icon: Users,
+  },
+  {
+    label: "Servion",
+    subtitle: "(On-demand Service App)",
+    description: "On-demand services, reimagined.",
+    href: "#",
+    icon: Wrench,
+  },
+  {
+    label: "DropChain",
+    subtitle: "(Parcel Delivery #2)",
+    description: "Reliable parcel logistics powered by smart tech.",
+    href: "#",
+    icon: Package,
+  },
+  {
+    label: "Fleetzy",
+    subtitle: "(Fleet Management)",
+    description: "Fleet tracking and logistics, simplified.",
+    href: "#",
+    icon: Truck,
+  },
+  {
+    label: "InstaSite",
+    subtitle: "(Miniweb)",
+    description: "Launch stunning mini websites in minutes.",
+    href: "#",
+    icon: MonitorSmartphone,
+  },
+  {
+    label: "XpressRoute",
+    subtitle: "(Parcel Delivery #3)",
+    description: "Speed up your delivery, the smart way.",
+    href: "#",
+    icon: Package, // Using Package for consistency with other delivery services
+  },
+  {
+    label: "Pulselytics",
+    subtitle: "(Social Media Data Dashboard)",
+    description: "Real-time analytics for your social presence.",
+    href: "#",
+    icon: BarChart3,
+  },
+];
+
 
 export const SERVICES_DATA: ServiceMenuItem[] = [
   {
@@ -168,9 +285,6 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
 ];
 
 
-// For the main /services page, you might want a flat list or a different structure.
-// This is the old flat structure, kept for reference or if needed on the services page itself.
-// You can choose to remove this or adapt it.
 export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "UI/UX Design",
@@ -193,7 +307,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "Android App Development",
     slug: "android-app-development",
-    icon: Smartphone, // Placeholder, specific Android icon if available
+    icon: Smartphone, 
     subServices: [],
     description: "Native Android applications built for performance and a seamless user experience on a wide range of devices.",
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=Android+App",
@@ -202,7 +316,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "iOS App Development",
     slug: "ios-app-development",
-    icon: Smartphone, // Placeholder, specific iOS icon if available
+    icon: Smartphone, 
     subServices: [],
     description: "Elegant and powerful iOS applications designed to meet Apple's high standards and delight users.",
     image: "https://placehold.co/600x400/ffc011/000000.png?text=iOS+App",
@@ -265,7 +379,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "AI Chatbot Development",
     slug: "ai-chatbot-development",
-    icon: MessageCircle, // Re-using, can be more specific
+    icon: MessageCircle, 
     subServices: [],
     description: "Sophisticated AI-powered chatbots for customer service, engagement, and process automation.",
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Chatbots",
@@ -292,7 +406,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "ICO Development",
     slug: "ico-development",
-    icon: Gem, // Placeholder, can be more specific
+    icon: Gem, 
     subServices: [],
     description: "End-to-end Initial Coin Offering development services, from token creation to launch.",
     image: "https://placehold.co/600x400/ffc011/000000.png?text=ICO+Dev",
@@ -319,7 +433,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "NFT Development",
     slug: "nft-development",
-    icon: Gem, // Re-using
+    icon: Gem, 
     subServices: [],
     description: "Creation of Non-Fungible Tokens (NFTs) and marketplaces for digital collectibles and assets.",
     image: "https://placehold.co/600x400/008d00/ffffff.png?text=NFT+Dev",
@@ -346,13 +460,12 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "Real Estate Tokenization",
     slug: "real-estate-tokenization",
-    icon: Building2, // Re-using
+    icon: Building2, 
     subServices: [],
     description: "Tokenizing real estate assets to enable fractional ownership and new investment opportunities.",
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Real+Estate+Tokens",
     dataAiHint: "property tokenization",
   },
-   // Adding a few from the old list that might not be directly in the new structure for completeness on the services page
   {
     title: "Cloud & DevOps Services",
     slug: "cloud-devops-services",
@@ -363,7 +476,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     dataAiHint: "cloud devops",
   },
   {
-    title: "Tech Consultancy", // Already somewhat covered by AI Consulting
+    title: "Tech Consultancy", 
     slug: "tech-consultancy",
     description: "Expert guidance to navigate complex technology challenges and strategize for digital transformation.",
     icon: Users,
@@ -519,5 +632,3 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
   },
 ];
-
-    
