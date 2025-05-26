@@ -64,8 +64,8 @@ export default function ContactPage() {
                 </CardHeader>
                 <CardContent className="text-muted-foreground space-y-1">
                     <p className="font-semibold text-foreground">CodeCafe Lab Headquarters</p>
-                    <p>123 Tech Avenue, Innovation City, CA 94000</p>
-                    <p>United States</p>
+                    <p>Manglam Grand City, Jaipur, Rajasthan, 302026</p>
+                    <p>India</p>
                 </CardContent>
             </Card>
             <Card>
@@ -73,8 +73,8 @@ export default function ContactPage() {
                     <CardTitle className="text-xl flex items-center gap-2"><Phone className="h-6 w-6 text-primary" />Call Us</CardTitle>
                 </CardHeader>
                 <CardContent className="text-muted-foreground space-y-1">
-                    <p><strong>General Inquiries:</strong> <a href="tel:+15551234567" className="hover:text-primary">+1 (555) 123-4567</a></p>
-                    <p><strong>Sales:</strong> <a href="tel:+15559876543" className="hover:text-primary">+1 (555) 987-6543</a></p>
+                    <p><strong>General Inquiries:</strong> <a href="tel:+917852010838" className="hover:text-primary">+91 7852010838</a></p>
+                    <p><strong>Sales:</strong> <a href="tel:+917852010838" className="hover:text-primary">+91 7852010838</a></p>
                 </CardContent>
             </Card>
             <Card>
@@ -82,9 +82,9 @@ export default function ContactPage() {
                     <CardTitle className="text-xl flex items-center gap-2"><Mail className="h-6 w-6 text-primary" />Email Us</CardTitle>
                 </CardHeader>
                 <CardContent className="text-muted-foreground space-y-1">
-                    <p><strong>General:</strong> <a href="mailto:info@codecafe.lab" className="hover:text-primary">info@codecafe.lab</a></p>
-                    <p><strong>Support:</strong> <a href="mailto:support@codecafe.lab" className="hover:text-primary">support@codecafe.lab</a></p>
-                    <p><strong>Careers:</strong> <a href="mailto:careers@codecafe.lab" className="hover:text-primary">careers@codecafe.lab</a></p>
+                    <p><strong>General:</strong> <a href="mailto:hello@codecafelab.in" className="hover:text-primary">hello@codecafelab.in</a></p>
+                    <p><strong>Support:</strong> <a href="mailto:support@codecafelab.in" className="hover:text-primary">support@codecafelab.in</a></p>
+                    <p><strong>Careers:</strong> <a href="mailto:careers@codecafelab.in" className="hover:text-primary">careers@codecafelab.in</a></p>
                 </CardContent>
             </Card>
         </div>
