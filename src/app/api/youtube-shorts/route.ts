@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
   if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
     console.error("YouTube API Key or Channel ID is missing from .env file.");
     return NextResponse.json(
-      { error: 'YouTube API key or Channel ID is not configured in environment variables.' },
+      { error: 'YouTube API key or Channel ID is not configured in environment variables. Please check your .env file and ensure the server has been restarted.', details: 'Server configuration issue.' },
       { status: 500 }
     );
   }
@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
         if (errorData.error.errors && errorData.error.errors.length > 0 && errorData.error.errors[0].reason) {
             detailMessage += ` (Reason: ${errorData.error.errors[0].reason})`;
         }
-      } else if (errorData.message) {
+      } else if (errorData.message) { // Some errors might just have a message field
         detailMessage = errorData.message;
       } else {
         detailMessage = `Received status ${searchResponse.status}. Response: ${JSON.stringify(errorData).substring(0, 200) + '...'}`;
@@ -119,7 +119,7 @@ export async function GET(req: NextRequest) {
           durationSeconds: durationInSeconds,
         };
       })
-      .filter((short: any) => short.durationSeconds > 0 && short.durationSeconds <= 61)
+      .filter((short: any) => short.durationSeconds > 0 && short.durationSeconds <= 61) // YouTube shorts can be up to 60s, plus a tiny buffer
       .slice(0, 10);
 
     return NextResponse.json({ shorts });

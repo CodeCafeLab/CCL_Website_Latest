@@ -3,7 +3,6 @@
 
 import { useState, useEffect }from 'react';
 import type { YouTubeShort } from '@/types';
-// import { YOUTUBE_SHORTS_DATA } from '@/lib/constants'; // Removed static data
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -30,7 +29,7 @@ export default function YoutubeShortsSection() {
           throw new Error(message);
         }
         const data = await response.json();
-        // Check if the successful response body itself indicates an error (though unlikely if response.ok was true)
+        // Check if the successful response body itself indicates an error
         if (data.error) {
             let message = data.error;
             if (data.details) {
@@ -42,7 +41,7 @@ export default function YoutubeShortsSection() {
       } catch (err: any) {
         console.error("Failed to fetch YouTube shorts:", err);
         setError(err.message || "An unexpected error occurred.");
-        setDisplayedShorts([]);
+        setDisplayedShorts([]); // Clear shorts on error
       } finally {
         setIsLoading(false);
       }
@@ -67,7 +66,6 @@ export default function YoutubeShortsSection() {
          <AlertTriangle className="h-12 w-12 text-destructive mx-auto" />
         <p className="text-destructive-foreground font-semibold">Failed to load shorts</p>
         <p className="text-sm text-muted-foreground px-4">{error}</p>
-        {/* Removed the generic environment variable message as the error should now be more specific */}
       </section>
     );
   }
@@ -124,8 +122,7 @@ export default function YoutubeShortsSection() {
           ))}
         </div>
       ) : (
-         // This case is less likely to be hit if the main error block catches API issues
-         <p className="text-center text-muted-foreground">No shorts available for this category.</p>
+         <p className="text-center text-muted-foreground">No shorts available.</p> // Should be caught by earlier error/empty states
       )}
     </section>
   );
