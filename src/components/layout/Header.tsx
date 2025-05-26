@@ -296,7 +296,7 @@ export default function Header() {
                         sideOffset={15} 
                     >
                         {COMPANY_SUB_LINKS.map((subLink) => (
-                        <DropdownMenuItem key={subLink.href} asChild className="p-0 rounded-md hover:bg-muted/30 focus:bg-muted/30">
+                        <DropdownMenuItem key={subLink.label} asChild className="p-0 rounded-md hover:bg-muted/30 focus:bg-muted/30">
                             <Link
                                 href={subLink.href}
                                 onClick={() => setCompanyMenuOpen(false)}
@@ -441,7 +441,7 @@ export default function Header() {
                             sideOffset={15} 
                         >
                             {RESOURCES_SUB_LINKS.map((subLink) => (
-                            <DropdownMenuItem key={subLink.href} asChild className="p-0 rounded-md hover:bg-muted/30 focus:bg-muted/30">
+                            <DropdownMenuItem key={subLink.label} asChild className="p-0 rounded-md hover:bg-muted/30 focus:bg-muted/30">
                                 <Link
                                     href={subLink.href}
                                     onClick={() => setResourcesMenuOpen(false)}
@@ -609,7 +609,7 @@ export default function Header() {
                           <AccordionContent className="pt-1 pb-0 pl-4 space-y-1">
                             {COMPANY_SUB_LINKS.map((subLink) => (
                               <Link
-                                key={subLink.href}
+                                key={subLink.label}
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
@@ -720,7 +720,7 @@ export default function Header() {
                           <AccordionContent className="pt-1 pb-0 pl-4 space-y-1 max-h-[50vh] overflow-y-auto">
                             {RESOURCES_SUB_LINKS.map((subLink) => (
                               <Link
-                                key={subLink.href}
+                                key={subLink.label}
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
