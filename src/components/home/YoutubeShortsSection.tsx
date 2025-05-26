@@ -23,9 +23,21 @@ export default function YoutubeShortsSection() {
         const response = await fetch('/api/youtube-shorts');
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || `Failed to fetch shorts: ${response.statusText}`);
+          let message = errorData.error || `Failed to fetch shorts: ${response.statusText}`;
+          if (errorData.details) {
+            message += ` (Details: ${errorData.details})`;
+          }
+          throw new Error(message);
         }
         const data = await response.json();
+        // Check if the successful response body itself indicates an error (though unlikely if response.ok was true)
+        if (data.error) {
+            let message = data.error;
+            if (data.details) {
+                message += ` (Details: ${data.details})`;
+            }
+            throw new Error(message);
+        }
         setDisplayedShorts(data.shorts || []);
       } catch (err: any) {
         console.error("Failed to fetch YouTube shorts:", err);
@@ -54,8 +66,8 @@ export default function YoutubeShortsSection() {
       <section className="space-y-8 py-12 text-center">
          <AlertTriangle className="h-12 w-12 text-destructive mx-auto" />
         <p className="text-destructive-foreground font-semibold">Failed to load shorts</p>
-        <p className="text-sm text-muted-foreground">{error}</p>
-        <p className="text-xs text-muted-foreground mt-2">Please ensure the YouTube API key and Channel ID are correctly configured in your environment variables.</p>
+        <p className="text-sm text-muted-foreground px-4">{error}</p>
+        {/* Removed the generic environment variable message as the error should now be more specific */}
       </section>
     );
   }
@@ -65,7 +77,7 @@ export default function YoutubeShortsSection() {
         <section className="space-y-8 py-12 text-center">
             <Youtube className="h-12 w-12 text-muted-foreground mx-auto" />
             <p className="text-muted-foreground">No shorts to display at the moment.</p>
-            <p className="text-xs text-muted-foreground mt-2">This could be due to no recent shorts found or API configuration issues.</p>
+            <p className="text-xs text-muted-foreground mt-2">This could be due to no recent shorts found or an API configuration issue.</p>
         </section>
     );
   }
@@ -79,9 +91,6 @@ export default function YoutubeShortsSection() {
         </h2>
         <p className="text-muted-foreground">Catch up with our latest tips, demos, and behind-the-scenes moments.</p>
       </div>
-
-      {/* Category chips removed as we are fetching a flat list for now */}
-      {/* <div className="flex flex-wrap gap-2 mb-6 justify-center"> ... </div> */}
 
       {displayedShorts.length > 0 ? (
         <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4"> {/* Added pr-4 for scrollbar visibility on far right */}
@@ -115,6 +124,7 @@ export default function YoutubeShortsSection() {
           ))}
         </div>
       ) : (
+         // This case is less likely to be hit if the main error block catches API issues
          <p className="text-center text-muted-foreground">No shorts available for this category.</p>
       )}
     </section>
