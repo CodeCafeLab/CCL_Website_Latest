@@ -5,7 +5,7 @@ import {
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
   Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus,
-  DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig, PlayCircle, Container, Share, Database, Settings2, Network, ServerCog, Shield, AppWindow, CodeXml, Cable, FileJson, TerminalSquare, FileCode
+  DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, BarChartHorizontalBig, PlayCircle, Container, Share, Database, Settings2, Network, ServerCog, Shield, AppWindow, CodeXml, Cable, FileJson, TerminalSquare, FileCode, Github, Linkedin, Twitter, Facebook, Send, Instagram
 } from 'lucide-react';
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -27,9 +27,9 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     description: "Company mission, vision, values, founding story, leadership team, and journey."
   },
   {
-    href: "/pricing", // Corrected href
+    href: "/pricing",
     label: "Pricing",
-    icon: CircleDollarSign, // Ensured correct icon
+    icon: CircleDollarSign,
     description: "We have transparent pricing modules for individuals, Startups, Companies."
   },
   {
@@ -104,7 +104,7 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     subtitle: "(Society Management)",
     description: "Simplifying society and community living.",
     href: "#",
-    icon: Home,
+    icon: HomeIcon, // Changed from Home to HomeIcon
   },
   {
     label: "ClientNest",
@@ -722,27 +722,27 @@ export const YOUTUBE_SHORTS_DATA: YouTubeShortsCategory[] = [
     id: "cat1",
     categoryName: "AI Quick Demos",
     shorts: [
-      { id: "s1", title: "Instant Image Analysis with AI", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "ai image analysis", duration: "0:45" },
-      { id: "s2", title: "NLP: Summarizing Text in Seconds", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "nlp text summary", duration: "0:52" },
-      { id: "s3", title: "Chatbot Magic: Customer Support", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "ai chatbot support", duration: "1:03" },
+      { id: "s1", title: "Neural Network in 60s", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "neural network", duration: "0:55" },
+      { id: "s2", title: "Real-time Object Detection", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "object detection", duration: "0:48" },
+      { id: "s3", title: "AI Code Generation", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "ai coding", duration: "1:05" },
     ]
   },
   {
     id: "cat2",
     categoryName: "Web Dev Tips & Tricks",
     shorts: [
-      { id: "s4", title: "React Tip: Efficient State Management", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "react state tip", duration: "0:58" },
-      { id: "s5", title: "Next.js Performance Boosters", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "nextjs performance", duration: "1:10" },
-      { id: "s6", title: "Tailwind CSS Power Moves", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "tailwind css trick", duration: "0:49" },
+      { id: "s4", title: "CSS Grid Magic", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "css grid", duration: "0:50" },
+      { id: "s5", title: "Optimizing Web Performance", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "web performance", duration: "1:12" },
+      { id: "s6", title: "API Design Best Practices", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "api design", duration: "0:59" },
     ]
   },
   {
     id: "cat3",
     categoryName: "Behind the Code @ CodeCafe",
     shorts: [
-      { id: "s7", title: "A Day in the Life of a Dev", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "developer life day", duration: "1:15" },
-      { id: "s8", title: "Our Collaborative Coding Sessions", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "team coding collaboration", duration: "0:55" },
-      { id: "s9", title: "Innovation Hour Highlights", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "innovation ideas tech", duration: "1:05" },
+      { id: "s7", title: "Our Agile Workflow", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "agile workflow", duration: "1:10" },
+      { id: "s8", title: "Tech Stack Deep Dive", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "tech stack", duration: "1:02" },
+      { id: "s9", title: "Solving a Complex Bug", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "bug fixing", duration: "0:57" },
     ]
   }
 ];
@@ -800,7 +800,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "2",
     name: "John Davis",
-    role: "CTO, QuantumLeap AI",
+    role: "CTO",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -820,7 +820,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder, SparkUp Ventures",
+    role: "Founder",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
