@@ -4,16 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
 import { Briefcase, MapPin, Users, Sparkles, ArrowRight } from 'lucide-react';
+import OpenPositionsSlider from '@/components/career/OpenPositionsSlider'; // Import the new component
+import type { OpenPosition } from '@/types';
 
 export const metadata: Metadata = {
   title: 'Careers at CodeCafe Lab',
   description: 'Join our innovative team at CodeCafe Lab. Explore open positions, learn about our company culture, and apply today.',
 };
 
-const openPositions = [
-  { id: '1', title: 'Senior AI Engineer', location: 'Remote / New York', type: 'Full-time', applyUrl: '#' },
-  { id: '2', title: 'Frontend Developer (React/Next.js)', location: 'Remote', type: 'Full-time', applyUrl: '#' },
-  { id: '3', title: 'UX/UI Designer', location: 'New York', type: 'Contract', applyUrl: '#' },
+const openPositionsData: OpenPosition[] = [ // Renamed to avoid conflict if OpenPosition type is imported
+  { id: '1', title: 'Senior AI Engineer', location: 'Remote / New York', type: 'Full-time', description: 'Lead the development of cutting-edge AI models and solutions, working with a talented team of researchers and engineers to solve complex problems.', applyUrl: '#' },
+  { id: '2', title: 'Frontend Developer (React/Next.js)', location: 'Remote', type: 'Full-time', description: 'Craft beautiful and performant user interfaces using React, Next.js, and Tailwind CSS. Collaborate closely with UI/UX designers and backend developers.', applyUrl: '#' },
+  { id: '3', title: 'UX/UI Designer', location: 'New York', type: 'Contract', description: 'Design intuitive and engaging user experiences across our web and mobile platforms. Create wireframes, prototypes, and high-fidelity mockups.', applyUrl: '#' },
+  { id: '4', title: 'DevOps Engineer', location: 'Remote', type: 'Full-time', description: 'Build and maintain our CI/CD pipelines, manage cloud infrastructure, and ensure the reliability and scalability of our services using modern DevOps practices.', applyUrl: '#' },
+  { id: '5', title: 'Product Manager - AI Platforms', location: 'New York / Remote', type: 'Full-time', description: 'Define the vision, strategy, and roadmap for our AI-powered products. Work closely with engineering, design, and marketing teams to deliver impactful solutions.', applyUrl: '#' },
 ];
 
 const teamTestimonials = [
@@ -53,37 +57,9 @@ export default function CareerPage() {
       </section>
 
       {/* Open Positions Section */}
-      <section>
-        <h2 className="text-3xl font-bold text-center mb-12">Open Positions</h2>
-        {openPositions.length > 0 ? (
-          <div className="space-y-6 max-w-3xl mx-auto">
-            {openPositions.map((position) => (
-              <Card key={position.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-2xl">{position.title}</CardTitle>
-                  <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-1">
-                    <span className="flex items-center gap-1"><MapPin className="h-4 w-4" /> {position.location}</span>
-                    <span className="flex items-center gap-1"><Briefcase className="h-4 w-4" /> {position.type}</span>
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    We are looking for a talented {position.title} to join our dynamic team. You will be working on exciting projects...
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button asChild>
-                    <a href={position.applyUrl} target="_blank" rel="noopener noreferrer">
-                      Apply Now <ArrowRight className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-muted-foreground">We currently don't have any open positions, but we're always looking for talent. Feel free to send us your resume!</p>
-        )}
+      <section className="overflow-hidden"> {/* Added overflow-hidden to contain the buttons if they extend beyond this section's padding */}
+        <h2 className="text-3xl font-bold text-center mb-8">Open Positions</h2> {/* Reduced mb from 12 to 8 */}
+        <OpenPositionsSlider positions={openPositionsData} /> {/* Use the new slider component */}
          <p className="text-xs text-muted-foreground mt-8 text-center">
             Note: Apply form functionality (React Hook Form, validation) needs to be implemented for each position or a general application form.
         </p>

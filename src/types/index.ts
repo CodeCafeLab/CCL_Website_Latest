@@ -74,7 +74,7 @@ export interface Testimonial {
   quote: string;
   avatarUrl: string;
   dataAiHint: string;
-  rating: number; // Added rating
+  rating: number; 
 }
 
 export interface ClientLogo {
@@ -98,7 +98,7 @@ export interface OpenPosition {
   title: string;
   location: string;
   type: string; 
-  description: string;
+  description: string; // Ensure description is part of the type
   applyUrl: string;
 }
 
