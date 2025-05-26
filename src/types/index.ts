@@ -109,13 +109,15 @@ export interface YouTubeShort {
   youtubeUrl: string;
   dataAiHint: string;
   duration: string; // e.g., "0:58"
+  // durationSeconds?: number; // Internal use for filtering
 }
 
-export interface YouTubeShortsCategory {
-  id: string;
-  categoryName: string;
-  shorts: YouTubeShort[];
-}
+// YouTubeShortsCategory is no longer needed for dynamic fetching of a flat list
+// export interface YouTubeShortsCategory {
+//   id: string;
+//   categoryName: string;
+//   shorts: YouTubeShort[];
+// }
 
 export interface TechStackItem {
   name: string;

@@ -1,5 +1,5 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, YouTubeShortsCategory, TechStackItem, Testimonial } from '@/types'; // Added Testimonial
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial } from '@/types'; // Removed YouTubeShortsCategory
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
@@ -104,7 +104,7 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     subtitle: "(Society Management)",
     description: "Simplifying society and community living.",
     href: "#",
-    icon: HomeIcon, // Changed from Home to HomeIcon
+    icon: HomeIcon, 
   },
   {
     label: "ClientNest",
@@ -717,35 +717,8 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
   },
 ];
 
-export const YOUTUBE_SHORTS_DATA: YouTubeShortsCategory[] = [
-  {
-    id: "cat1",
-    categoryName: "AI Quick Demos",
-    shorts: [
-      { id: "s1", title: "Neural Network in 60s", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "neural network", duration: "0:55" },
-      { id: "s2", title: "Real-time Object Detection", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "object detection", duration: "0:48" },
-      { id: "s3", title: "AI Code Generation", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "ai coding", duration: "1:05" },
-    ]
-  },
-  {
-    id: "cat2",
-    categoryName: "Web Dev Tips & Tricks",
-    shorts: [
-      { id: "s4", title: "CSS Grid Magic", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "css grid", duration: "0:50" },
-      { id: "s5", title: "Optimizing Web Performance", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "web performance", duration: "1:12" },
-      { id: "s6", title: "API Design Best Practices", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "api design", duration: "0:59" },
-    ]
-  },
-  {
-    id: "cat3",
-    categoryName: "Behind the Code @ CodeCafe",
-    shorts: [
-      { id: "s7", title: "Our Agile Workflow", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "agile workflow", duration: "1:10" },
-      { id: "s8", title: "Tech Stack Deep Dive", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "tech stack", duration: "1:02" },
-      { id: "s9", title: "Solving a Complex Bug", thumbnailUrl: "https://placehold.co/270x480.png", youtubeUrl: "#", dataAiHint: "bug fixing", duration: "0:57" },
-    ]
-  }
-];
+// Removed YOUTUBE_SHORTS_DATA as it's now fetched dynamically
+// export const YOUTUBE_SHORTS_DATA: YouTubeShortsCategory[] = [ ... ];
 
 
 export const TECH_STACK_DATA: TechStackItem[] = [
@@ -838,7 +811,3 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     rating: 4,
   }
 ];
-
-    
-
-    
