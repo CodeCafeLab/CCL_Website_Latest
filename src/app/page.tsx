@@ -93,7 +93,7 @@ export default function HomePage() {
             </Card>
           ))}
           {/* See All Services Card */}
-          <Card className="flex flex-col items-center justify-between p-6 text-center bg-card hover:shadow-xl transition-shadow duration-300 h-full border-2 border-primary/30">
+          <Card key="see-all-services" className="flex flex-col items-center justify-between p-6 text-center bg-card hover:shadow-xl transition-shadow duration-300 h-full border-2 border-primary/30">
             <CardHeader className="p-2">
               <CardTitle className="text-2xl text-primary">Explore All Services</CardTitle>
             </CardHeader>
@@ -217,7 +217,7 @@ export default function HomePage() {
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
           {[...Array(5)].map((_, i) => (
             <Image
-              key={i}
+              key={`client-logo-${i}`}
               src={`https://placehold.co/120x60/ffffff/cccccc.png?text=Client${i+1}`}
               alt={`Client Logo ${i+1}`}
               width={120}
@@ -263,7 +263,7 @@ export default function HomePage() {
                   <div className="flex mb-3">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
-                        key={i}
+                        key={`star-${testimonial.id}-${index}-${i}`}
                         className={`h-5 w-5 ${i < testimonial.rating ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`}
                       />
                     ))}
@@ -327,3 +327,4 @@ export default function HomePage() {
     </div>
   );
 }
+

@@ -245,7 +245,7 @@ export default function Header() {
                                     );
                                     })}
                                     {category.subServices.length > 4 && (
-                                    <li className="group">
+                                    <li key={`${category.slug}-see-all`} className="group">
                                         <Link
                                         href={`/services#${category.slug}`}
                                         className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
@@ -569,7 +569,7 @@ export default function Header() {
                                      </div>
                                     ))}
                                     {category.subServices.length > 4 && (
-                                      <div className="py-1">
+                                      <div key={`${category.slug}-see-all-mobile`} className="py-1">
                                         <Link
                                           href={`/services#${category.slug}`}
                                           onClick={closeSheet}
@@ -772,3 +772,4 @@ export default function Header() {
     </header>
   );
 }
+
