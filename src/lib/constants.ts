@@ -1,5 +1,5 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial } from '@/types'; // Removed YouTubeShortsCategory
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial, InstagramReel } from '@/types';
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
@@ -104,7 +104,7 @@ export const PRODUCT_SUB_LINKS: ProductSubMenuItem[] = [
     subtitle: "(Society Management)",
     description: "Simplifying society and community living.",
     href: "#",
-    icon: HomeIcon, 
+    icon: HomeIcon,
   },
   {
     label: "ClientNest",
@@ -717,8 +717,56 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
   },
 ];
 
-// Removed YOUTUBE_SHORTS_DATA as it's now fetched dynamically
-// export const YOUTUBE_SHORTS_DATA: YouTubeShortsCategory[] = [ ... ];
+export const INSTAGRAM_REELS_DATA: InstagramReel[] = [
+  {
+    id: 'reel1',
+    title: 'Exploring Genkit: AI in Next.js',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Genkit+AI',
+    instagramUrl: '#',
+    dataAiHint: 'ai development genkit',
+    duration: '0:55',
+  },
+  {
+    id: 'reel2',
+    title: 'Frontend Magic with ShadCN UI',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=ShadCN+UI',
+    instagramUrl: '#',
+    dataAiHint: 'ui ux design',
+    duration: '0:40',
+  },
+  {
+    id: 'reel3',
+    title: 'Our Team Retreat Highlights',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Team+Retreat',
+    instagramUrl: '#',
+    dataAiHint: 'team building office',
+    duration: '1:00',
+  },
+  {
+    id: 'reel4',
+    title: 'DevOps CI/CD Pipeline Demo',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=CI/CD+Demo',
+    instagramUrl: '#',
+    dataAiHint: 'devops pipeline code',
+    duration: '0:50',
+  },
+  {
+    id: 'reel5',
+    title: 'Blockchain Smart Contract Explained',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Smart+Contract',
+    instagramUrl: '#',
+    dataAiHint: 'blockchain contract crypto',
+    duration: '0:48',
+  },
+  {
+    id: 'reel6',
+    title: 'Quick UI Tip: Color Theory Basics',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Color+Theory',
+    instagramUrl: '#',
+    dataAiHint: 'design color palette',
+    duration: '0:35',
+  },
+];
 
 
 export const TECH_STACK_DATA: TechStackItem[] = [
@@ -773,7 +821,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "2",
     name: "John Davis",
-    role: "CTO",
+    role: "CTO, QuantumLeap AI",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -793,7 +841,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder",
+    role: "Founder & Visionary",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -803,8 +851,8 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "5",
     name: "Jessica Williams",
-    role: "Head of Digital",
-    company: "ConnectFlow",
+    role: "Head of Digital Transformation",
+    company: "ConnectFlow Dynamics",
     quote: "Their team's dedication and problem-solving skills are top-notch. CodeCafe Lab is our go-to for any complex software development needs.",
     avatarUrl: "https://placehold.co/60x60.png",
     dataAiHint: "woman professional",

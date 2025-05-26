@@ -5,23 +5,23 @@ export interface NavItem {
   href: string;
   label: string;
   icon?: LucideIcon;
-  description?: string; 
+  description?: string;
 }
 
 export interface SubService {
   title: string;
-  slug: string; 
-  description?: string; 
+  slug: string;
+  description?: string;
 }
 
 export interface ServiceMenuItem {
   title: string;
-  slug: string; 
+  slug: string;
   icon: LucideIcon;
   subServices: SubService[];
-  description?: string; 
-  image?: string; 
-  dataAiHint?: string; 
+  description?: string;
+  image?: string;
+  dataAiHint?: string;
 }
 
 export interface Product {
@@ -59,10 +59,10 @@ export interface BlogPost {
   title: string;
   date: string;
   excerpt: string;
-  category: string; 
+  category: string;
   imageUrl: string;
   dataAiHint: string;
-  content: string; 
+  content: string;
   tags?: string[];
 }
 
@@ -74,7 +74,7 @@ export interface Testimonial {
   quote: string;
   avatarUrl: string;
   dataAiHint: string;
-  rating: number; 
+  rating: number;
 }
 
 export interface ClientLogo {
@@ -97,8 +97,8 @@ export interface OpenPosition {
   id: string;
   title: string;
   location: string;
-  type: string; 
-  description: string; // Ensure description is part of the type
+  type: string;
+  description: string;
   applyUrl: string;
 }
 
@@ -108,16 +108,19 @@ export interface YouTubeShort {
   thumbnailUrl: string;
   youtubeUrl: string;
   dataAiHint: string;
-  duration: string; // e.g., "0:58"
-  // durationSeconds?: number; // Internal use for filtering
+  duration: string; 
+  durationSeconds?: number; 
 }
 
-// YouTubeShortsCategory is no longer needed for dynamic fetching of a flat list
-// export interface YouTubeShortsCategory {
-//   id: string;
-//   categoryName: string;
-//   shorts: YouTubeShort[];
-// }
+export interface InstagramReel {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  instagramUrl: string;
+  dataAiHint: string;
+  duration?: string; // Duration might be harder to get/less standardized for IG
+}
+
 
 export interface TechStackItem {
   name: string;

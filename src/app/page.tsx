@@ -1,26 +1,21 @@
 
-"use client"; // Convert to client component for useState
+"use client"; 
 
-import type { Metadata } from 'next'; // Keep for potential static metadata if parts are server-rendered
+import type { Metadata } from 'next'; 
 import Link from 'next/link';
-import { useState } from 'react'; // Import useState
+import { useState } from 'react'; 
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
-import YoutubeShortsSection from '@/components/home/YoutubeShortsSection';
+import InstagramReelsSection from '@/components/home/InstagramReelsSection'; // Updated import
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
-import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star } from 'lucide-react';
+import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star, CalendarPlus, Handshake } from 'lucide-react';
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
-import QuoteFormSheet from '@/components/pricing/QuoteFormSheet'; // Import the sheet component
-
-// export const metadata: Metadata = { // Metadata needs to be handled differently for client components if dynamic
-//   title: 'Home',
-//   description: 'Welcome to CodeCafe Lab - Where Innovation, AI, and Creativity meet to brew exceptional software solutions.',
-// };
+import QuoteFormSheet from '@/components/pricing/QuoteFormSheet'; 
 
 export default function HomePage() {
-  const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false); // State for the sheet
+  const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false); 
 
   const heroTexts = [
     "Brewed Software with AI Precision",
@@ -59,10 +54,10 @@ export default function HomePage() {
               CodeCafe Lab blends innovation, AI, and creativity to deliver cutting-edge software solutions tailored for your success.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                onClick={() => setIsQuoteSheetOpen(true)} // Open sheet on click
+                onClick={() => setIsQuoteSheetOpen(true)} 
               >
                 Get a Quote <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -73,8 +68,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* YouTube Shorts Section */}
-        <YoutubeShortsSection />
+        {/* Instagram Reels Section */}
+        <InstagramReelsSection />
 
         {/* Services Overview */}
         <section>
@@ -173,7 +168,7 @@ export default function HomePage() {
 
         {/* CodeCafe Lab Tech Stack Section */}
         <section className="ai-glow-bg pt-8 pb-16 md:pt-12 md:pb-24 rounded-xl">
-          <div className="relative z-10 container mx-auto"> {/* Removed px-4 here */}
+          <div className="relative z-10 container mx-auto"> 
               <div className="text-center mb-12">
                   <Brain className="h-12 w-12 text-primary mx-auto mb-4" />
                   <h2 className="text-3xl font-bold">CodeCafe Lab Tech Stack</h2>
@@ -223,7 +218,7 @@ export default function HomePage() {
         </section>
 
         {/* Trusted By Section */}
-        <section className="mt-8 md:mt-12">
+        <section>
           <h2 className="text-5xl text-center mb-12 font-brittany text-royal-shine">Trusted By</h2>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {[...Array(5)].map((_, i) => (
