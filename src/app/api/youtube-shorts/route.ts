@@ -1,3 +1,4 @@
+
 // src/app/api/youtube-shorts/route.ts
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
@@ -29,8 +30,9 @@ function formatDuration(totalSeconds: number): string {
 
 export async function GET(req: NextRequest) {
   if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
+    console.error("YouTube API Key or Channel ID is missing from .env file.");
     return NextResponse.json(
-      { error: 'YouTube API key or Channel ID is not configured.' },
+      { error: 'YouTube API key or Channel ID is not configured in environment variables.' },
       { status: 500 }
     );
   }
@@ -50,9 +52,20 @@ export async function GET(req: NextRequest) {
 
     if (!searchResponse.ok) {
       const errorData = await searchResponse.json();
-      console.error('YouTube API Search Error:', errorData);
+      console.error('Detailed YouTube API Search Error:', JSON.stringify(errorData, null, 2));
+      let detailMessage = 'Unknown API error during video search.';
+      if (errorData.error && errorData.error.message) {
+        detailMessage = errorData.error.message;
+        if (errorData.error.errors && errorData.error.errors.length > 0 && errorData.error.errors[0].reason) {
+            detailMessage += ` (Reason: ${errorData.error.errors[0].reason})`;
+        }
+      } else if (errorData.message) {
+        detailMessage = errorData.message;
+      } else {
+        detailMessage = `Received status ${searchResponse.status}. Response: ${JSON.stringify(errorData).substring(0, 200) + '...'}`;
+      }
       return NextResponse.json(
-        { error: 'Failed to fetch videos from YouTube via search', details: errorData.error?.message || 'Unknown error' },
+        { error: 'Failed to fetch videos from YouTube via search', details: detailMessage },
         { status: searchResponse.status }
       );
     }
@@ -74,9 +87,20 @@ export async function GET(req: NextRequest) {
 
     if (!videosResponse.ok) {
       const errorData = await videosResponse.json();
-      console.error('YouTube API Videos Error:', errorData);
+      console.error('Detailed YouTube API Videos Error:', JSON.stringify(errorData, null, 2));
+      let detailMessage = 'Unknown API error during video details fetch.';
+       if (errorData.error && errorData.error.message) {
+        detailMessage = errorData.error.message;
+        if (errorData.error.errors && errorData.error.errors.length > 0 && errorData.error.errors[0].reason) {
+            detailMessage += ` (Reason: ${errorData.error.errors[0].reason})`;
+        }
+      } else if (errorData.message) {
+        detailMessage = errorData.message;
+      } else {
+        detailMessage = `Received status ${videosResponse.status}. Response: ${JSON.stringify(errorData).substring(0, 200) + '...'}`;
+      }
       return NextResponse.json(
-        { error: 'Failed to fetch video details from YouTube', details: errorData.error?.message || 'Unknown error' },
+        { error: 'Failed to fetch video details from YouTube', details: detailMessage },
         { status: videosResponse.status }
       );
     }
@@ -88,22 +112,21 @@ export async function GET(req: NextRequest) {
         return {
           id: video.id,
           title: video.snippet.title,
-          // Prefer maxresdefault for Shorts, fallback to high, then medium, then default
           thumbnailUrl: video.snippet.thumbnails.maxres?.url || video.snippet.thumbnails.high?.url || video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default?.url,
-          youtubeUrl: `https://www.youtube.com/shorts/${video.id}`, // More direct link for shorts
-          dataAiHint: 'youtube short ' + video.snippet.title.toLowerCase().split(' ').slice(0,2).join(' '), // Simple hint
+          youtubeUrl: `https://www.youtube.com/shorts/${video.id}`,
+          dataAiHint: 'youtube short ' + video.snippet.title.toLowerCase().split(' ').slice(0,2).join(' '),
           duration: formatDuration(durationInSeconds),
-          durationSeconds: durationInSeconds, // Keep for filtering
+          durationSeconds: durationInSeconds,
         };
       })
-      .filter((short: any) => short.durationSeconds > 0 && short.durationSeconds <= 61) // Filter for typical Short length (<= 60s, allow 61 for rounding)
-      .slice(0, 10); // Limit to 10 shorts after filtering
+      .filter((short: any) => short.durationSeconds > 0 && short.durationSeconds <= 61)
+      .slice(0, 10);
 
     return NextResponse.json({ shorts });
   } catch (error: any) {
     console.error('Error fetching YouTube Shorts:', error);
     return NextResponse.json(
-      { error: 'An unexpected error occurred.', details: error.message },
+      { error: 'An unexpected error occurred while processing YouTube Shorts request.', details: error.message },
       { status: 500 }
     );
   }
