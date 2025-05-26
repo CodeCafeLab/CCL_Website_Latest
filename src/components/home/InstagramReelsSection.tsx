@@ -57,7 +57,7 @@ export default function InstagramReelsSection() {
               <div key={reel.id} onClick={() => handleReelClick(reel)} className="block flex-shrink-0 w-56 group cursor-pointer">
                 <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                   <CardHeader className="p-0 relative">
-                    <div className="aspect-[9/16] w-full relative overflow-hidden"> {/* Added overflow-hidden */}
+                    <div className="aspect-[9/16] w-full relative overflow-hidden"> {/* Ensure overflow-hidden is here */}
                       <Image
                         src={reel.thumbnailUrl}
                         alt={reel.title}
@@ -65,7 +65,7 @@ export default function InstagramReelsSection() {
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         data-ai-hint={reel.dataAiHint || 'instagram reel thumbnail'}
-                        priority // Added priority
+                        // priority prop removed
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent group-hover:from-black/70 transition-colors"></div>
                       {reel.duration && (
