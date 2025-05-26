@@ -60,9 +60,6 @@ export default function CareerPage() {
       <section className="overflow-hidden"> {/* Added overflow-hidden to contain the buttons if they extend beyond this section's padding */}
         <h2 className="text-3xl font-bold text-center mb-8">Open Positions</h2> {/* Reduced mb from 12 to 8 */}
         <OpenPositionsSlider positions={openPositionsData} /> {/* Use the new slider component */}
-         <p className="text-xs text-muted-foreground mt-8 text-center">
-            Note: Apply form functionality (React Hook Form, validation) needs to be implemented for each position or a general application form.
-        </p>
       </section>
 
       {/* Team Testimonials Section */}
