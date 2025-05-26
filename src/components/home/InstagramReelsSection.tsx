@@ -4,7 +4,6 @@
 import { useState, useEffect } from 'react';
 import type { InstagramReel } from '@/types';
 import Image from 'next/image';
-// Removed Link import as we're using a dialog now
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { PlayCircle, Instagram, Loader2, AlertTriangle } from 'lucide-react';
 import { INSTAGRAM_REELS_DATA } from '@/lib/constants';
@@ -19,7 +18,7 @@ export default function InstagramReelsSection() {
     if (match && match[1]) {
       return `https://www.instagram.com/reel/${match[1]}/embed`;
     }
-    return null; // Or handle error appropriately
+    return null; 
   };
 
   const handleReelClick = (reel: InstagramReel) => {
@@ -27,7 +26,6 @@ export default function InstagramReelsSection() {
     if (embedUrl) {
       setSelectedReelEmbedUrl(embedUrl);
     } else {
-      // Fallback to opening in new tab if URL parsing fails or it's not a standard reel URL
       window.open(reel.instagramUrl, '_blank');
       console.warn("Could not parse Instagram Reel URL for embedding, opening in new tab:", reel.instagramUrl);
     }
@@ -59,7 +57,7 @@ export default function InstagramReelsSection() {
               <div key={reel.id} onClick={() => handleReelClick(reel)} className="block flex-shrink-0 w-56 group cursor-pointer">
                 <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                   <CardHeader className="p-0 relative">
-                    <div className="aspect-[9/16] w-full relative">
+                    <div className="aspect-[9/16] w-full relative overflow-hidden"> {/* Added overflow-hidden */}
                       <Image
                         src={reel.thumbnailUrl}
                         alt={reel.title}
@@ -67,6 +65,7 @@ export default function InstagramReelsSection() {
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         data-ai-hint={reel.dataAiHint || 'instagram reel thumbnail'}
+                        priority // Added priority
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent group-hover:from-black/70 transition-colors"></div>
                       {reel.duration && (
@@ -93,18 +92,14 @@ export default function InstagramReelsSection() {
 
       <Dialog open={!!selectedReelEmbedUrl} onOpenChange={(isOpen) => { if (!isOpen) setSelectedReelEmbedUrl(null); }}>
         <DialogContent className="sm:max-w-[375px] p-0 overflow-hidden border-0 aspect-[9/16]">
-          {/* The aspect ratio here helps size the dialog itself like a reel.
-              You might need to adjust max-w and height for the iframe for perfect fit.
-              Instagram embeds often have fixed widths like ~326px.
-          */}
           {selectedReelEmbedUrl && (
             <iframe
               src={selectedReelEmbedUrl}
               width="100%"
-              height="100%" // Let the aspect ratio of DialogContent control this
+              height="100%"
               allowFullScreen
               title="Instagram Reel Embed"
-              className="border-0 block" // `block` helps remove extra space below iframe sometimes
+              className="border-0 block"
             ></iframe>
           )}
         </DialogContent>
