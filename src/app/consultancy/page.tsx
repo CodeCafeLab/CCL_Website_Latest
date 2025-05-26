@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -108,3 +109,4 @@ export default function ConsultancyPage() {
     </div>
   );
 }
+

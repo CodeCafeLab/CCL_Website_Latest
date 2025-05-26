@@ -52,7 +52,7 @@ export default function ContactPage() {
               <Button type="submit" className="w-full" size="lg">Send Message</Button>
             </form>
             <p className="text-xs text-muted-foreground mt-4 text-center">
-                Note: This is a placeholder form. Form submission functionality needs to be implemented.
+                Note: This is a placeholder form. Form submission functionality (React Hook Form, validation) needs to be implemented.
             </p>
           </CardContent>
         </Card>
