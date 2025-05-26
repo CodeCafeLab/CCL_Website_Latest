@@ -27,9 +27,9 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
     description: "Company mission, vision, values, founding story, leadership team, and journey."
   },
   {
-    href: "/pricing", // Updated href
+    href: "/pricing", // Corrected href
     label: "Pricing",
-    icon: CircleDollarSign,
+    icon: CircleDollarSign, // Ensured correct icon
     description: "We have transparent pricing modules for individuals, Startups, Companies."
   },
   {
@@ -285,7 +285,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Frontend Development", slug: "frontend-development", description: "React, Next.js, Vue.js, and modern JavaScript frameworks." },
       { title: "Backend Development", slug: "backend-development", description: "Node.js, Laravel, Python/Django, and scalable API development." },
       { title: "CMS & Custom Admin Panels", slug: "cms-custom-admin-panels", description: "WordPress, Strapi, Headless CMSs, or fully custom admin interfaces." },
-      { title: "API Integration & Development (Web)", slug: "api-integration-development-web", description: "RESTful APIs, GraphQL, and third-party API integrations." },
+      { title: "API Integration & Development (Web)", slug: "web-api-integration-development", description: "RESTful APIs, GraphQL, and third-party API integrations." },
       { title: "Performance Optimization", slug: "performance-optimization", description: "Speed, SEO, accessibility, and Core Web Vitals improvements." },
       { title: "Web Hosting & Deployment", slug: "web-hosting-deployment", description: "Scalable hosting setup on AWS, Vercel, Netlify, DigitalOcean, etc." },
     ],
@@ -304,7 +304,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "ERP & CRM Solutions", slug: "erp-crm-solutions", description: "Internal tools for enterprise resource planning and customer relationship management." },
       { title: "Legacy Software Modernization", slug: "legacy-software-modernization", description: "Rebuilding or upgrading outdated systems using modern technologies." },
       { title: "Desktop Application Development", slug: "desktop-application-development", description: "Software for Windows, macOS, or Linux platforms." },
-      { title: "API Development & Integration (Software)", slug: "api-development-integration-software", description: "Scalable RESTful or GraphQL APIs and third-party service integrations." },
+      { title: "API Development & Integration (Software)", slug: "software-api-development-integration", description: "Scalable RESTful or GraphQL APIs and third-party service integrations." },
       { title: "Software Testing & QA", slug: "software-testing-qa", description: "Manual and automated testing for functionality, performance, and security." },
       { title: "Software Maintenance & Support", slug: "software-maintenance-support", description: "Ongoing upgrades, troubleshooting, and performance monitoring." },
     ],
@@ -800,7 +800,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "2",
     name: "John Davis",
-    role: "CTO, QuantumLeap AI", // Shortened role
+    role: "CTO, QuantumLeap AI",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -820,7 +820,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder, SparkUp Ventures", // Shortened role
+    role: "Founder, SparkUp Ventures",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
