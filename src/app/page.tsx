@@ -6,7 +6,7 @@ import YoutubeShortsSection from '@/components/home/YoutubeShortsSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
-import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star } from 'lucide-react'; 
+import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star } from 'lucide-react';
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 
@@ -174,8 +174,8 @@ export default function HomePage() {
                 {/* Row 1 */}
                 <div className="flex flex-wrap justify-center items-center gap-4">
                   {TECH_STACK_DATA.slice(0, techStackRow1Count).map((tech, itemIndex) => (
-                    <div 
-                      key={tech.name} 
+                    <div
+                      key={tech.name}
                       className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
                     >
                       <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
@@ -186,8 +186,8 @@ export default function HomePage() {
                 {/* Row 2 */}
                 <div className="flex flex-wrap justify-center items-center gap-4">
                   {TECH_STACK_DATA.slice(techStackRow1Count, techStackRow1Count + techStackRow2Count).map((tech, itemIndex) => (
-                    <div 
-                      key={tech.name} 
+                    <div
+                      key={tech.name}
                       className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
                     >
                       <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
@@ -198,8 +198,8 @@ export default function HomePage() {
                 {/* Row 3 */}
                 <div className="flex flex-wrap justify-center items-center gap-4">
                   {TECH_STACK_DATA.slice(techStackRow1Count + techStackRow2Count, techStackRow1Count + techStackRow2Count + techStackRow3Count).map((tech, itemIndex) => (
-                    <div 
-                      key={tech.name} 
+                    <div
+                      key={tech.name}
                       className="w-28 h-28 flex flex-col items-center justify-center p-3 bg-card rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105"
                     >
                       <tech.icon className={`h-8 w-8 mb-2 ${itemIndex % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
@@ -233,24 +233,24 @@ export default function HomePage() {
       <section className="mt-8 md:mt-12">
         <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
         <div className="relative w-full overflow-hidden group">
-          <div 
-            className="flex animate-marquee group-hover:pause whitespace-nowrap" 
+          <div
+            className="flex animate-marquee group-hover:pause whitespace-nowrap"
             style={{ willChange: 'transform' }}
           >
             {[...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA].map((testimonial, index) => (
-              <Card 
-                key={`${testimonial.id}-${index}`} 
+              <Card
+                key={`${testimonial.id}-${index}`}
                 className="flex-shrink-0 w-72 md:w-80 mx-4 bg-card flex flex-col"
               >
                 <CardContent className="p-6 flex flex-col h-full">
                   <div className="flex items-center mb-4">
-                    <Image 
-                        src={testimonial.avatarUrl} 
-                        alt={testimonial.name} 
-                        width={60} 
-                        height={60} 
-                        className="rounded-full mr-4 object-cover" 
-                        data-ai-hint={testimonial.dataAiHint} 
+                    <Image
+                        src={testimonial.avatarUrl}
+                        alt={testimonial.name}
+                        width={60}
+                        height={60}
+                        className="rounded-full mr-4 object-cover"
+                        data-ai-hint={testimonial.dataAiHint}
                     />
                     <div>
                       <h4 className="font-semibold">{testimonial.name}</h4>
@@ -327,4 +327,3 @@ export default function HomePage() {
     </div>
   );
 }
-
