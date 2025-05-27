@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 };
 
 const teamMembers = [
-  { name: 'Gaurav Saini', role: 'Vibe Coder and business manager', image: '/gaurav.png', dataAiHint: 'Gaurav Saini portrait' },
-  { name: 'Sarita Tak', role: 'Vibe Coder and business manager', image: '/sarita.png', dataAiHint: 'Sarita Tak portrait' },
+  { name: 'Gaurav Saini', role: 'Vibe Coder and business manager', image: '/gaurav.jpg', dataAiHint: 'Gaurav Saini portrait' },
+  { name: 'Sarita Tak', role: 'Vibe Coder and business manager', image: '/sarita.jpg', dataAiHint: 'Sarita Tak portrait' },
 ];
 
 const values = [
@@ -52,7 +52,7 @@ export default function CompanyPage() {
               width={600} 
               height={400} 
               className="rounded-lg object-cover"
-              data-ai-hint="team working" 
+              dataAiHint="team working" 
             />
           </CardContent>
         </Card>
