@@ -15,6 +15,9 @@ export default function FeaturedVideosSection() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const videoModalRef = useRef<HTMLVideoElement>(null);
 
+  const [hoveredVideoId, setHoveredVideoId] = useState<string | null>(null);
+  const videoPreviewRefs = useRef<Map<string, HTMLVideoElement | null>>(new Map());
+
   const handleVideoClick = (videoSrc: string) => {
     setSelectedVideoSrc(videoSrc);
     setIsModalOpen(true);
@@ -30,9 +33,26 @@ export default function FeaturedVideosSection() {
     }
   };
 
+  const handleMouseEnter = (video: FeaturedVideo) => {
+    setHoveredVideoId(video.id);
+    const videoEl = videoPreviewRefs.current.get(video.id);
+    if (videoEl) {
+      videoEl.currentTime = 0;
+      videoEl.play().catch(error => console.warn("Preview video autoplay prevented:", error));
+    }
+  };
+
+  const handleMouseLeave = (video: FeaturedVideo) => {
+    setHoveredVideoId(null);
+    const videoEl = videoPreviewRefs.current.get(video.id);
+    if (videoEl) {
+      videoEl.pause();
+    }
+  };
+
   useEffect(() => {
     if (isModalOpen && videoModalRef.current && selectedVideoSrc) {
-      videoModalRef.current.load();
+      videoModalRef.current.load(); // Ensure the source is loaded
       videoModalRef.current.play().catch(error => {
         console.warn("Modal video autoplay prevented:", error);
       });
@@ -65,28 +85,43 @@ export default function FeaturedVideosSection() {
               key={video.id}
               className="block flex-shrink-0 w-56 group cursor-pointer"
               onClick={() => handleVideoClick(video.videoSrc)}
+              onMouseEnter={() => handleMouseEnter(video)}
+              onMouseLeave={() => handleMouseLeave(video)}
             >
               <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                 <CardHeader className="p-0 relative">
                   <div className="aspect-[9/16] w-full relative overflow-hidden bg-black">
-                    <Image
-                      src={video.thumbnailUrl}
-                      alt={video.title}
-                      fill
-                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      data-ai-hint={video.dataAiHint || 'video thumbnail'}
-                      poster={video.thumbnailUrl}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent group-hover:from-black/70 transition-colors"></div>
-                    {video.duration && (
-                      <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded-sm">
-                        {video.duration}
-                      </div>
+                    {hoveredVideoId === video.id ? (
+                      <video
+                        ref={(el) => videoPreviewRefs.current.set(video.id, el)}
+                        src={video.videoSrc}
+                        poster={video.thumbnailUrl}
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <>
+                        <Image
+                          src={video.thumbnailUrl}
+                          alt={video.title}
+                          fill
+                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px"
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          data-ai-hint={video.dataAiHint || 'video thumbnail'}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent group-hover:from-black/70 transition-colors"></div>
+                        {video.duration && (
+                          <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded-sm">
+                            {video.duration}
+                          </div>
+                        )}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <PlayCircle className="h-12 w-12 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                        </div>
+                      </>
                     )}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <PlayCircle className="h-12 w-12 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
-                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="p-3">
@@ -101,7 +136,7 @@ export default function FeaturedVideosSection() {
       <Dialog open={isModalOpen} onOpenChange={handleModalOpenChange}>
         <DialogContent
           className={cn(
-            "bg-background sm:max-w-2xl p-4 overflow-hidden aspect-video border-0 shadow-lg rounded-lg"
+            "bg-background sm:max-w-[375px] p-0 overflow-hidden aspect-[9/16] border-0 shadow-lg rounded-lg"
           )}
         >
           {selectedVideoSrc && (
@@ -110,8 +145,6 @@ export default function FeaturedVideosSection() {
               src={selectedVideoSrc}
               controls
               autoPlay
-              width="100%"
-              height="auto"
               className="w-full h-full object-contain"
             >
               Your browser does not support the video tag.
