@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -9,19 +10,24 @@ interface AnimatedHeroTextProps {
   delayBetweenTexts?: number;
 }
 
-export default function AnimatedHeroText({ 
-  texts, 
-  typingSpeed = 100, 
-  deletingSpeed = 50, 
-  delayBetweenTexts = 2000 
+export default function AnimatedHeroText({
+  texts,
+  typingSpeed = 100,
+  deletingSpeed = 50,
+  delayBetweenTexts = 2000
 }: AnimatedHeroTextProps) {
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (!texts || texts.length === 0) return;
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted || !texts || texts.length === 0) return;
 
     const handleTyping = () => {
       const fullText = texts[textIndex];
@@ -38,12 +44,21 @@ export default function AnimatedHeroText({
       } else if (isDeleting && currentText === '') {
         setIsDeleting(false);
         setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+        // Reset charIndex for the new text
+        setCharIndex(0);
       }
     };
 
     const timer = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed);
     return () => clearTimeout(timer);
-  }, [charIndex, currentText, isDeleting, textIndex, texts, typingSpeed, deletingSpeed, delayBetweenTexts]);
+  }, [isMounted, charIndex, currentText, isDeleting, textIndex, texts, typingSpeed, deletingSpeed, delayBetweenTexts]);
+
+  if (!isMounted) {
+    // Render a placeholder or nothing on the server and initial client render
+    // to avoid hydration mismatch for the animated part.
+    // A non-breaking space can help maintain layout if the span has height/padding.
+    return <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-primary">&nbsp;</span>;
+  }
 
   return (
     <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-primary">
