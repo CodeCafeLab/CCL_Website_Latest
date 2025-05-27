@@ -143,7 +143,7 @@ export default function FeaturedVideosSection() {
           {/* Right Column: Main YouTube Embed */}
           <div className="space-y-6">
             <h3 className="font-brittany text-4xl text-primary text-center lg:text-left mt-4 mb-4">
-              Let’s Learn the Art of Brewing with AI
+              Let's See, whats brewing in our codecafe lab
             </h3>
             <div className="aspect-video w-full rounded-lg overflow-hidden shadow-lg">
               <iframe
