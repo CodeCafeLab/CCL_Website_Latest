@@ -102,25 +102,16 @@ export interface OpenPosition {
   applyUrl: string;
 }
 
-export interface YouTubeShort {
+export interface FeaturedVideo { // Renamed from YouTubeShort and adapted
   id: string;
   title: string;
-  thumbnailUrl: string;
-  youtubeUrl: string;
+  thumbnailUrl: string; // Will use placeholders
+  videoSrc: string; // Path to local video in /public
   dataAiHint: string;
-  duration: string; 
-  durationSeconds?: number; 
+  duration?: string;
 }
 
-export interface InstagramReel {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  instagramUrl: string;
-  dataAiHint: string;
-  duration?: string; // Duration might be harder to get/less standardized for IG
-}
-
+// Removed InstagramReel type
 
 export interface TechStackItem {
   name: string;

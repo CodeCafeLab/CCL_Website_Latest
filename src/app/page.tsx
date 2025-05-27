@@ -1,11 +1,10 @@
 
 "use client"; 
 
-import type { Metadata } from 'next'; 
 import Link from 'next/link';
 import { useState } from 'react'; 
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
-import InstagramReelsSection from '@/components/home/InstagramReelsSection'; // Updated import
+import FeaturedVideosSection from '@/components/home/FeaturedVideosSection'; // Updated import name
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
@@ -68,8 +67,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Instagram Reels Section */}
-        <InstagramReelsSection />
+        {/* Featured Videos Section (formerly Instagram Reels) */}
+        <FeaturedVideosSection />
 
         {/* Services Overview */}
         <section>
