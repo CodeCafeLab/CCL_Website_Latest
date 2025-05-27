@@ -99,7 +99,7 @@ export default function FeaturedVideosSection() {
                 >
                   <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                     <CardHeader className="p-0 relative">
-                      <div className="aspect-[9/16] w-full relative overflow-hidden bg-black">
+                      <div className="aspect-[9/16] w-full relative overflow-hidden">
                         {hoveredVideoId === video.id ? (
                           <video
                             ref={(el) => videoPreviewRefs.current.set(video.id, el)}
@@ -144,7 +144,7 @@ export default function FeaturedVideosSection() {
 
           {/* Right Column: Main YouTube Embed */}
           <div className="space-y-6">
-            <h3 className="font-brittany text-4xl text-primary text-center lg:text-left mb-4">
+            <h3 className="font-brittany text-4xl text-primary text-center mt-4 mb-4">
               Let’s Learn the Art of Brewing with AI
             </h3>
             <div className="aspect-video w-full rounded-lg overflow-hidden shadow-lg">
