@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { FeaturedVideo } from '@/types';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardHeader } from '@/components/ui/card';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Film, PlayCircle } from 'lucide-react';
 import { FEATURED_VIDEOS_DATA } from '@/lib/constants';
@@ -79,7 +79,7 @@ export default function FeaturedVideosSection() {
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
             <Film className="h-10 w-10 text-primary" />
-            Showcasing Our Work
+            Let's see whats brewing in codecafe lab
           </h2>
           <p className="text-muted-foreground">Quick bites & in-depth looks at what we do.</p>
         </div>
@@ -133,7 +133,6 @@ export default function FeaturedVideosSection() {
                         )}
                       </div>
                     </CardHeader>
-                    {/* CardContent for video title has been removed */}
                   </Card>
                 </div>
               ))}
@@ -142,8 +141,8 @@ export default function FeaturedVideosSection() {
 
           {/* Right Column: Main YouTube Embed */}
           <div className="space-y-6">
-            <h3 className="font-brittany text-4xl text-primary text-center lg:text-left mt-4 mb-4">
-              Let's See, whats brewing in our codecafe lab
+             <h3 className="font-brittany text-4xl text-primary text-center mt-4 mb-4">
+                Let&apos;s See, whats brewing in our codecafe lab
             </h3>
             <div className="aspect-video w-full rounded-lg overflow-hidden shadow-lg">
               <iframe
