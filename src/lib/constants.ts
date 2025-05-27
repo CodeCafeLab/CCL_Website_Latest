@@ -1,5 +1,5 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial, FeaturedVideo } from '@/types'; // Updated import
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial, FeaturedVideo } from '@/types';
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, FileCode,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
@@ -744,17 +744,14 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   },
 ];
 
-// The HTML embed code for the specific reel is now in InstagramReelsSection.tsx
-// const specificReelEmbedHtml = `<blockquote class="instagram-media" ...>...</blockquote>`;
-// const specificReelId = 'DJZ0qPoSIUt';
 
-export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
+export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [ // Renamed to FeaturedVideo but keeping content for now
   {
     id: 'reel1',
     title: 'Meta AI Showcase Reel',
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Meta+AI+Reel',
     instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/',
-    videoSrc: '', // Not used for Instagram embeds in modal
+    videoSrc: '', // This will be used for local video if instagramUrl is not for embedding
     dataAiHint: 'meta ai',
     duration: '0:58',
   },
@@ -764,7 +761,7 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Innovation+Reel',
     instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     videoSrc: '',
-    dataAiHint: 'codecafelab reel',
+    dataAiHint: 'codecafelab instagram',
     duration: '0:45',
   },
   {
@@ -773,7 +770,7 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Team+Culture+Reel',
     instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     videoSrc: '',
-    dataAiHint: 'team culture',
+    dataAiHint: 'codecafelab instagram',
     duration: '1:02',
   },
   {
@@ -782,7 +779,7 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Project+Alpha+Reel',
     instagramUrl: 'https://www.instagram.com/reel/Cexample1/', // Placeholder
     videoSrc: '',
-    dataAiHint: 'coding project',
+    dataAiHint: 'codecafelab instagram',
     duration: '0:50',
   },
   {
@@ -791,7 +788,7 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     thumbnailUrl: 'https://placehold.co/270x480.png?text=AI+Life+Reel',
     instagramUrl: 'https://www.instagram.com/reel/Cexample2/', // Placeholder
     videoSrc: '',
-    dataAiHint: 'ai application',
+    dataAiHint: 'codecafelab instagram',
     duration: '0:55',
   },
   {
@@ -800,7 +797,7 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Web+Dev+Tips+Reel',
     instagramUrl: 'https://www.instagram.com/reel/Cexample3/', // Placeholder
     videoSrc: '',
-    dataAiHint: 'web dev',
+    dataAiHint: 'codecafelab instagram',
     duration: '1:10',
   },
 ];
@@ -848,7 +845,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "1",
     name: "Sarah Miller",
-    role: "CEO, Innovatech Solutions",
+    role: "CEO",
     company: "Innovatech Solutions",
     quote: "CodeCafe Lab transformed our vision into a reality with their exceptional AI expertise. Their team is not only skilled but also incredibly responsive and collaborative.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -858,7 +855,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "2",
     name: "John Davis",
-    role: "CTO, QuantumLeap AI",
+    role: "CTO",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -868,7 +865,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "3",
     name: "Emily Carter",
-    role: "Product Manager, NextGen Apps",
+    role: "Product Manager",
     company: "NextGen Apps",
     quote: "The mobile app developed by CodeCafe Lab exceeded all our expectations in terms of design, functionality, and performance. Highly recommended!",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -878,7 +875,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder, SparkUp Ventures",
+    role: "Founder",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -888,7 +885,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "5",
     name: "Jessica Williams",
-    role: "Head of Digital, ConnectFlow Dynamics",
+    role: "Head of Digital",
     company: "ConnectFlow Dynamics",
     quote: "Their team's dedication and problem-solving skills are top-notch. CodeCafe Lab is our go-to for any complex software development needs.",
     avatarUrl: "https://placehold.co/60x60.png",

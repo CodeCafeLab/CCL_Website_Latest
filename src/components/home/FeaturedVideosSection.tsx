@@ -2,11 +2,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import type { FeaturedVideo } from '@/types'; // Ensure this type is correct
+import type { FeaturedVideo } from '@/types'; 
 import Image from 'next/image';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Film, PlayCircle } from 'lucide-react'; // Using Film for section icon
+import { Film, PlayCircle } from 'lucide-react'; 
 import { FEATURED_VIDEOS_DATA } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
@@ -23,16 +23,14 @@ export default function FeaturedVideosSection() {
   const handleModalOpenChange = (open: boolean) => {
     setIsModalOpen(open);
     if (!open) {
-      setSelectedVideoSrc(null); // Reset when modal closes
+      setSelectedVideoSrc(null); 
     }
   };
 
   useEffect(() => {
-    if (isModalOpen && videoRef.current) {
-      videoRef.current.load(); // Ensure video reloads if src changes
+    if (isModalOpen && videoRef.current && selectedVideoSrc) {
+      videoRef.current.load(); 
       videoRef.current.play().catch(error => {
-        // Autoplay was prevented, which is common in browsers.
-        // The user will have to click play on the controls.
         console.warn("Video autoplay prevented:", error);
       });
     }
@@ -67,7 +65,7 @@ export default function FeaturedVideosSection() {
             >
               <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                 <CardHeader className="p-0 relative">
-                  <div className="aspect-[9/16] w-full relative overflow-hidden">
+                  <div className="aspect-[9/16] w-full relative overflow-hidden bg-pink-500/30"> {/* Diagnostic background color, remove if images show */}
                     <Image
                       src={video.thumbnailUrl}
                       alt={video.title}

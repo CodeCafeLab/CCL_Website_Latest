@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { useState } from 'react'; 
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
-import FeaturedVideosSection from '@/components/home/FeaturedVideosSection'; // Updated import name
+import FeaturedVideosSection from '@/components/home/FeaturedVideosSection'; 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
@@ -67,7 +67,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Featured Videos Section (formerly Instagram Reels) */}
+        {/* Featured Videos Section */}
         <FeaturedVideosSection />
 
         {/* Services Overview */}

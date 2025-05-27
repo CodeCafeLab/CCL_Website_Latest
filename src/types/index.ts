@@ -102,18 +102,28 @@ export interface OpenPosition {
   applyUrl: string;
 }
 
-export interface FeaturedVideo { // Renamed from YouTubeShort and adapted
+export interface FeaturedVideo {
   id: string;
   title: string;
-  thumbnailUrl: string; // Will use placeholders
+  thumbnailUrl: string; 
   videoSrc: string; // Path to local video in /public
   dataAiHint: string;
   duration?: string;
+  instagramUrl?: string; // Keep if any specific reel still uses it, otherwise can be removed
 }
 
-// Removed InstagramReel type
 
 export interface TechStackItem {
   name: string;
   icon: LucideIcon;
+}
+
+export interface YouTubeShort {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  youtubeUrl: string;
+  dataAiHint: string;
+  duration: string;
+  durationSeconds: number;
 }
