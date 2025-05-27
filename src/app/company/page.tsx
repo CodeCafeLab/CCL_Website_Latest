@@ -10,9 +10,8 @@ export const metadata: Metadata = {
 };
 
 const teamMembers = [
-  { name: 'Jane Doe', role: 'CEO & Co-founder', image: 'https://placehold.co/300x300.png', dataAiHint: 'person portrait' },
-  { name: 'John Smith', role: 'CTO & Co-founder', image: 'https://placehold.co/300x300.png', dataAiHint: 'person portrait' },
-  { name: 'Alice Brown', role: 'Lead AI Engineer', image: 'https://placehold.co/300x300.png', dataAiHint: 'person portrait' },
+  { name: 'Gaurav Saini', role: 'Vibe Coder and business manager', image: '/gaurav.png', dataAiHint: 'Gaurav Saini portrait' },
+  { name: 'Sarita Tak', role: 'Vibe Coder and business manager', image: '/sarita.png', dataAiHint: 'Sarita Tak portrait' },
 ];
 
 const values = [
@@ -100,7 +99,7 @@ export default function CompanyPage() {
       {/* Team Carousel Placeholder */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-12 flex items-center justify-center gap-2"><Users className="h-8 w-8 text-primary" />Meet Our Team</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
           {teamMembers.map((member) => (
             <Card key={member.name} className="text-center overflow-hidden group">
               <Image 
@@ -118,7 +117,6 @@ export default function CompanyPage() {
             </Card>
           ))}
         </div>
-        <p className="text-center mt-8 text-muted-foreground">...and many more talented individuals!</p>
       </section>
 
       {/* Company Timeline Section */}
