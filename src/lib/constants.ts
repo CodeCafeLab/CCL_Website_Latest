@@ -1,7 +1,7 @@
 
 import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial, FeaturedVideo, OpenPosition, YouTubeShort } from '@/types';
 import {
-  Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, FileCode,
+  Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, FileCode as LucideFileCode, // Renamed to avoid conflict
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
   Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus,
@@ -526,7 +526,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "Smart Contract Development",
     slug: "smart-contract-development",
-    icon: FileCode,
+    icon: LucideFileCode,
     subServices: [],
     description: "Development of self-executing smart contracts for automating agreements and processes on the blockchain.",
     image: "https://placehold.co/600x400.png",
@@ -721,7 +721,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video1',
     title: 'Intro to Our AI Platform',
-    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png',
+    thumbnailUrl: '/video1s.png',
     videoSrc: '/video1.mp4',
     dataAiHint: 'ai platform demo',
     duration: '0:45',
@@ -729,7 +729,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video2',
     title: 'Web Dev Best Practices',
-    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png',
+    thumbnailUrl: '/video2s.png',
     videoSrc: '/video2.mp4',
     dataAiHint: 'coding tutorial screen',
     duration: '1:10',
@@ -737,7 +737,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video3',
     title: 'A Day at CodeCafe Lab',
-    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png',
+    thumbnailUrl: '/video3s.png',
     videoSrc: '/video3.mp4',
     dataAiHint: 'office team working',
     duration: '0:55',
@@ -750,8 +750,8 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     id: 'reel1',
     title: 'Meta AI Showcase Reel',
     thumbnailUrl: 'https://placehold.co/270x480.png',
-    instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/', // Meta AI reel
-    videoSrc: '', // Not used for direct embed or iframe if instagramUrl is primary
+    instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/',
+    videoSrc: '',
     dataAiHint: 'meta ai',
     duration: '0:58',
   },
@@ -759,7 +759,7 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     id: 'reel2',
     title: 'CodeCafe Lab: Innovations Reel',
     thumbnailUrl: 'https://placehold.co/270x480.png',
-    instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/', // Example CodeCafe Reel
+    instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/',
     videoSrc: '',
     dataAiHint: 'codecafelab instagram',
     duration: '0:45',
@@ -768,30 +768,20 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
     id: 'reel3',
     title: 'Our Team Culture Reel',
     thumbnailUrl: 'https://placehold.co/270x480.png',
-    instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/', // Example CodeCafe Reel
+    instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/',
     videoSrc: '',
     dataAiHint: 'codecafelab instagram',
     duration: '1:02',
   },
-  // You can add more reels here if needed, following the same structure
-  // {
-  //   id: 'reel4',
-  //   title: 'Behind the Code: Project Alpha',
-  //   thumbnailUrl: 'https://placehold.co/270x480.png?text=Project+Alpha+Reel',
-  //   instagramUrl: 'https://www.instagram.com/reel/Cexample1/', // Replace with actual URL
-  //   videoSrc: '',
-  //   dataAiHint: 'codecafelab instagram',
-  //   duration: '0:50',
-  // },
 ];
 
 
 export const TECH_STACK_DATA: TechStackItem[] = [
   { name: "Next.js", icon: Package },
   { name: "React", icon: Package },
-  { name: "TypeScript", icon: FileCode },
+  { name: "TypeScript", icon: LucideFileCode },
   { name: "Node.js", icon: Server },
-  { name: "Python", icon: FileCode },
+  { name: "Python", icon: LucideFileCode },
   { name: "AI / ML", icon: Brain },
   { name: "Genkit", icon: Settings2 },
   { name: "Tailwind CSS", icon: Palette },
@@ -806,14 +796,14 @@ export const TECH_STACK_DATA: TechStackItem[] = [
   { name: "Figma", icon: PenTool },
   { name: "Android", icon: Smartphone },
   { name: "iOS", icon: Smartphone },
-  { name: "Java", icon: FileCode },
-  { name: "Kotlin", icon: FileCode },
-  { name: "Swift", icon: FileCode },
+  { name: "Java", icon: LucideFileCode },
+  { name: "Kotlin", icon: LucideFileCode },
+  { name: "Swift", icon: LucideFileCode },
   { name: "TensorFlow", icon: Cpu },
   { name: "PyTorch", icon: Cpu },
   { name: "HTML5", icon: CodeXml },
   { name: "CSS3", icon: Palette },
-  { name: "JavaScript", icon: FileCode },
+  { name: "JavaScript", icon: LucideFileCode },
   { name: "REST APIs", icon: Cable },
   { name: "GraphQL", icon: FileJson },
   { name: "DevOps", icon: TerminalSquare },
@@ -828,7 +818,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "1",
     name: "Sarah Miller",
-    role: "CEO, Innovatech Solutions",
+    role: "CEO",
     company: "Innovatech Solutions",
     quote: "CodeCafe Lab transformed our vision into a reality with their exceptional AI expertise. Their team is not only skilled but also incredibly responsive and collaborative.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -838,7 +828,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "2",
     name: "John Davis",
-    role: "CTO, QuantumLeap AI",
+    role: "CTO",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -848,7 +838,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "3",
     name: "Emily Carter",
-    role: "Product Manager, NextGen Apps",
+    role: "Product Manager",
     company: "NextGen Apps",
     quote: "The mobile app developed by CodeCafe Lab exceeded all our expectations in terms of design, functionality, and performance. Highly recommended!",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -858,7 +848,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder, SparkUp Ventures",
+    role: "Founder",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -868,7 +858,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "5",
     name: "Jessica Williams",
-    role: "Head of Digital, ConnectFlow Dynamics",
+    role: "Head of Digital",
     company: "ConnectFlow Dynamics",
     quote: "Their team's dedication and problem-solving skills are top-notch. CodeCafe Lab is our go-to for any complex software development needs.",
     avatarUrl: "https://placehold.co/60x60.png",
