@@ -133,9 +133,7 @@ export default function FeaturedVideosSection() {
                         )}
                       </div>
                     </CardHeader>
-                    <CardContent className="p-3">
-                      <h4 className="text-sm font-medium truncate group-hover:text-primary transition-colors">{video.title}</h4>
-                    </CardContent>
+                    {/* CardContent for video title has been removed */}
                   </Card>
                 </div>
               ))}
@@ -144,7 +142,7 @@ export default function FeaturedVideosSection() {
 
           {/* Right Column: Main YouTube Embed */}
           <div className="space-y-6">
-            <h3 className="font-brittany text-4xl text-primary text-center mt-4 mb-4">
+            <h3 className="font-brittany text-4xl text-primary text-center lg:text-left mt-4 mb-4">
               Let’s Learn the Art of Brewing with AI
             </h3>
             <div className="aspect-video w-full rounded-lg overflow-hidden shadow-lg">
