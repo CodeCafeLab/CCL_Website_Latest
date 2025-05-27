@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         hostname: 'i.ytimg.com', // Added for YouTube thumbnails
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com', // Added for Firebase Storage images
+        port: '',
+        pathname: '/**',
       }
     ],
   },
