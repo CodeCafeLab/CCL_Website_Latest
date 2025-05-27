@@ -2,13 +2,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import type { InstagramReel } from '@/types';
+import type { FeaturedVideo } from '@/types'; // Ensure this type is correct
 import Image from 'next/image';
 import Script from 'next/script';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { PlayCircle, Instagram } from 'lucide-react';
-import { INSTAGRAM_REELS_DATA } from '@/lib/constants';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Film, Instagram, PlayCircle } from 'lucide-react'; // Using Film for section icon
+import { INSTAGRAM_REELS_DATA } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 // The HTML embed code for the specific reel
@@ -43,7 +43,7 @@ export default function InstagramReelsSection() {
     return null;
   };
 
-  const handleReelClick = (reel: InstagramReel) => {
+  const handleReelClick = (reel: FeaturedVideo) => {
     const reelIdFromUrl = reel.instagramUrl.match(/\/reels?\/([a-zA-Z0-9_-]+)/)?.[1];
 
     if (reelIdFromUrl === specificReelId) {
@@ -117,7 +117,7 @@ export default function InstagramReelsSection() {
               <div key={reel.id} onClick={() => handleReelClick(reel)} className="block flex-shrink-0 w-56 group cursor-pointer">
                 <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                   <CardHeader className="p-0 relative">
-                    <div className="aspect-[9/16] w-full relative overflow-hidden">
+                    <div className="aspect-[9/16] w-full relative overflow-hidden bg-pink-500/30"> {/* Diagnostic background color */}
                       <Image
                         src={reel.thumbnailUrl}
                         alt={reel.title}
@@ -178,5 +178,3 @@ export default function InstagramReelsSection() {
     </>
   );
 }
-
-    

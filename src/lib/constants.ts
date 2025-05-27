@@ -526,7 +526,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "Smart Contract Development",
     slug: "smart-contract-development",
-    icon: FileText,
+    icon: FileCode,
     subServices: [],
     description: "Development of self-executing smart contracts for automating agreements and processes on the blockchain.",
     image: "https://placehold.co/600x400/ffc011/000000.png?text=Smart+Contracts",
@@ -744,6 +744,67 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   },
 ];
 
+// The HTML embed code for the specific reel is now in InstagramReelsSection.tsx
+// const specificReelEmbedHtml = `<blockquote class="instagram-media" ...>...</blockquote>`;
+// const specificReelId = 'DJZ0qPoSIUt';
+
+export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
+  {
+    id: 'reel1',
+    title: 'Meta AI Showcase Reel',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Meta+AI+Reel',
+    instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/',
+    videoSrc: '', // Not used for Instagram embeds in modal
+    dataAiHint: 'meta ai',
+    duration: '0:58',
+  },
+  {
+    id: 'reel2',
+    title: 'CodeCafe Lab: Innovations',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Innovation+Reel',
+    instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+    videoSrc: '',
+    dataAiHint: 'codecafelab reel',
+    duration: '0:45',
+  },
+  {
+    id: 'reel3',
+    title: 'Our Team Culture',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Team+Culture+Reel',
+    instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+    videoSrc: '',
+    dataAiHint: 'team culture',
+    duration: '1:02',
+  },
+  {
+    id: 'reel4',
+    title: 'Behind the Code: Project Alpha',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Project+Alpha+Reel',
+    instagramUrl: 'https://www.instagram.com/reel/Cexample1/', // Placeholder
+    videoSrc: '',
+    dataAiHint: 'coding project',
+    duration: '0:50',
+  },
+  {
+    id: 'reel5',
+    title: 'AI in Everyday Life',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=AI+Life+Reel',
+    instagramUrl: 'https://www.instagram.com/reel/Cexample2/', // Placeholder
+    videoSrc: '',
+    dataAiHint: 'ai application',
+    duration: '0:55',
+  },
+  {
+    id: 'reel6',
+    title: 'Web Development Tips & Tricks',
+    thumbnailUrl: 'https://placehold.co/270x480.png?text=Web+Dev+Tips+Reel',
+    instagramUrl: 'https://www.instagram.com/reel/Cexample3/', // Placeholder
+    videoSrc: '',
+    dataAiHint: 'web dev',
+    duration: '1:10',
+  },
+];
+
 
 export const TECH_STACK_DATA: TechStackItem[] = [
   { name: "Next.js", icon: Package },
@@ -835,96 +896,3 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     rating: 4,
   }
 ];
-
-// The HTML embed code for the Instagram Reel.
-// This is kept in the component file (InstagramReelsSection.tsx) to avoid parsing issues in constants.ts.
-// const specificReelEmbedHtml = `<blockquote class="instagram-media" ...>...</blockquote>`;
-// const specificReelId = 'DJZ0qPoSIUt';
-
-// Add this to your global types if not already present
-// This helps TypeScript understand that 'instgrm' might exist on the window object.
-// declare global {
-//   interface Window {
-//     instgrm?: {
-//       Embeds: {
-//         process: () => void;
-//       };
-//     };
-//   }
-// }
-
-// The INSTAGRAM_REELS_DATA is used in InstagramReelsSection.tsx
-// It was previously defined as:
-// export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
-//   {
-//     id: 'reel1',
-//     title: 'Meta AI Showcase Reel',
-//     thumbnailUrl: 'https://placehold.co/270x480.png?text=Meta+AI+Reel',
-//     instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/', // Keep this URL as it might be used to identify the specific reel
-//     videoSrc: '', // Not used for Instagram embeds in modal
-//     dataAiHint: 'meta ai showcase',
-//     duration: '0:58',
-//   },
-// ... other reels
-// ];
-// The actual `INSTAGRAM_REELS_DATA` constant seems to have been overwritten or removed in a previous step in this file.
-// I will re-insert a version of it based on previous context.
-
-export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
-  {
-    id: 'reel1',
-    title: 'Meta AI Showcase Reel',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Meta+AI+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/',
-    videoSrc: '',
-    dataAiHint: 'meta ai showcase',
-    duration: '0:58',
-  },
-  {
-    id: 'reel2',
-    title: 'CodeCafe Lab: Innovations',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Innovation+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '0:45',
-  },
-  {
-    id: 'reel3',
-    title: 'Our Team Culture',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Team+Culture+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '1:02',
-  },
-  {
-    id: 'reel4',
-    title: 'Behind the Code: Project Alpha',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Project+Alpha+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample1/', // Placeholder
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '0:50',
-  },
-  {
-    id: 'reel5',
-    title: 'AI in Everyday Life',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=AI+Life+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample2/', // Placeholder
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '0:55',
-  },
-  {
-    id: 'reel6',
-    title: 'Web Development Tips & Tricks',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Web+Dev+Tips+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample3/', // Placeholder
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '1:10',
-  },
-];
-
-    
