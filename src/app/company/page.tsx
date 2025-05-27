@@ -52,7 +52,7 @@ export default function CompanyPage() {
               width={600} 
               height={400} 
               className="rounded-lg object-cover"
-              dataAiHint="team working" 
+              data-ai-hint="team working" 
             />
           </CardContent>
         </Card>
@@ -107,7 +107,7 @@ export default function CompanyPage() {
                 alt={member.name} 
                 width={300} 
                 height={300} 
-                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
                 data-ai-hint={member.dataAiHint}
               />
               <CardContent className="p-6">
