@@ -84,7 +84,7 @@ export default function ContactPage() {
                 <CardContent className="text-muted-foreground space-y-1">
                     <p><strong>General:</strong> <a href="mailto:hello@codecafelab.in" className="hover:text-primary">hello@codecafelab.in</a></p>
                     <p><strong>Support:</strong> <a href="mailto:support@codecafelab.in" className="hover:text-primary">support@codecafelab.in</a></p>
-                    <p><strong>Careers:</strong> <a href="mailto:careers@codecafelab.in" className="hover:text-primary">careers@codecafelab.in</a></p>
+                    <p><strong>Careers:</strong> <a href="mailto:career@codecafelab.in" className="hover:text-primary">career@codecafelab.in</a></p>
                 </CardContent>
             </Card>
         </div>
