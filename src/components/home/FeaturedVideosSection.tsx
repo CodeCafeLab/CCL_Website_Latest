@@ -83,10 +83,14 @@ export default function FeaturedVideosSection() {
           </h2>
           <p className="text-muted-foreground">Quick bites & in-depth looks at what we do.</p>
         </div>
+        
+        <h3 className="font-brittany text-4xl text-primary text-center mt-6 mb-8">
+          Let’s Learn the Art of Brewing with AI
+        </h3>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"> {/* Changed from lg:grid-cols-3 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left Column: Featured Quick Bites (Horizontally Scrollable) */}
-          <div className="space-y-6"> {/* Removed lg:col-span-2 */}
+          <div className="space-y-6">
             <h3 className="text-xl font-semibold text-center lg:text-left">Featured Quick Bites</h3>
             <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
               {FEATURED_VIDEOS_DATA.map((video) => (
@@ -143,7 +147,7 @@ export default function FeaturedVideosSection() {
           </div>
 
           {/* Right Column: Main YouTube Embed */}
-          <div className="space-y-6"> {/* Removed lg:col-span-1 */}
+          <div className="space-y-6">
             <h3 className="text-xl font-semibold text-center lg:text-left">Featured Showcase</h3>
             <div className="aspect-video w-full rounded-lg overflow-hidden shadow-lg">
               <iframe
