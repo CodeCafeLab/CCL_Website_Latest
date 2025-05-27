@@ -3,7 +3,7 @@
 
 import { useState, useRef, type SyntheticEvent } from 'react';
 import Image from 'next/image';
-import { PlayCircle, Loader2, AlertTriangle } from 'lucide-react';
+import { PlayCircle, Loader2, AlertTriangle, ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -25,6 +25,7 @@ export default function FirebaseVideoPlayer({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [posterLoadError, setPosterLoadError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handlePlayClick = () => {
@@ -37,8 +38,7 @@ export default function FirebaseVideoPlayer({
     setIsLoading(false);
     videoRef.current?.play().catch(error => {
       console.warn("Autoplay was prevented:", error);
-      // If autoplay is prevented, controls will be visible for manual play
-      setIsLoading(false); // Ensure loading is false if autoplay fails but video is ready
+      setIsLoading(false);
     });
   };
 
@@ -46,7 +46,7 @@ export default function FirebaseVideoPlayer({
     console.error('Video Error:', (e.target as HTMLVideoElement).error);
     setIsLoading(false);
     setHasError(true);
-    setIsPlaying(false); // Optionally revert to poster on error
+    setIsPlaying(false);
   };
   
   const getAspectRatioClass = () => {
@@ -55,7 +55,7 @@ export default function FirebaseVideoPlayer({
       case '9/16': return 'aspect-[9/16]';
       case '4/3': return 'aspect-[4/3]';
       case '1/1': return 'aspect-square';
-      default: return ''; // for 'auto' or custom sizing
+      default: return ''; 
     }
   }
 
@@ -63,28 +63,34 @@ export default function FirebaseVideoPlayer({
     <div className={cn("relative w-full rounded-lg shadow-lg overflow-hidden bg-card", getAspectRatioClass(), className)}>
       {!isPlaying && !hasError && (
         <>
-          <Image
-            src={posterSrc}
-            alt={title || 'Video poster'}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-opacity duration-300 hover:opacity-80"
-            priority={false} // Typically posters are not LCP
-            onError={() => {
-              // Simple fallback if poster image fails to load
-              // This will just show the play button over the background
-              console.warn("Poster image failed to load.");
-            }}
-          />
-          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+          {posterLoadError ? (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted text-muted-foreground p-4">
+              <ImageIcon className="h-12 w-12 mb-2" />
+              <p className="text-sm text-center">Poster image unavailable</p>
+            </div>
+          ) : (
+            <Image
+              src={posterSrc}
+              alt={title || 'Video poster'}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-opacity duration-300 group-hover:opacity-80"
+              priority={false}
+              onError={() => {
+                console.warn("Poster image failed to load for: ", posterSrc);
+                setPosterLoadError(true);
+              }}
+            />
+          )}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30 group">
             <Button
               variant="ghost"
               size="icon"
               onClick={handlePlayClick}
               aria-label={`Play video: ${title}`}
-              className="h-20 w-20 text-primary-foreground hover:text-primary-foreground/80 hover:bg-transparent"
+              className="h-20 w-20 text-white hover:text-white/80 hover:bg-transparent"
             >
-              <PlayCircle className="h-full w-full text-white opacity-80 hover:opacity-100 transition-opacity" strokeWidth={1.5} />
+              <PlayCircle className="h-full w-full opacity-80 group-hover:opacity-100 transition-opacity" strokeWidth={1.5} />
             </Button>
           </div>
         </>
@@ -94,14 +100,14 @@ export default function FirebaseVideoPlayer({
         <video
           ref={videoRef}
           src={videoSrc}
-          poster={posterSrc}
+          poster={posterSrc} // Poster is important here too for when autoplay is blocked
           controls
           autoPlay
           playsInline
           onLoadedData={handleVideoLoadedData}
           onError={handleVideoError}
-          onCanPlay={() => setIsLoading(false)} // Hide loader when video can start playing
-          className="w-full h-full object-contain bg-black"
+          onCanPlay={() => setIsLoading(false)}
+          className="w-full h-full object-contain bg-black" // bg-black ensures no white flash if video is transparent
           aria-label={title}
         />
       )}
@@ -113,11 +119,12 @@ export default function FirebaseVideoPlayer({
       )}
 
       {hasError && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-card p-4">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-card p-4 text-center">
           <AlertTriangle className="h-12 w-12 text-destructive mb-2" />
-          <p className="text-destructive-foreground text-center">
-            Video could not be loaded. Please try again later.
+          <p className="text-destructive-foreground">
+            Video could not be loaded.
           </p>
+          <p className="text-xs text-muted-foreground mt-1">Please check the video URL or try again later.</p>
         </div>
       )}
     </div>
