@@ -103,11 +103,12 @@ export default function FeaturedVideosSection() {
             >
               <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                 <CardHeader className="p-0 relative">
-                  <div className="aspect-[9/16] w-full relative overflow-hidden bg-black"> {/* Added bg-black as fallback */}
+                  <div className="aspect-[9/16] w-full relative overflow-hidden bg-black">
                     {hoveredVideoId === video.id ? (
                       <video
                         ref={(el) => videoPreviewRefs.current.set(video.id, el)}
                         src={video.videoSrc}
+                        poster={video.thumbnailUrl}
                         muted
                         loop
                         playsInline
