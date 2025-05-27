@@ -1,5 +1,5 @@
 
-import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial, FeaturedVideo } from '@/types';
+import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial, FeaturedVideo, OpenPosition, YouTubeShort } from '@/types';
 import {
   Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, FileCode,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
@@ -721,7 +721,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video1',
     title: 'Intro to Our AI Platform',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=AI+Platform+Intro',
+    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png?text=AI+Platform+Intro',
     videoSrc: '/video1.mp4',
     dataAiHint: 'ai platform demo',
     duration: '0:45',
@@ -729,7 +729,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video2',
     title: 'Web Dev Best Practices',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Web+Dev+Tips',
+    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png?text=Web+Dev+Tips',
     videoSrc: '/video2.mp4',
     dataAiHint: 'coding tutorial screen',
     duration: '1:10',
@@ -737,7 +737,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video3',
     title: 'A Day at CodeCafe Lab',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Office+Tour',
+    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png?text=Office+Tour',
     videoSrc: '/video3.mp4',
     dataAiHint: 'office team working',
     duration: '0:55',
@@ -745,19 +745,19 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
 ];
 
 
-export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [ // Renamed to FeaturedVideo but keeping content for now
+export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
   {
     id: 'reel1',
     title: 'Meta AI Showcase Reel',
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Meta+AI+Reel',
     instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/',
-    videoSrc: '', // This will be used for local video if instagramUrl is not for embedding
+    videoSrc: '',
     dataAiHint: 'meta ai',
     duration: '0:58',
   },
   {
     id: 'reel2',
-    title: 'CodeCafe Lab: Innovations',
+    title: 'CodeCafe Lab: Innovations Reel',
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Innovation+Reel',
     instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     videoSrc: '',
@@ -766,7 +766,7 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [ // Renamed to FeaturedVid
   },
   {
     id: 'reel3',
-    title: 'Our Team Culture',
+    title: 'Our Team Culture Reel',
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Team+Culture+Reel',
     instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     videoSrc: '',
@@ -777,25 +777,25 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [ // Renamed to FeaturedVid
     id: 'reel4',
     title: 'Behind the Code: Project Alpha',
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Project+Alpha+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample1/', // Placeholder
+    instagramUrl: 'https://www.instagram.com/reel/Cexample1/',
     videoSrc: '',
     dataAiHint: 'codecafelab instagram',
     duration: '0:50',
   },
   {
     id: 'reel5',
-    title: 'AI in Everyday Life',
+    title: 'AI in Everyday Life Showcase',
     thumbnailUrl: 'https://placehold.co/270x480.png?text=AI+Life+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample2/', // Placeholder
+    instagramUrl: 'https://www.instagram.com/reel/Cexample2/',
     videoSrc: '',
     dataAiHint: 'codecafelab instagram',
     duration: '0:55',
   },
   {
     id: 'reel6',
-    title: 'Web Development Tips & Tricks',
+    title: 'Web Dev Quick Tips',
     thumbnailUrl: 'https://placehold.co/270x480.png?text=Web+Dev+Tips+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample3/', // Placeholder
+    instagramUrl: 'https://www.instagram.com/reel/Cexample3/',
     videoSrc: '',
     dataAiHint: 'codecafelab instagram',
     duration: '1:10',
@@ -855,7 +855,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "2",
     name: "John Davis",
-    role: "CTO",
+    role: "CTO, QuantumLeap AI",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -893,3 +893,5 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     rating: 4,
   }
 ];
+
+    
