@@ -253,7 +253,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Competitor Analysis", slug: "competitor-analysis", description: "Market research and UX/UI comparisons for competitive differentiation." },
     ],
     description: "Transforming concepts into engaging and user-centric digital experiences.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Ideation+Design",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "design thinking",
   },
   {
@@ -271,7 +271,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "App Maintenance & Support", slug: "mobile-app-maintenance-support-sub", description: "Post-launch updates, monitoring, and feature improvements." },
     ],
     description: "Building high-performance, scalable mobile applications for iOS and Android.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Mobile+Apps",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "mobile development",
   },
   {
@@ -290,7 +290,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Web Hosting & Deployment", slug: "web-hosting-deployment", description: "Scalable hosting setup on AWS, Vercel, Netlify, DigitalOcean, etc." },
     ],
     description: "Crafting dynamic websites and powerful web applications tailored to your needs.",
-    image: "https://placehold.co/600x400/1c1c1c/ffffff.png?text=Web+Development",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "web design",
   },
   {
@@ -309,7 +309,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Software Maintenance & Support", slug: "software-maintenance-support-sub", description: "Ongoing upgrades, troubleshooting, and performance monitoring." },
     ],
     description: "Delivering robust and scalable custom software solutions for diverse business challenges.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Software+Development",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "custom software",
   },
   {
@@ -329,7 +329,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "AI Model Deployment & MLOps", slug: "ai-model-deployment-mlops", description: "Scalable AI pipeline management with tools like TensorFlow Serving or SageMaker." },
     ],
     description: "Leveraging artificial intelligence and machine learning to build intelligent systems.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Development",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "artificial intelligence",
   },
   {
@@ -349,7 +349,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "dApp Development", slug: "dapp-development", description: "Decentralized application design with Web3 integrations and wallet connectivity." },
     ],
     description: "Exploring decentralized solutions with our expert blockchain development services.",
-    image: "https://placehold.co/600x400/1c1c1c/ffffff.png?text=Blockchain+Tech",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "blockchain technology",
   },
    {
@@ -365,7 +365,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
        { title: "Monitoring & Logging", slug: "monitoring-logging", description: "Set up comprehensive monitoring and logging solutions for proactive issue detection and resolution." },
        { title: "Cloud Cost Optimization", slug: "cloud-cost-optimization", description: "Analyze and optimize your cloud spending to ensure cost-efficiency without compromising performance." }
     ],
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Cloud+DevOps",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "cloud devops",
   },
   {
@@ -381,7 +381,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Data Strategy & Analytics", slug: "data-strategy-analytics", description: "Leverage data as a strategic asset with our services in data governance, analytics, and BI." },
       { title: "Agile & DevOps Transformation", slug: "agile-devops-transformation", description: "Adopt agile methodologies and DevOps practices to improve efficiency, collaboration, and speed to market." }
     ],
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Tech+Consultancy",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "tech consultation",
   },
 ];
@@ -394,7 +394,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Palette,
     subServices: [],
     description: "Intuitive and visually appealing user interfaces that provide exceptional user experiences.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=UI+UX+Design",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "ui ux",
   },
   {
@@ -403,7 +403,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: BarChartBig,
     subServices: [],
     description: "Strategic planning and roadmap development to guide your product's journey from concept to market success.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Product+Roadmap",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "product strategy",
   },
   {
@@ -412,7 +412,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Smartphone,
     subServices: [],
     description: "Native Android applications built for performance and a seamless user experience on a wide range of devices.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Android+App",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "android development",
   },
   {
@@ -421,7 +421,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Smartphone,
     subServices: [],
     description: "Elegant and powerful iOS applications designed to meet Apple's high standards and delight users.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=iOS+App",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "ios development",
   },
   {
@@ -430,7 +430,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Smartphone,
     subServices: [],
     description: "Efficiently build and deploy applications across multiple platforms (iOS, Android, Web) from a single codebase.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Cross+Platform",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "cross platform",
   },
   {
@@ -439,7 +439,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Code,
     subServices: [],
     description: "Beautiful, responsive, and high-performing websites that serve as the digital face of your brand.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Website+Dev",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "website creation",
   },
   {
@@ -448,7 +448,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: DatabaseZap,
     subServices: [],
     description: "Complex and scalable web applications with rich interactivity and robust backend systems.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Web+Application",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "web application",
   },
   {
@@ -457,7 +457,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: MessageCircle,
     subServices: [],
     description: "Expert guidance to help you identify and implement AI solutions that drive business value and innovation.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=AI+Consulting",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "ai strategy",
   },
   {
@@ -466,7 +466,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Bot,
     subServices: [],
     description: "Development of intelligent AI agents capable of autonomous decision-making and task execution.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Agents",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "intelligent agents",
   },
   {
@@ -475,7 +475,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Brain,
     subServices: [],
     description: "AI systems that learn and adapt over time, continuously improving performance and responsiveness.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Adaptive+AI",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "learning ai",
   },
   {
@@ -484,7 +484,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: MessageCircle,
     subServices: [],
     description: "Sophisticated AI-powered chatbots for customer service, engagement, and process automation.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Chatbots",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "chatbot solutions",
   },
   {
@@ -493,7 +493,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: PenTool,
     subServices: [],
     description: "Bespoke software solutions meticulously crafted to meet your unique business requirements and objectives.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Custom+Software",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "bespoke software",
   },
   {
@@ -502,7 +502,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Building2,
     subServices: [],
     description: "Robust and scalable software solutions designed for large organizations to optimize operations and drive growth.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Enterprise+Software",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "enterprise solutions",
   },
   {
@@ -511,7 +511,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Gem,
     subServices: [],
     description: "End-to-end Initial Coin Offering development services, from token creation to launch.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=ICO+Dev",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "cryptocurrency ico",
   },
   {
@@ -520,7 +520,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: ShieldCheck,
     subServices: [],
     description: "Secure and user-friendly cryptocurrency wallet development for various blockchain platforms.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Crypto+Wallet",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "crypto wallet",
   },
   {
@@ -529,7 +529,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: FileCode,
     subServices: [],
     description: "Development of self-executing smart contracts for automating agreements and processes on the blockchain.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Smart+Contracts",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "blockchain contract",
   },
   {
@@ -538,7 +538,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Gem,
     subServices: [],
     description: "Creation of Non-Fungible Tokens (NFTs) and marketplaces for digital collectibles and assets.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=NFT+Dev",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "nft marketplace",
   },
   {
@@ -547,7 +547,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: GitBranch,
     subServices: [],
     description: "Building decentralized finance (DeFi) applications for lending, borrowing, trading, and more.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=DeFi+Apps",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "decentralized finance",
   },
   {
@@ -556,7 +556,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Layers,
     subServices: [],
     description: "Transforming real-world assets into digital tokens on the blockchain for increased liquidity and accessibility.",
-    image: "https://placehold.co/600x400/008d00/ffffff.png?text=Asset+Tokenization",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "digital assets",
   },
   {
@@ -565,7 +565,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
     icon: Building2,
     subServices: [],
     description: "Tokenizing real estate assets to enable fractional ownership and new investment opportunities.",
-    image: "https://placehold.co/600x400/ffc011/000000.png?text=Real+Estate+Tokens",
+    image: "https://placehold.co/600x400.png",
     dataAiHint: "property tokenization",
   },
 ];
@@ -577,7 +577,7 @@ export const PRODUCTS_DATA: Product[] = [
     name: "AI Chatbot Pro",
     description: "An intelligent chatbot leveraging NLP to enhance customer interactions.",
     stack: "Python, TensorFlow, React",
-    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=Chatbot+Pro",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "ai chatbot",
     demoUrl: "#",
   },
@@ -586,7 +586,7 @@ export const PRODUCTS_DATA: Product[] = [
     name: "Analytics Master",
     description: "AI-driven platform for deep data analysis and actionable business insights.",
     stack: "Scala, Spark, Next.js",
-    imageUrl: "https://placehold.co/600x400/008d00/ffffff.png?text=Analytics+Master",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "data analytics",
     demoUrl: "#",
   },
@@ -595,7 +595,7 @@ export const PRODUCTS_DATA: Product[] = [
     name: "AutoML Suite",
     description: "Automate your machine learning model building and deployment pipelines.",
     stack: "Python, Kubernetes, Flask",
-    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=AutoML+Suite",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "machine learning",
     demoUrl: "#",
   },
@@ -604,7 +604,7 @@ export const PRODUCTS_DATA: Product[] = [
     name: "ContentGen GPT",
     description: "GPT-powered tool for generating high-quality marketing and sales content.",
     stack: "Node.js, OpenAI API, Vue.js",
-    imageUrl: "https://placehold.co/600x400/008d00/ffffff.png?text=ContentGen+GPT",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "gpt content",
     demoUrl: "#",
   },
@@ -638,7 +638,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     date: "2024-07-15",
     excerpt: "Discover how AI is reshaping industries and what it means for your business.",
     category: "ai-ml",
-    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=AI+Future",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "artificial intelligence",
     content: "Full blog post content about the future of AI in business...",
     tags: ["AI", "Machine Learning", "Business"],
@@ -650,7 +650,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     date: "2024-07-10",
     excerpt: "An overview of the latest trends and best practices in software development.",
     category: "software-development",
-    imageUrl: "https://placehold.co/600x400/008d00/ffffff.png?text=Software+Dev",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "software development",
     content: "Full blog post content about modern software development practices...",
     tags: ["Agile", "DevOps", "Microservices"],
@@ -662,7 +662,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     date: "2024-07-05",
     excerpt: "Tips and tricks for designing user interfaces that users love.",
     category: "ui-ux",
-    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=UX+Design",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "ui design",
     content: "Full blog post content about crafting delightful user experiences...",
     tags: ["UX", "UI Design", "User Research"],
@@ -674,7 +674,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     date: "2024-06-28",
     excerpt: "A look back at our milestones and innovations in the AI space.",
     category: "company-news",
-    imageUrl: "https://placehold.co/600x400/008d00/ffffff.png?text=Company+AI",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "company journey",
     content: "Full blog post content about CodeCafe Lab's journey in AI...",
     tags: ["CodeCafe Lab", "AI Innovation", "Company Story"],
@@ -686,7 +686,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     date: "2024-08-01",
     excerpt: "Exploring the core concepts and challenges of building Decentralized Finance applications.",
     category: "blockchain",
-    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=DeFi+Deep+Dive",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "decentralized finance blockchain",
     content: "Full blog post content about DeFi development...",
     tags: ["DeFi", "Blockchain", "Smart Contracts", "Ethereum"],
@@ -698,7 +698,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     date: "2024-08-05",
     excerpt: "How CodeCafe Lab helped a major logistics firm reduce costs and improve efficiency using AI.",
     category: "case-studies",
-    imageUrl: "https://placehold.co/600x400/008d00/ffffff.png?text=AI+Logistics+Case+Study",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "logistics optimization ai",
     content: "Detailed case study on AI in logistics...",
     tags: ["AI", "Case Study", "Logistics", "Optimization", "Machine Learning"],
@@ -710,7 +710,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     date: "2024-08-10",
     excerpt: "A step-by-step guide to building your first web application with Next.js.",
     category: "tutorials",
-    imageUrl: "https://placehold.co/600x400/ffc011/1c1c1c.png?text=NextJS+Tutorial",
+    imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "nextjs tutorial web",
     content: "Comprehensive tutorial on Next.js for beginners...",
     tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
@@ -721,7 +721,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video1',
     title: 'Intro to Our AI Platform',
-    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png?text=AI+Platform+Intro',
+    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png',
     videoSrc: '/video1.mp4',
     dataAiHint: 'ai platform demo',
     duration: '0:45',
@@ -729,7 +729,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video2',
     title: 'Web Dev Best Practices',
-    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png?text=Web+Dev+Tips',
+    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png',
     videoSrc: '/video2.mp4',
     dataAiHint: 'coding tutorial screen',
     duration: '1:10',
@@ -737,7 +737,7 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
   {
     id: 'video3',
     title: 'A Day at CodeCafe Lab',
-    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png?text=Office+Tour',
+    thumbnailUrl: 'https://placehold.co/270x480/E0E0E0/1c1c1c.png',
     videoSrc: '/video3.mp4',
     dataAiHint: 'office team working',
     duration: '0:55',
@@ -749,17 +749,17 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
   {
     id: 'reel1',
     title: 'Meta AI Showcase Reel',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Meta+AI+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/',
-    videoSrc: '',
+    thumbnailUrl: 'https://placehold.co/270x480.png',
+    instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/', // Meta AI reel
+    videoSrc: '', // Not used for direct embed or iframe if instagramUrl is primary
     dataAiHint: 'meta ai',
     duration: '0:58',
   },
   {
     id: 'reel2',
     title: 'CodeCafe Lab: Innovations Reel',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Innovation+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+    thumbnailUrl: 'https://placehold.co/270x480.png',
+    instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/', // Example CodeCafe Reel
     videoSrc: '',
     dataAiHint: 'codecafelab instagram',
     duration: '0:45',
@@ -767,39 +767,22 @@ export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
   {
     id: 'reel3',
     title: 'Our Team Culture Reel',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Team+Culture+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+    thumbnailUrl: 'https://placehold.co/270x480.png',
+    instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/', // Example CodeCafe Reel
     videoSrc: '',
     dataAiHint: 'codecafelab instagram',
     duration: '1:02',
   },
-  {
-    id: 'reel4',
-    title: 'Behind the Code: Project Alpha',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Project+Alpha+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample1/',
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '0:50',
-  },
-  {
-    id: 'reel5',
-    title: 'AI in Everyday Life Showcase',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=AI+Life+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample2/',
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '0:55',
-  },
-  {
-    id: 'reel6',
-    title: 'Web Dev Quick Tips',
-    thumbnailUrl: 'https://placehold.co/270x480.png?text=Web+Dev+Tips+Reel',
-    instagramUrl: 'https://www.instagram.com/reel/Cexample3/',
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '1:10',
-  },
+  // You can add more reels here if needed, following the same structure
+  // {
+  //   id: 'reel4',
+  //   title: 'Behind the Code: Project Alpha',
+  //   thumbnailUrl: 'https://placehold.co/270x480.png?text=Project+Alpha+Reel',
+  //   instagramUrl: 'https://www.instagram.com/reel/Cexample1/', // Replace with actual URL
+  //   videoSrc: '',
+  //   dataAiHint: 'codecafelab instagram',
+  //   duration: '0:50',
+  // },
 ];
 
 
@@ -845,7 +828,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "1",
     name: "Sarah Miller",
-    role: "CEO",
+    role: "CEO, Innovatech Solutions",
     company: "Innovatech Solutions",
     quote: "CodeCafe Lab transformed our vision into a reality with their exceptional AI expertise. Their team is not only skilled but also incredibly responsive and collaborative.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -865,7 +848,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "3",
     name: "Emily Carter",
-    role: "Product Manager",
+    role: "Product Manager, NextGen Apps",
     company: "NextGen Apps",
     quote: "The mobile app developed by CodeCafe Lab exceeded all our expectations in terms of design, functionality, and performance. Highly recommended!",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -875,7 +858,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder",
+    role: "Founder, SparkUp Ventures",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -885,7 +868,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "5",
     name: "Jessica Williams",
-    role: "Head of Digital",
+    role: "Head of Digital, ConnectFlow Dynamics",
     company: "ConnectFlow Dynamics",
     quote: "Their team's dedication and problem-solving skills are top-notch. CodeCafe Lab is our go-to for any complex software development needs.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -893,5 +876,5 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     rating: 4,
   }
 ];
-
+    
     
