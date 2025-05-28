@@ -1,7 +1,7 @@
 
 import type { NavItem, ServiceMenuItem, Product, TimelineEvent, BlogPost, BlogCategory, ProductSubMenuItem, TechStackItem, Testimonial, FeaturedVideo, OpenPosition, YouTubeShort } from '@/types';
 import {
-  Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, FileCode as LucideFileCode, // Renamed to avoid conflict
+  Code, Smartphone, Brain, Cloud, Palette, Users, Bot, HomeIcon, Layers, Building2, FileText, FileCode,
   Lightbulb, MessageCircle, ShieldCheck, PenTool, Server, Cpu, Gem, GitBranch, DatabaseZap, BarChartBig,
   Info, Briefcase, Mail, Globe, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon,
   Clock, Car, QrCode, Package, Home, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, CircleDollarSign, Users2, Award, Handshake, CalendarPlus,
@@ -285,7 +285,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "Frontend Development", slug: "frontend-development", description: "React, Next.js, Vue.js, and modern JavaScript frameworks." },
       { title: "Backend Development", slug: "backend-development", description: "Node.js, Laravel, Python/Django, and scalable API development." },
       { title: "CMS & Custom Admin Panels", slug: "cms-custom-admin-panels", description: "WordPress, Strapi, Headless CMSs, or fully custom admin interfaces." },
-      { title: "API Integration & Development (Web)", slug: "web-api-integration-development", description: "RESTful APIs, GraphQL, and third-party API integrations." },
+      { title: "API Integration & Development", slug: "web-api-integration-development-sub", description: "RESTful APIs, GraphQL, and third-party API integrations." },
       { title: "Performance Optimization", slug: "web-performance-optimization", description: "Speed, SEO, accessibility, and Core Web Vitals improvements." },
       { title: "Web Hosting & Deployment", slug: "web-hosting-deployment", description: "Scalable hosting setup on AWS, Vercel, Netlify, DigitalOcean, etc." },
     ],
@@ -304,7 +304,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
       { title: "ERP & CRM Solutions", slug: "erp-crm-solutions", description: "Internal tools for enterprise resource planning and customer relationship management." },
       { title: "Legacy Software Modernization", slug: "legacy-software-modernization", description: "Rebuilding or upgrading outdated systems using modern technologies." },
       { title: "Desktop Application Development", slug: "desktop-application-development", description: "Software for Windows, macOS, or Linux platforms." },
-      { title: "API Development & Integration (Software)", slug: "software-api-development-integration", description: "Scalable RESTful or GraphQL APIs and third-party service integrations." },
+      { title: "API Development & Integration", slug: "software-api-development-integration-sub", description: "Scalable RESTful or GraphQL APIs and third-party service integrations." },
       { title: "Software Testing & QA", slug: "software-testing-qa-sub", description: "Manual and automated testing for functionality, performance, and security." },
       { title: "Software Maintenance & Support", slug: "software-maintenance-support-sub", description: "Ongoing upgrades, troubleshooting, and performance monitoring." },
     ],
@@ -526,7 +526,7 @@ export const ALL_SERVICES_FLAT: ServiceMenuItem[] = [
   {
     title: "Smart Contract Development",
     slug: "smart-contract-development",
-    icon: LucideFileCode,
+    icon: FileCode,
     subServices: [],
     description: "Development of self-executing smart contracts for automating agreements and processes on the blockchain.",
     image: "https://placehold.co/600x400.png",
@@ -687,7 +687,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     excerpt: "Exploring the core concepts and challenges of building Decentralized Finance applications.",
     category: "blockchain",
     imageUrl: "https://placehold.co/600x400.png",
-    dataAiHint: "decentralized finance blockchain",
+    dataAiHint: "defi blockchain",
     content: "Full blog post content about DeFi development...",
     tags: ["DeFi", "Blockchain", "Smart Contracts", "Ethereum"],
   },
@@ -699,7 +699,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     excerpt: "How CodeCafe Lab helped a major logistics firm reduce costs and improve efficiency using AI.",
     category: "case-studies",
     imageUrl: "https://placehold.co/600x400.png",
-    dataAiHint: "logistics optimization ai",
+    dataAiHint: "logistics ai",
     content: "Detailed case study on AI in logistics...",
     tags: ["AI", "Case Study", "Logistics", "Optimization", "Machine Learning"],
   },
@@ -711,7 +711,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
     excerpt: "A step-by-step guide to building your first web application with Next.js.",
     category: "tutorials",
     imageUrl: "https://placehold.co/600x400.png",
-    dataAiHint: "nextjs tutorial web",
+    dataAiHint: "nextjs tutorial",
     content: "Comprehensive tutorial on Next.js for beginners...",
     tags: ["Next.js", "React", "Web Development", "Tutorial", "JavaScript"],
   },
@@ -745,43 +745,12 @@ export const FEATURED_VIDEOS_DATA: FeaturedVideo[] = [
 ];
 
 
-export const INSTAGRAM_REELS_DATA: FeaturedVideo[] = [
-  {
-    id: 'reel1',
-    title: 'Meta AI Showcase Reel',
-    thumbnailUrl: 'https://placehold.co/270x480.png',
-    instagramUrl: 'https://www.instagram.com/reel/DJZ0qPoSIUt/',
-    videoSrc: '',
-    dataAiHint: 'meta ai',
-    duration: '0:58',
-  },
-  {
-    id: 'reel2',
-    title: 'CodeCafe Lab: Innovations Reel',
-    thumbnailUrl: 'https://placehold.co/270x480.png',
-    instagramUrl: 'https://www.instagram.com/reel/DJ2PNKOBwNe/',
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '0:45',
-  },
-  {
-    id: 'reel3',
-    title: 'Our Team Culture Reel',
-    thumbnailUrl: 'https://placehold.co/270x480.png',
-    instagramUrl: 'https://www.instagram.com/reel/DJ9f6vUJ6af/',
-    videoSrc: '',
-    dataAiHint: 'codecafelab instagram',
-    duration: '1:02',
-  },
-];
-
-
 export const TECH_STACK_DATA: TechStackItem[] = [
   { name: "Next.js", icon: Package },
   { name: "React", icon: Package },
-  { name: "TypeScript", icon: LucideFileCode },
+  { name: "TypeScript", icon: FileCode },
   { name: "Node.js", icon: Server },
-  { name: "Python", icon: LucideFileCode },
+  { name: "Python", icon: FileCode },
   { name: "AI / ML", icon: Brain },
   { name: "Genkit", icon: Settings2 },
   { name: "Tailwind CSS", icon: Palette },
@@ -796,14 +765,14 @@ export const TECH_STACK_DATA: TechStackItem[] = [
   { name: "Figma", icon: PenTool },
   { name: "Android", icon: Smartphone },
   { name: "iOS", icon: Smartphone },
-  { name: "Java", icon: LucideFileCode },
-  { name: "Kotlin", icon: LucideFileCode },
-  { name: "Swift", icon: LucideFileCode },
+  { name: "Java", icon: FileCode },
+  { name: "Kotlin", icon: FileCode },
+  { name: "Swift", icon: FileCode },
   { name: "TensorFlow", icon: Cpu },
   { name: "PyTorch", icon: Cpu },
   { name: "HTML5", icon: CodeXml },
   { name: "CSS3", icon: Palette },
-  { name: "JavaScript", icon: LucideFileCode },
+  { name: "JavaScript", icon: FileCode },
   { name: "REST APIs", icon: Cable },
   { name: "GraphQL", icon: FileJson },
   { name: "DevOps", icon: TerminalSquare },
@@ -818,7 +787,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "1",
     name: "Sarah Miller",
-    role: "CEO",
+    role: "CEO, Innovatech Solutions",
     company: "Innovatech Solutions",
     quote: "CodeCafe Lab transformed our vision into a reality with their exceptional AI expertise. Their team is not only skilled but also incredibly responsive and collaborative.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -828,7 +797,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "2",
     name: "John Davis",
-    role: "CTO",
+    role: "CTO, QuantumLeap AI",
     company: "QuantumLeap AI",
     quote: "Working with CodeCafe Lab was a game-changer. Their deep understanding of complex algorithms and commitment to quality is unmatched.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -838,7 +807,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "3",
     name: "Emily Carter",
-    role: "Product Manager",
+    role: "Product Manager, NextGen Apps",
     company: "NextGen Apps",
     quote: "The mobile app developed by CodeCafe Lab exceeded all our expectations in terms of design, functionality, and performance. Highly recommended!",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -848,7 +817,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "4",
     name: "Michael Brown",
-    role: "Founder",
+    role: "Founder, SparkUp Ventures",
     company: "SparkUp Ventures",
     quote: "As a startup, we needed a tech partner who was agile and innovative. CodeCafe Lab delivered on all fronts, helping us launch successfully.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -858,7 +827,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: "5",
     name: "Jessica Williams",
-    role: "Head of Digital",
+    role: "Head of Digital, ConnectFlow",
     company: "ConnectFlow Dynamics",
     quote: "Their team's dedication and problem-solving skills are top-notch. CodeCafe Lab is our go-to for any complex software development needs.",
     avatarUrl: "https://placehold.co/60x60.png",
@@ -866,5 +835,3 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     rating: 4,
   }
 ];
-    
-    
