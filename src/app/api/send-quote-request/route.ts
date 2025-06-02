@@ -1,7 +1,8 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
-import type { QuoteFormData } from '@/components/pricing/QuoteFormSheet'; // Assuming type export
+import type { QuoteFormData } from '@/components/pricing/QuoteFormSheet';
+import nodemailer from 'nodemailer';
 
 // Re-define schema for server-side validation (can be imported if shared)
 const quoteFormSchema = z.object({
@@ -16,10 +17,8 @@ const quoteFormSchema = z.object({
 });
 
 function generateHtmlEmail(data: QuoteFormData): string {
-  const recipientEmail = "hello@codecafelab.in";
   const subject = `New Quote Request from ${data.fullName}`;
   
-  // Basic inline styles for email client compatibility
   const styles = {
     body: `font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; margin: 0; padding: 20px;`,
     container: `max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);`,
@@ -81,7 +80,6 @@ function generateHtmlEmail(data: QuoteFormData): string {
   return htmlContent;
 }
 
-
 export async function POST(req: NextRequest) {
   try {
     const rawData: unknown = await req.json();
@@ -93,49 +91,44 @@ export async function POST(req: NextRequest) {
 
     const formData = validationResult.data;
     const emailHtml = generateHtmlEmail(formData);
+    const emailSubject = `New Quote Request from ${formData.fullName}`;
+    const recipientEmail = "hello@codecafelab.in";
 
-    // --- !!! IMPORTANT: Email Sending Logic Placeholder !!! ---
-    // In a real application, you would integrate an email sending service here.
-    // For example, using SendGrid, Resend, Nodemailer + SMTP, etc.
-    //
-    // Example with Nodemailer (requires setup and credentials):
-    //
-    // import nodemailer from 'nodemailer';
-    // const transporter = nodemailer.createTransport({
-    //   host: process.env.SMTP_HOST,
-    //   port: Number(process.env.SMTP_PORT),
-    //   secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
-    //   auth: {
-    //     user: process.env.SMTP_USER,
-    //     pass: process.env.SMTP_PASS,
-    //   },
-    // });
-    //
-    // await transporter.sendMail({
-    //   from: `"CodeCafe Lab Quotes" <quotes@yourdomain.com>`, // Sender address
-    //   to: "hello@codecafelab.in", // List of receivers
-    //   subject: `New Quote Request from ${formData.fullName}`, // Subject line
-    //   html: emailHtml, // HTML body
-    // });
-    //
-    // console.log('Email sending simulated for:', formData.email);
-    // --- End of Email Sending Logic Placeholder ---
+    // Nodemailer transporter setup
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
 
-    console.log("---BEGIN MOCK EMAIL---");
-    console.log("To: hello@codecafelab.in");
-    console.log(`Subject: New Quote Request from ${formData.fullName}`);
-    console.log("Body (HTML):");
-    console.log(emailHtml);
-    console.log("---END MOCK EMAIL---");
-    
-    // Return the generated email content for debugging/testing on client if needed,
-    // or just a success message.
-    return NextResponse.json({ message: "Quote request processed successfully. Email content logged on server.", emailContentPreview: process.env.NODE_ENV === 'development' ? emailHtml : undefined }, { status: 200 });
+    // Send mail with defined transport object
+    try {
+      await transporter.verify(); // Verify connection configuration
+      const info = await transporter.sendMail({
+        from: process.env.SMTP_FROM_ADDRESS || `"CodeCafe Lab Quotes" <noreply@yourdomain.com>`, // Sender address (ensure it's authorized)
+        to: recipientEmail, // List of receivers
+        replyTo: formData.email, // Set reply-to to the user's email
+        subject: emailSubject, // Subject line
+        html: emailHtml, // HTML body
+      });
+      console.log("Message sent: %s", info.messageId);
+      return NextResponse.json({ message: "Quote request submitted and email sent successfully!" }, { status: 200 });
+    } catch (emailError: any) {
+      console.error('Error sending email:', emailError);
+      // Log detailed error if available
+      if (emailError.responseCode) {
+         console.error('SMTP Error Code:', emailError.responseCode);
+         console.error('SMTP Error Message:', emailError.response);
+      }
+      return NextResponse.json({ message: 'Form data processed, but failed to send email.', error: `Email Error: ${emailError.message}` }, { status: 500 });
+    }
 
   } catch (error: any) {
     console.error('Error processing quote request:', error);
     return NextResponse.json({ message: 'Failed to process quote request.', error: error.message }, { status: 500 });
   }
 }
-
-    
