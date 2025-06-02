@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/sheet';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from '@/hooks/use-toast';
-import { CheckCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, Loader2, AlertTriangle } from 'lucide-react';
 
 const serviceInterestOptions = [
   "Web Development",
@@ -73,7 +73,7 @@ const quoteFormSchema = z.object({
   }
 });
 
-type QuoteFormData = z.infer<typeof quoteFormSchema>;
+export type QuoteFormData = z.infer<typeof quoteFormSchema>;
 
 interface QuoteFormSheetProps {
   isOpen: boolean;
@@ -100,23 +100,51 @@ export default function QuoteFormSheet({ isOpen, onOpenChange }: QuoteFormSheetP
 
   const onSubmit: SubmitHandler<QuoteFormData> = async (data) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      const response = await fetch('/api/send-quote-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    console.log("Quote Request Data:", data);
-    toast({
-      title: (
-        <div className="flex items-center">
-          <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-          Quote Request Submitted!
-        </div>
-      ),
-      description: "Thank you for your interest. We'll review your request and get back to you shortly.",
-      duration: 5000,
-    });
-    setIsSubmitting(false);
-    form.reset();
-    onOpenChange(false); // Close the sheet
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit quote request.');
+      }
+
+      // const responseData = await response.json(); // Contains { message: "...", emailContent: "..." }
+      // console.log("Email content that would be sent:", responseData.emailContent); // For debugging
+
+      toast({
+        title: (
+          <div className="flex items-center">
+            <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+            Quote Request Submitted!
+          </div>
+        ),
+        description: "Thank you! We'll review your request and get back to you shortly.",
+        duration: 5000,
+      });
+      form.reset();
+      onOpenChange(false);
+    } catch (error: any) {
+      console.error("Quote submission error:", error);
+      toast({
+        variant: "destructive",
+        title: (
+          <div className="flex items-center">
+            <AlertTriangle className="h-5 w-5 mr-2" />
+            Submission Failed
+          </div>
+        ),
+        description: error.message || "Something went wrong. Please try again.",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   const handleSheetOpenChange = (open: boolean) => {
@@ -303,3 +331,5 @@ export default function QuoteFormSheet({ isOpen, onOpenChange }: QuoteFormSheetP
     </Sheet>
   );
 }
+
+    
