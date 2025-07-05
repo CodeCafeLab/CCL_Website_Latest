@@ -4,8 +4,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon, Clock, Car, QrCode, Package, Home as HomeIcon, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, FileText, BarChartHorizontalBig, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus } from "lucide-react";
-import { NAV_LINKS, SERVICES_DATA, ServiceMenuItem as AppServiceMenuItem, SITE_NAME, COMPANY_SUB_LINKS, ProductSubMenuItem as AppProductSubMenuItem, PRODUCT_SUB_LINKS, RESOURCES_SUB_LINKS } from "@/lib/constants";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon, Clock, Car, QrCode, Package, Home as HomeIcon, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, FileText, BarChartHorizontalBig, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, Code, Layers, Palette, Cloud } from "lucide-react";
+import { NAV_LINKS, SERVICES_DATA, SITE_NAME, COMPANY_SUB_LINKS, PRODUCT_SUB_LINKS, RESOURCES_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
-import type { SubService } from '@/types';
+import type { ServiceMenuItem } from '@/types';
+import React from "react";
 
 
 export default function Header() {
@@ -42,6 +43,25 @@ export default function Header() {
   const resourcesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const HOVER_MENU_CLOSE_DELAY = 200; 
+
+  const servicesByCategory = React.useMemo(() => {
+    return SERVICES_DATA.reduce((acc, service) => {
+      const category = service.category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(service);
+      return acc;
+    }, {} as Record<string, ServiceMenuItem[]>);
+  }, []);
+
+  const categoryIcons: Record<string, LucideIcon> = {
+    Development: Code,
+    Design: Palette,
+    Marketing: TrendingUp,
+    Infrastructure: Cloud,
+  };
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -189,80 +209,75 @@ export default function Header() {
                 const isActive = (link.href === "/" && pathname === "/") || (link.href !== "/" && pathname.startsWith(link.href) && link.href !== "/blog" && !pathname.startsWith('/blog/'));
                 
                 if (link.label === "Services") {
-                const isServicesActive = (pathname.startsWith(link.href) || pathname === "/services") || servicesMenuOpen;
-                return (
-                    <DropdownMenu
-                        key={link.href}
-                        open={servicesMenuOpen}
-                        onOpenChange={onServicesOpenChange}
-                    >
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                        variant="ghost"
-                        className={cn(
-                            "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-0 focus-visible:ring-offset-0 outline-none", 
-                            isServicesActive
-                            ? "text-primary font-semibold" 
-                            : "text-foreground/60 hover:text-white" 
-                        )}
-                        onMouseEnter={() => handleMenuInteraction('services', 'enter')}
-                        onMouseLeave={() => handleMenuInteraction('services', 'leave')}
-                        aria-expanded={servicesMenuOpen}
-                        >
-                        {link.label}
-                        <ChevronDown className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                        className="w-screen max-w-none p-0" 
-                        onMouseEnter={() => handleMenuInteraction('services', 'enter')}
-                        onMouseLeave={() => handleMenuInteraction('services', 'leave')}
-                        sideOffset={15} 
-                    >
-                        <div className="bg-background shadow-xl rounded-lg border-border">
-                            <div className="container mx-auto py-4 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
-                            {SERVICES_DATA.map((category: AppServiceMenuItem) => (
-                                <div key={category.slug}>
-                                <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
-                                    {category.icon && <category.icon className="h-5 w-5" />}
-                                    {category.title}
-                                </h4>
-                                <ul className="space-y-1">
-                                    {category.subServices.slice(0, 4).map((subService) => {
-                                    const href = `/services#${category.slug}-${subService.slug}`;
-                                    return (
-                                        <li key={subService.slug} className="group">
-                                        <Link
-                                            href={href}
-                                            className={cn(
-                                            "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-foreground/80 hover:text-white"
-                                            )}
-                                            onClick={() => setServicesMenuOpen(false)}
-                                        >
-                                            {subService.title}
-                                        </Link>
-                                        </li>
-                                    );
-                                    })}
-                                    {category.subServices.length > 4 && (
-                                    <li key={`${category.slug}-see-all`} className="group">
-                                        <Link
-                                        href={`/services#${category.slug}`}
-                                        className="block text-sm font-semibold rounded-md transition-colors px-3 py-1.5 text-primary hover:text-white flex items-center gap-1"
-                                        onClick={() => setServicesMenuOpen(false)}
-                                        >
-                                        See All <ArrowRight className="ml-1 h-4 w-4" />
-                                        </Link>
-                                    </li>
-                                    )}
-                                </ul>
-                                </div>
-                            ))}
-                            </div>
-                        </div>
-                    </DropdownMenuContent>
-                    </DropdownMenu>
-                );
+                  const isServicesActive = (pathname.startsWith(link.href) || pathname === "/services") || servicesMenuOpen;
+                  return (
+                      <DropdownMenu
+                          key={link.href}
+                          open={servicesMenuOpen}
+                          onOpenChange={onServicesOpenChange}
+                      >
+                      <DropdownMenuTrigger asChild>
+                          <Button
+                          variant="ghost"
+                          className={cn(
+                              "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-0 focus-visible:ring-offset-0 outline-none", 
+                              isServicesActive
+                              ? "text-primary font-semibold" 
+                              : "text-foreground/60 hover:text-white" 
+                          )}
+                          onMouseEnter={() => handleMenuInteraction('services', 'enter')}
+                          onMouseLeave={() => handleMenuInteraction('services', 'leave')}
+                          aria-expanded={servicesMenuOpen}
+                          >
+                          {link.label}
+                          <ChevronDown className="h-4 w-4" />
+                          </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                          className="w-screen max-w-none p-0" 
+                          onMouseEnter={() => handleMenuInteraction('services', 'enter')}
+                          onMouseLeave={() => handleMenuInteraction('services', 'leave')}
+                          sideOffset={15} 
+                      >
+                          <div className="bg-background shadow-xl rounded-lg border-border">
+                              <div className="container mx-auto py-4 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
+                              {Object.entries(servicesByCategory).map(([category, services]) => (
+                                  <div key={category}>
+                                  <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
+                                      {React.createElement(categoryIcons[category] || Layers, { className: "h-5 w-5" })}
+                                      {category}
+                                  </h4>
+                                  <ul className="space-y-1">
+                                      {services.map((service) => (
+                                          <li key={service.slug} className="group">
+                                          <Link
+                                              href={`/services/${service.slug}`}
+                                              className={cn(
+                                              "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-foreground/80 hover:text-white"
+                                              )}
+                                              onClick={() => setServicesMenuOpen(false)}
+                                          >
+                                              {service.title}
+                                          </Link>
+                                          </li>
+                                      ))}
+                                  </ul>
+                                  </div>
+                              ))}
+                              </div>
+                              <div className="container mx-auto py-3 px-6 mt-2 border-t border-border/40">
+                                <Link
+                                    href="/services"
+                                    className="flex items-center justify-center text-sm font-semibold text-primary hover:underline"
+                                    onClick={() => setServicesMenuOpen(false)}
+                                >
+                                    View All Services <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                              </div>
+                          </div>
+                      </DropdownMenuContent>
+                      </DropdownMenu>
+                  );
                 }
                 if (link.label === "Company") {
                 const companyActive = isCompanyLinkActive(pathname) || companyMenuOpen;
@@ -540,45 +555,34 @@ export default function Header() {
                           </AccordionTrigger>
                           <AccordionContent className="pt-1 pb-0 pl-2 space-y-1">
                             <Accordion type="multiple" className="w-full">
-                              {SERVICES_DATA.map((category: AppServiceMenuItem) => (
-                                <AccordionItem value={category.slug} key={category.slug} className="border-b-0">
+                              {Object.entries(servicesByCategory).map(([category, services]) => (
+                                <AccordionItem value={category} key={category} className="border-b-0">
                                   <AccordionTrigger className={cn(
                                     "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline [&[data-state=open]]:text-primary focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                                     "text-foreground/80 hover:text-white" 
                                   )}>
                                     <div className="flex items-center gap-2">
-                                      {category.icon && <category.icon className="h-4 w-4" />}
-                                      {category.title}
+                                      {React.createElement(categoryIcons[category] || Layers, { className: "h-4 w-4" })}
+                                      {category}
                                     </div>
                                   </AccordionTrigger>
                                   <AccordionContent className="pt-1 pb-0 pl-3 space-y-0.5">
-                                    {category.subServices.slice(0,4).map((subService) => (
-                                       <div key={subService.slug} className="py-1">
+                                    {services.map((service) => (
+                                       <div key={service.slug} className="py-1">
                                        <Link
-                                         href={`/services#${category.slug}-${subService.slug}`}
+                                         href={`/services/${service.slug}`}
                                          onClick={closeSheet}
                                          className={cn(
                                            "block w-full text-left text-sm rounded-md transition-colors group focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                                           (typeof window !== 'undefined' && window.location.hash === `#${category.slug}-${subService.slug}` && pathname === '/services')
+                                           pathname === `/services/${service.slug}`
                                              ? "text-primary font-semibold"
                                              : "text-foreground/80 hover:text-white"
                                          )}
                                        >
-                                         {subService.title}
+                                         {service.title}
                                        </Link>
                                      </div>
                                     ))}
-                                    {category.subServices.length > 4 && (
-                                      <div key={`${category.slug}-see-all-mobile`} className="py-1">
-                                        <Link
-                                          href={`/services#${category.slug}`}
-                                          onClick={closeSheet}
-                                          className="block w-full text-left text-sm rounded-md transition-colors group focus-visible:ring-0 focus-visible:ring-offset-0 outline-none text-primary font-semibold hover:text-white flex items-center gap-1"
-                                        >
-                                          See All <ArrowRight className="h-4 w-4" />
-                                        </Link>
-                                      </div>
-                                    )}
                                   </AccordionContent>
                                 </AccordionItem>
                               ))}
@@ -772,4 +776,3 @@ export default function Header() {
     </header>
   );
 }
-
