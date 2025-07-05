@@ -21,8 +21,8 @@ const openPositionsData: OpenPosition[] = [ // Renamed to avoid conflict if Open
 ];
 
 const teamTestimonials = [
-  { name: 'Alex Chen', role: 'Software Engineer', quote: "CodeCafe Lab fosters a culture of learning and growth. I'm constantly challenged and supported by an amazing team.", avatarUrl: "https://placehold.co/80x80.png", dataAiHint:"person avatar" },
-  { name: 'Maria Rodriguez', role: 'AI Researcher', quote: "Working on cutting-edge AI projects here is incredibly rewarding. The company truly values innovation.", avatarUrl: "https://placehold.co/80x80.png", dataAiHint:"person avatar" },
+  { name: 'Alex Chen', role: 'Software Engineer', quote: "CodeCafe Lab fosters a culture of learning and growth. I'm constantly challenged and supported by an amazing team.", avatarUrl: "https://placehold.co/80x80.png", dataAiHint:"software engineer" },
+  { name: 'Maria Rodriguez', role: 'AI Researcher', quote: "Working on cutting-edge AI projects here is incredibly rewarding. The company truly values innovation.", avatarUrl: "https://placehold.co/80x80.png", dataAiHint:"ai researcher" },
 ];
 
 export default function CareerPage() {
@@ -52,7 +52,7 @@ export default function CareerPage() {
             width={600} 
             height={400} 
             className="rounded-lg object-cover shadow-lg"
-            data-ai-hint="team collaboration"
+            data-ai-hint="office meeting"
         />
       </section>
 
