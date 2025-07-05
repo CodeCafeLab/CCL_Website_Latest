@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Tag, DollarSign, ArrowLeft } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type Props = {
   params: { slug: string };
@@ -61,10 +62,35 @@ export default function ServiceDetailPage({ params }: Props) {
   const relatedServices = SERVICES_DATA.filter(
     (s) => s.category === service.category && s.slug !== service.slug
   ).slice(0, 3);
+  
+  const processSteps = [
+      { num: 1, title: "Discovery & Strategy", description: "We start by understanding your vision, goals, and challenges to define a clear roadmap." },
+      { num: 2, title: "Design & Prototyping", description: "Our team crafts intuitive UI/UX designs and interactive prototypes for your approval." },
+      { num: 3, title: "Development & Testing", description: "Expert developers bring the designs to life with clean code, followed by rigorous testing." },
+      { num: 4, title: "Launch & Optimization", description: "We deploy your solution and monitor its performance for continuous improvement and growth." }
+  ];
+
+  const faqItems = [
+      {
+          value: "item-1",
+          question: "How long does a typical project take?",
+          answer: "Project timelines vary depending on the complexity and scope. A simple project might take a few weeks, while a more complex application could take several months. We provide a detailed timeline after our initial discovery phase."
+      },
+      {
+          value: "item-2",
+          question: "How do you handle project communication?",
+          answer: "We believe in transparent and frequent communication. You'll have a dedicated project manager and regular check-ins via your preferred method (email, calls, Slack). We also provide access to a project management tool to track progress."
+      },
+      {
+          value: "item-3",
+          question: "What is your pricing model?",
+          answer: "We offer flexible pricing models, including hourly rates, fixed project-based costs, and retainer agreements for ongoing work. We'll work with you to determine the best model for your needs and budget."
+      }
+  ];
 
   return (
     <div className="space-y-16">
-        <Link href="/services" className="inline-flex items-center text-primary hover:underline mb-8 group">
+        <Link href="/services" className="inline-flex items-center text-primary hover:underline group">
             <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
             Back to All Services
         </Link>
@@ -127,10 +153,58 @@ export default function ServiceDetailPage({ params }: Props) {
           </Button>
         </aside>
       </div>
+      
+      <section className="pt-16 border-t">
+        <h2 className="text-3xl font-bold text-center mb-12">What You Get</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-w-4xl mx-auto">
+            {[
+                "Custom-tailored Strategy",
+                "Dedicated Project Manager",
+                "Transparent Reporting & Analytics",
+                "Scalable & Future-Proof Solutions",
+                "Comprehensive QA & Testing",
+                "Post-Launch Support"
+            ].map((feature) => (
+                <div key={feature} className="flex items-start gap-3">
+                    <CheckCircle className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
+                    <p className="text-foreground">{feature}</p>
+                </div>
+            ))}
+        </div>
+      </section>
 
-      {/* Related Services */}
+      <section className="pt-16 border-t">
+          <h2 className="text-3xl font-bold text-center mb-12">Our Proven Process</h2>
+          <div className="relative grid md:grid-cols-4 gap-8">
+              <div className="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-border -z-10"></div>
+              {processSteps.map((step) => (
+                  <div key={step.num} className="relative text-center p-4">
+                      <div className="relative z-10 mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-2xl border-4 border-background mb-4">
+                          {step.num}
+                      </div>
+                      <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
+                      <p className="text-sm text-muted-foreground">{step.description}</p>
+                  </div>
+              ))}
+          </div>
+      </section>
+
+      <section className="pt-16 border-t">
+          <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+              <Accordion type="single" collapsible className="w-full">
+                  {faqItems.map(item => (
+                      <AccordionItem key={item.value} value={item.value}>
+                          <AccordionTrigger>{item.question}</AccordionTrigger>
+                          <AccordionContent>{item.answer}</AccordionContent>
+                      </AccordionItem>
+                  ))}
+              </Accordion>
+          </div>
+      </section>
+
       {relatedServices.length > 0 && (
-        <section className="pt-12 border-t">
+        <section className="pt-16 border-t">
           <h2 className="text-3xl font-bold text-center mb-12">Related Services</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {relatedServices.map((related) => (
