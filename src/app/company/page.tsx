@@ -47,7 +47,7 @@ export default function CompanyPage() {
               </p>
             </div>
             <Image 
-              src="https://placehold.co/600x400/ffc011/000000.png?text=Our+Journey" 
+              src="https://placehold.co/600x400.png" 
               alt="CodeCafe Lab team working" 
               width={600} 
               height={400} 

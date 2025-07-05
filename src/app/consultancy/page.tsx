@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const industriesServed = [
-  { name: 'Fintech', icon: DollarSign, description: "Innovative solutions for financial institutions, enhancing security and user experience.", image: "https://placehold.co/600x400/ffc011/000000.png?text=Fintech", dataAiHint: "finance technology" },
-  { name: 'Healthtech', icon: Lightbulb, description: "Transforming healthcare with technology, improving patient care and operational efficiency.", image: "https://placehold.co/600x400/008d00/ffffff.png?text=Healthtech", dataAiHint: "health technology" },
-  { name: 'Logistics', icon: BarChart3, description: "Optimizing supply chains and logistics operations with data-driven insights and automation.", image: "https://placehold.co/600x400/ffc011/000000.png?text=Logistics", dataAiHint: "logistics supply" },
-  { name: 'Startups', icon: MessageSquare, description: "Guiding startups from idea to launch with tailored tech strategies and MVP development.", image: "https://placehold.co/600x400/008d00/ffffff.png?text=Startups", dataAiHint: "startup business" },
+  { name: 'Fintech', icon: DollarSign, description: "Innovative solutions for financial institutions, enhancing security and user experience.", image: "https://placehold.co/600x400.png", dataAiHint: "finance technology" },
+  { name: 'Healthtech', icon: Lightbulb, description: "Transforming healthcare with technology, improving patient care and operational efficiency.", image: "https://placehold.co/600x400.png", dataAiHint: "health technology" },
+  { name: 'Logistics', icon: BarChart3, description: "Optimizing supply chains and logistics operations with data-driven insights and automation.", image: "https://placehold.co/600x400.png", dataAiHint: "logistics supply" },
+  { name: 'Startups', icon: MessageSquare, description: "Guiding startups from idea to launch with tailored tech strategies and MVP development.", image: "https://placehold.co/600x400.png", dataAiHint: "startup business" },
 ];
 
 const consultancyBenefits = [
@@ -109,4 +109,3 @@ export default function ConsultancyPage() {
     </div>
   );
 }
-

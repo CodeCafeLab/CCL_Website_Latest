@@ -223,7 +223,7 @@ export default function HomePage() {
             {[...Array(5)].map((_, i) => (
               <Image
                 key={`client-logo-${i}`}
-                src={`https://placehold.co/120x60/ffffff/cccccc.png?text=Client${i+1}`}
+                src={`https://placehold.co/120x60.png`}
                 alt={`Client Logo ${i+1}`}
                 width={120}
                 height={60}
