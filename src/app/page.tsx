@@ -228,7 +228,7 @@ export default function HomePage() {
                 width={120}
                 height={60}
                 className="opacity-70 hover:opacity-100 transition-opacity duration-300"
-                data-ai-hint="company logo"
+                data-ai-hint="tech client logo"
               />
             ))}
           </div>
