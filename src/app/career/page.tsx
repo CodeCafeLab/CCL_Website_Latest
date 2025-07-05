@@ -47,7 +47,7 @@ export default function CareerPage() {
           </div>
         </div>
         <Image 
-            src="https://placehold.co/600x400/008d00/ffffff.png?text=Team+Collaboration" 
+            src="https://placehold.co/600x400.png" 
             alt="CodeCafe Lab team collaborating" 
             width={600} 
             height={400} 

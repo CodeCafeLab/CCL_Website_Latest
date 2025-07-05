@@ -14,21 +14,21 @@ const aiFeatures = [
         icon: BrainCircuit,
         title: "Advanced Machine Learning",
         description: "We build sophisticated ML models for prediction, classification, and clustering to solve complex business problems.",
-        image: "https://placehold.co/600x400/ffc011/000000.png?text=Machine+Learning",
+        image: "https://placehold.co/600x400.png",
         dataAiHint: "machine learning"
     },
     {
         icon: Cpu,
         title: "Natural Language Processing",
         description: "Our NLP solutions understand and process human language, enabling intelligent chatbots, sentiment analysis, and more.",
-        image: "https://placehold.co/600x400/008d00/ffffff.png?text=NLP+Tech",
+        image: "https://placehold.co/600x400.png",
         dataAiHint: "nlp tech"
     },
     {
         icon: Bot,
         title: "Automation Bots",
         description: "We develop custom automation bots to streamline repetitive tasks, improve efficiency, and reduce operational costs.",
-        image: "https://placehold.co/600x400/ffc011/000000.png?text=Automation+Bot",
+        image: "https://placehold.co/600x400.png",
         dataAiHint: "automation bot"
     }
 ];
@@ -77,7 +77,7 @@ export default function AIPage() {
           Experience our AI in action! We&apos;re working on an interactive demo that will showcase the power and versatility of our AI solutions. Stay tuned!
         </p>
         <div className="mt-6">
-            <Image src="https://placehold.co/800x450/1c1c1c/444444.png?text=AI+Demo+Placeholder" alt="AI Demo Placeholder" width={800} height={450} className="rounded-lg mx-auto shadow-md" data-ai-hint="ai demo" />
+            <Image src="https://placehold.co/800x450.png" alt="AI Demo Placeholder" width={800} height={450} className="rounded-lg mx-auto shadow-md" data-ai-hint="ai demo" />
         </div>
       </section>
     </div>
