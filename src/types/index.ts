@@ -18,10 +18,16 @@ export interface ServiceMenuItem {
   title: string;
   slug: string;
   icon: LucideIcon;
-  subServices: SubService[];
-  description?: string;
-  image?: string;
-  dataAiHint?: string;
+  category: string;
+  image: string;
+  dataAiHint: string;
+  description: string; // Short description
+  detailedDescription: string; // Long description
+  technologies: string[];
+  pricing: {
+    type: 'Project-Based' | 'Hourly' | 'Contact for Quote';
+    range: string;
+  };
 }
 
 export interface Product {
@@ -78,7 +84,7 @@ export interface Testimonial {
 }
 
 export interface ClientLogo {
-  id: string;
+  id:string;
   name: string;
   logoUrl: string;
   dataAiHint: string;

@@ -1,8 +1,10 @@
+
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { SERVICES_DATA } from '@/lib/constants';
-import { CheckCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Our Services',
@@ -19,41 +21,27 @@ export default function ServicesPage() {
         </p>
       </section>
 
-      <section className="space-y-16">
-        {SERVICES_DATA.map((service, index) => (
-          <Card 
-            key={service.title} 
-            className={`overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ${index % 2 === 0 ? 'bg-card' : 'bg-secondary/30'}`}
-          >
-            <div className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center`}>
-              <div className="md:w-2/5 w-full">
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  width={600}
-                  height={400}
-                  className="object-cover w-full h-64 md:h-full"
-                  data-ai-hint={service.dataAiHint}
-                />
-              </div>
-              <div className="md:w-3/5 w-full p-6 md:p-10">
-                <CardHeader className="p-0 mb-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <service.icon className="h-10 w-10 text-primary" />
-                    <CardTitle className="text-3xl">{service.title}</CardTitle>
+      <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {SERVICES_DATA.map((service) => (
+          <Card key={service.slug} className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1">
+            <CardHeader>
+              <div className="flex items-center gap-3 mb-2">
+                  <div className="p-3 bg-primary/10 rounded-full">
+                    <service.icon className="h-8 w-8 text-primary" />
                   </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <CardDescription className="text-base mb-6">{service.description}</CardDescription>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-accent" /> Agile Development Process</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-accent" /> Dedicated Project Management</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-accent" /> Scalable and Secure Solutions</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-accent" /> Post-Launch Support</li>
-                  </ul>
-                </CardContent>
+                   <CardTitle className="text-2xl">{service.title}</CardTitle>
               </div>
-            </div>
+            </CardHeader>
+            <CardContent className="flex-grow">
+               <CardDescription>{service.description}</CardDescription>
+            </CardContent>
+             <CardFooter>
+                <Button asChild variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Link href={`/services/${service.slug}`}>
+                    View Details <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+            </CardFooter>
           </Card>
         ))}
       </section>
