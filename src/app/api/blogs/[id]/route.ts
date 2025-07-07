@@ -1,5 +1,6 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
+import { getBlog as fetchBlogFromLib } from '@/lib/blog-data';
 
 export async function GET(
   req: NextRequest,
@@ -12,31 +13,17 @@ export async function GET(
   }
 
   try {
-    const backendUrl = `http://localhost:5000/api/blogs/${id}`;
+    const blog = await fetchBlogFromLib(id);
 
-    const backendRes = await fetch(backendUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Revalidate cache every 60 seconds
-      next: { revalidate: 60 }
-    });
-
-    if (!backendRes.ok) {
-      const errorData = await backendRes.json();
-      console.error(`Backend API error for blog ${id}:`, errorData);
-      return NextResponse.json(
-        { message: `Failed to fetch blog with ID ${id}`, error: errorData },
-        { status: backendRes.status }
-      );
+    if (!blog) {
+      return NextResponse.json({ message: `Blog with ID ${id} not found` }, { status: 404 });
     }
 
-    const data = await backendRes.json();
-    return NextResponse.json(data, { status: 200 });
+    // Wrap the single blog post in a `blog` object for a consistent API response.
+    return NextResponse.json({ blog }, { status: 200 });
 
   } catch (error) {
-    console.error(`Error in /api/blogs/${id} route:`, error);
+    console.error(`Error in /api/blogs/${id} route handler:`, error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

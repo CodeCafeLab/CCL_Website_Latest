@@ -3,34 +3,16 @@ import type { Metadata } from 'next';
 import type { BlogPost, BlogCategory } from '@/types';
 import BlogListClient from '@/components/blog/BlogListClient';
 import { SITE_NAME } from '@/lib/constants';
+import { getAllBlogs } from '@/lib/blog-data';
 
 export const metadata: Metadata = {
   title: `Blog | ${SITE_NAME}`,
   description: 'Read the latest articles and insights from CodeCafe Lab on AI, software development, and technology trends.',
 };
 
-async function getBlogs(): Promise<BlogPost[]> {
-  try {
-    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
-    const res = await fetch(`${apiUrl}/api/blogs`, {
-      cache: 'no-store', // Use 'no-store' for development to see changes, or a revalidation strategy
-    });
-
-    if (!res.ok) {
-      console.error("Failed to fetch blogs:", res.status, res.statusText);
-      return [];
-    }
-
-    const data = await res.json();
-    return data.blogs || data || []; 
-  } catch (error) {
-    console.error("Error fetching blogs in BlogPage:", error);
-    return [];
-  }
-}
-
 export default async function BlogPage() {
-  const posts = await getBlogs();
+  // Directly call the centralized data fetching function
+  const posts = await getAllBlogs();
 
   const categories: BlogCategory[] = [
     { id: 'all', name: 'All' },

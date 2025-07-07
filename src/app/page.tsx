@@ -24,15 +24,15 @@ export default function HomePage() {
     async function fetchBlogs() {
       try {
         setIsLoadingBlogs(true);
-        const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
-        const res = await fetch(`${apiUrl}/api/blogs`);
+        // Fetch from the relative API route, which is the correct way for client-side components
+        const res = await fetch("/api/blogs");
         if (!res.ok) {
           console.error("Failed to fetch blogs for homepage");
           throw new Error("Failed to fetch blogs");
         }
         const data = await res.json();
-        // Assuming the API returns an object with a 'blogs' key, or just the array
-        const posts: BlogPost[] = data.blogs || data || [];
+        // Assuming the API returns an object with a 'blogs' key
+        const posts: BlogPost[] = data.blogs || [];
         
         const latestPublished = posts
           .filter(p => p.status === 'published')
