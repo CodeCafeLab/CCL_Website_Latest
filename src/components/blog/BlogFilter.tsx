@@ -1,18 +1,19 @@
+
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { BLOG_CATEGORIES } from '@/lib/constants';
 import type { BlogCategory } from '@/types';
 
 interface BlogFilterProps {
+  categories: BlogCategory[];
   selectedCategory: string;
   onSelectCategory: (categoryId: string) => void;
 }
 
-export default function BlogFilter({ selectedCategory, onSelectCategory }: BlogFilterProps) {
+export default function BlogFilter({ categories, selectedCategory, onSelectCategory }: BlogFilterProps) {
   return (
     <div className="flex flex-wrap gap-2 mb-8 justify-center">
-      {BLOG_CATEGORIES.map((category: BlogCategory) => (
+      {categories.map((category: BlogCategory) => (
         <Button
           key={category.id}
           variant={selectedCategory === category.id ? 'default' : 'outline'}

@@ -1,41 +1,46 @@
-"use client"; // Required for useState and event handlers
 
-import { useState, useEffect } from 'react';
 import type { Metadata } from 'next';
-import BlogFilter from '@/components/blog/BlogFilter';
-import BlogPostCard from '@/components/blog/BlogPostCard';
-import { BLOG_POSTS_DATA } from '@/lib/constants';
-import type { BlogPost } from '@/types';
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import type { BlogPost, BlogCategory } from '@/types';
+import BlogListClient from '@/components/blog/BlogListClient';
+import { SITE_NAME } from '@/lib/constants';
 
-// We can't export metadata from a client component.
-// If SEO for this page is critical, consider making the filtering server-side or use a child server component for the list.
-// For now, this approach prioritizes client-side interactivity.
+export const metadata: Metadata = {
+  title: `Blog | ${SITE_NAME}`,
+  description: 'Read the latest articles and insights from CodeCafe Lab on AI, software development, and technology trends.',
+};
 
-// export const metadata: Metadata = {
-//   title: 'Blog',
-//   description: 'Read the latest articles and insights from CodeCafe Lab on AI, software development, and technology trends.',
-// };
+async function getBlogs(): Promise<BlogPost[]> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const res = await fetch(`${apiUrl}/api/blogs`, {
+      cache: 'no-store', // Use 'no-store' for development to see changes, or a revalidation strategy
+    });
 
-export default function BlogPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(BLOG_POSTS_DATA);
-
-  useEffect(() => {
-    let posts = BLOG_POSTS_DATA;
-    if (selectedCategory !== 'all') {
-      posts = posts.filter(post => post.category === selectedCategory);
+    if (!res.ok) {
+      console.error("Failed to fetch blogs:", res.status, res.statusText);
+      return [];
     }
-    if (searchTerm) {
-      posts = posts.filter(post => 
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    setFilteredPosts(posts);
-  }, [selectedCategory, searchTerm]);
+
+    const data = await res.json();
+    return data.blogs || data || []; 
+  } catch (error) {
+    console.error("Error fetching blogs in BlogPage:", error);
+    return [];
+  }
+}
+
+export default async function BlogPage() {
+  const posts = await getBlogs();
+
+  const categories: BlogCategory[] = [
+    { id: 'all', name: 'All' },
+    ...Array.from(new Set(posts.map(p => p.category.trim())))
+      .filter(Boolean) // Remove any empty categories
+      .sort()
+      .map(cat => ({ id: cat.toLowerCase().replace(/\s+/g, '-'), name: cat }))
+  ];
+
+  const publishedPosts = posts.filter(p => p.status === 'published');
 
   return (
     <div className="space-y-12">
@@ -46,35 +51,7 @@ export default function BlogPage() {
         </p>
       </section>
 
-      <section>
-        <div className="mb-8 max-w-md mx-auto">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input 
-              type="search"
-              placeholder="Search articles..."
-              className="pl-10"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-        <BlogFilter selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
-      </section>
-
-      <section>
-        {filteredPosts.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post) => (
-              <BlogPostCard key={post.id} post={post} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-muted-foreground text-lg py-12">
-            No blog posts found matching your criteria. Try a different search or category!
-          </p>
-        )}
-      </section>
+      <BlogListClient posts={publishedPosts} categories={categories} />
     </div>
   );
 }

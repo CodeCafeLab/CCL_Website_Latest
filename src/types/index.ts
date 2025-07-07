@@ -61,16 +61,20 @@ export interface BlogCategory {
 
 export interface BlogPost {
   id: string;
-  slug: string;
   title: string;
-  date: string;
-  excerpt: string;
+  author: string;
+  status: 'published' | 'draft';
   category: string;
-  imageUrl: string;
-  dataAiHint: string;
-  content: string;
-  tags?: string[];
+  tags: string[];
+  read_time: string;
+  createdDate: string;
+  views: number;
+  thumbnail?: string;
+  featured: boolean;
+  summary: string;
+  content?: string; // Content is optional for list view, required for detail view
 }
+
 
 export interface Testimonial {
   id: string;
@@ -125,7 +129,7 @@ export interface TechStackItem {
 }
 
 export interface YouTubeShort {
-  id: string;
+  id:string;
   title: string;
   thumbnailUrl: string;
   youtubeUrl: string;

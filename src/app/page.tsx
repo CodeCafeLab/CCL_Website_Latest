@@ -2,19 +2,53 @@
 "use client"; 
 
 import Link from 'next/link';
-import { useState } from 'react'; 
+import { useState, useEffect } from 'react'; 
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
 import FeaturedVideosSection from '@/components/home/FeaturedVideosSection'; 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { SERVICES_DATA, PRODUCTS_DATA, BLOG_POSTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
+import { SERVICES_DATA, PRODUCTS_DATA, TECH_STACK_DATA, TESTIMONIALS_DATA } from '@/lib/constants';
 import { ArrowRight, Bot, Users, Zap, FileText, Brain, Star, CalendarPlus, Handshake } from 'lucide-react';
 import Image from 'next/image';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import QuoteFormSheet from '@/components/pricing/QuoteFormSheet'; 
+import type { BlogPost } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function HomePage() {
   const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false); 
+  const [featuredBlogPosts, setFeaturedBlogPosts] = useState<BlogPost[]>([]);
+  const [isLoadingBlogs, setIsLoadingBlogs] = useState(true);
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        setIsLoadingBlogs(true);
+        const res = await fetch('/api/blogs');
+        if (!res.ok) {
+          console.error("Failed to fetch blogs for homepage");
+          throw new Error("Failed to fetch blogs");
+        }
+        const data = await res.json();
+        // Assuming the API returns an object with a 'blogs' key, or just the array
+        const posts: BlogPost[] = data.blogs || data || [];
+        
+        const latestPublished = posts
+          .filter(p => p.status === 'published')
+          .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+          .slice(0, 3);
+
+        setFeaturedBlogPosts(latestPublished);
+      } catch (error) {
+        console.error("Error fetching featured blogs:", error);
+        // In case of error, we can set an empty array
+        setFeaturedBlogPosts([]);
+      } finally {
+        setIsLoadingBlogs(false);
+      }
+    }
+    fetchBlogs();
+  }, []);
 
   const heroTexts = [
     "Brewed Software with AI Precision",
@@ -23,12 +57,9 @@ export default function HomePage() {
   ];
 
   const featuredServices = SERVICES_DATA.slice(0, 5);
-  const featuredBlogPosts = BLOG_POSTS_DATA.slice(0, 3);
-
   const techStackRow1Count = 13;
   const techStackRow2Count = 12;
   const techStackRow3Count = 10;
-
 
   return (
     <>
@@ -92,7 +123,7 @@ export default function HomePage() {
                 </CardContent>
                 <CardFooter>
                   <Button variant="link" asChild className="mt-4 px-0 text-primary">
-                    <Link href={`/services#${service.slug}`}>Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                    <Link href={`/services/${service.slug}`}>Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -288,15 +319,31 @@ export default function HomePage() {
               <h2 className="text-3xl font-bold">Latest From Our Blog</h2>
               <p className="text-muted-foreground mt-2">Stay updated with our newest articles and insights.</p>
           </div>
-          {featuredBlogPosts.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredBlogPosts.map((post) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {isLoadingBlogs ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <Card key={index} className="flex flex-col h-full">
+                  <Skeleton className="aspect-video w-full" />
+                  <CardHeader>
+                    <Skeleton className="h-6 w-3/4" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-4 w-full mb-2" />
+                    <Skeleton className="h-4 w-5/6" />
+                  </CardContent>
+                  <CardFooter>
+                    <Skeleton className="h-10 w-full" />
+                  </CardFooter>
+                </Card>
+              ))
+            ) : featuredBlogPosts.length > 0 ? (
+              featuredBlogPosts.map((post) => (
                 <BlogPostCard key={post.id} post={post} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-muted-foreground">No blog posts available yet.</p>
-          )}
+              ))
+            ) : (
+              <p className="col-span-full text-center text-muted-foreground">No blog posts available yet.</p>
+            )}
+          </div>
           <div className="text-center mt-12">
             <Button asChild size="lg" variant="outline" className="text-primary border-primary hover:bg-primary/10 hover:text-primary">
               <Link href="/blog">
