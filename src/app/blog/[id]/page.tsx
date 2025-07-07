@@ -17,7 +17,7 @@ type Props = {
 // This function fetches data for a single blog post.
 async function getBlog(id: string): Promise<BlogPost | null> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
     const res = await fetch(`${apiUrl}/api/blogs/${id}`, {
       next: { revalidate: 60 }, // Revalidate every 60 seconds
     });
@@ -39,7 +39,7 @@ async function getBlog(id: string): Promise<BlogPost | null> {
 // This function fetches all blog posts, primarily for generateStaticParams.
 async function getAllBlogs(): Promise<BlogPost[]> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
     const res = await fetch(`${apiUrl}/api/blogs`);
     if (!res.ok) return [];
     const data = await res.json();

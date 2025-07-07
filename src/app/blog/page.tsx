@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 async function getBlogs(): Promise<BlogPost[]> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
     const res = await fetch(`${apiUrl}/api/blogs`, {
       cache: 'no-store', // Use 'no-store' for development to see changes, or a revalidation strategy
     });

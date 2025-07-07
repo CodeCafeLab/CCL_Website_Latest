@@ -24,7 +24,8 @@ export default function HomePage() {
     async function fetchBlogs() {
       try {
         setIsLoadingBlogs(true);
-        const res = await fetch('/api/blogs');
+        const apiUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
+        const res = await fetch(`${apiUrl}/api/blogs`);
         if (!res.ok) {
           console.error("Failed to fetch blogs for homepage");
           throw new Error("Failed to fetch blogs");
