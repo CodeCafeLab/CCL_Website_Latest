@@ -1,13 +1,18 @@
 import type { BlogPost } from '@/types';
 
-// In a real application, this would come from an environment variable
-const API_BASE_URL = "http://localhost:5000/api";
+// The backend API URL is loaded from environment variables.
+// See the .env file for configuration.
+const API_BASE_URL = process.env.BACKEND_API_URL;
 
 /**
  * Fetches all blog posts from the backend.
  * Caches the data for 60 seconds.
  */
 export async function getAllBlogs(): Promise<BlogPost[]> {
+  if (!API_BASE_URL) {
+    console.error("BACKEND_API_URL is not defined in .env file. Cannot fetch blogs.");
+    return [];
+  }
   try {
     const res = await fetch(`${API_BASE_URL}/blogs`, {
       next: { revalidate: 60 },
@@ -33,6 +38,10 @@ export async function getAllBlogs(): Promise<BlogPost[]> {
  * @param id The ID of the blog post to fetch.
  */
 export async function getBlog(id: string): Promise<BlogPost | null> {
+  if (!API_BASE_URL) {
+    console.error("BACKEND_API_URL is not defined in .env file. Cannot fetch blog.");
+    return null;
+  }
   try {
     const res = await fetch(`${API_BASE_URL}/blogs/${id}`, {
       next: { revalidate: 60 },
