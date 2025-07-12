@@ -1,16 +1,29 @@
 
+"use client";
+
 import type { Metadata } from 'next';
+import { useState } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, DollarSign, Lightbulb, MessageSquare, BarChart3 } from 'lucide-react';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from '@/hooks/use-toast';
+import { CheckCircle, DollarSign, Lightbulb, MessageSquare, BarChart3, Loader2, AlertTriangle } from 'lucide-react';
 import Image from 'next/image';
 
-export const metadata: Metadata = {
-  title: 'Tech Consultancy',
-  description: 'Expert tech consultancy services from CodeCafe Lab for fintech, healthtech, logistics, and startups. Schedule a consultation today.',
-};
+// Consultancy form schema
+const consultancyFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Please enter a valid email address."),
+  company: z.string().optional(),
+  message: z.string().min(10, "Message must be at least 10 characters."),
+});
+
+type ConsultancyFormData = z.infer<typeof consultancyFormSchema>;
 
 const industriesServed = [
   { name: 'Fintech', icon: DollarSign, description: "Innovative solutions for financial institutions, enhancing security and user experience.", image: "https://placehold.co/600x400.png", dataAiHint: "fintech app" },
@@ -29,6 +42,54 @@ const consultancyBenefits = [
 ];
 
 export default function ConsultancyPage() {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<ConsultancyFormData>({
+    resolver: zodResolver(consultancyFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      company: '',
+      message: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<ConsultancyFormData> = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/consultancy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit consultancy request.');
+      }
+
+      toast({
+        title: "Consultancy Request Submitted!",
+        description: "Thank you! We'll review your request and get back to you shortly.",
+        duration: 9002,
+      });
+      form.reset();
+    } catch (error: any) {
+      console.error("Consultancy form submission error:", error);
+      toast({
+        variant: "destructive",
+        title: "Submission Failed",
+        description: error.message || "Something went wrong. Please try again.",
+        duration: 9002,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="space-y-16">
       <section className="text-center">
@@ -79,30 +140,74 @@ export default function ConsultancyPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">Full Name</label>
-                  <Input type="text" id="name" name="name" placeholder="John Doe" required />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="John Doe" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email Address</FormLabel>
+                        <FormControl>
+                          <Input type="email" placeholder="you@example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">Email Address</label>
-                  <Input type="email" id="email" name="email" placeholder="you@example.com" required />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium text-foreground mb-1">Company (Optional)</label>
-                <Input type="text" id="company" name="company" placeholder="Your Company Inc." />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1">Your Message/Inquiry</label>
-                <Textarea id="message" name="message" rows={5} placeholder="Briefly describe your project or question..." required />
-              </div>
-              <Button type="submit" className="w-full" size="lg">Send Message</Button>
-            </form>
-             <p className="text-xs text-muted-foreground mt-4 text-center">
-                Note: This is a placeholder form. Form submission functionality (React Hook Form, validation) needs to be implemented.
-            </p>
+                <FormField
+                  control={form.control}
+                  name="company"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Company (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your Company Inc." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Your Message/Inquiry</FormLabel>
+                      <FormControl>
+                        <Textarea rows={5} placeholder="Briefly describe your project or question..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    'Send Message'
+                  )}
+                </Button>
+              </form>
+            </Form>
           </CardContent>
         </Card>
       </section>

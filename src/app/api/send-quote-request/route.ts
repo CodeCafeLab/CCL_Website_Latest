@@ -92,16 +92,16 @@ export async function POST(req: NextRequest) {
     const formData = validationResult.data;
     const emailHtml = generateHtmlEmail(formData);
     const emailSubject = `New Quote Request from ${formData.fullName}`;
-    const recipientEmail = "hello@codecafelab.in";
+    const recipientEmail = "codecafelabtechnologies@gmail.com";
 
-    // Nodemailer transporter setup
+    // Nodemailer transporter setup with provided SMTP settings
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+      host: "smtp.hostinger.com",
+      port: 465,
+      secure: true, // SSL
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: "hello@codecafelab.in",
+        pass: "CCl@1234@1234",
       },
     });
 
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
     try {
       await transporter.verify(); // Verify connection configuration
       const info = await transporter.sendMail({
-        from: process.env.SMTP_FROM_ADDRESS || `"CodeCafe Lab Quotes" <noreply@yourdomain.com>`, // Sender address (ensure it's authorized)
+        from: `"CodeCafe Lab Quotes" <hello@codecafelab.in>`, // Sender address
         to: recipientEmail, // List of receivers
         replyTo: formData.email, // Set reply-to to the user's email
         subject: emailSubject, // Subject line

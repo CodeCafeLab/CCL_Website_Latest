@@ -90,14 +90,9 @@ export default function ApplicationFormSheet({
 
     console.log("Application Data:", data);
     toast({
-      title: (
-        <div className="flex items-center">
-          <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-          Application Submitted!
-        </div>
-      ),
+      title: "Application Submitted!",
       description: `Thank you for applying for the ${positionTitle} position. We'll be in touch soon.`,
-      duration: 5000,
+      duration: 9002,
     });
     setIsSubmitting(false);
     form.reset();

@@ -28,6 +28,12 @@ const nextConfig: NextConfig = {
         hostname: 'firebasestorage.googleapis.com', // Added for Firebase Storage images
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'example.com', // Added for placeholder images
+        port: '',
+        pathname: '/**',
       }
     ],
   },

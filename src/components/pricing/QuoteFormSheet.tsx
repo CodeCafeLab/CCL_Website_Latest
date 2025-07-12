@@ -118,14 +118,9 @@ export default function QuoteFormSheet({ isOpen, onOpenChange }: QuoteFormSheetP
       // console.log("Email content that would be sent:", responseData.emailContent); // For debugging
 
       toast({
-        title: (
-          <div className="flex items-center">
-            <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-            Quote Request Submitted!
-          </div>
-        ),
+        title: "Quote Request Submitted!",
         description: "Thank you! We'll review your request and get back to you shortly.",
-        duration: 5000,
+        duration: 9002,
       });
       form.reset();
       onOpenChange(false);
@@ -133,14 +128,9 @@ export default function QuoteFormSheet({ isOpen, onOpenChange }: QuoteFormSheetP
       console.error("Quote submission error:", error);
       toast({
         variant: "destructive",
-        title: (
-          <div className="flex items-center">
-            <AlertTriangle className="h-5 w-5 mr-2" />
-            Submission Failed
-          </div>
-        ),
+        title: "Submission Failed",
         description: error.message || "Something went wrong. Please try again.",
-        duration: 5000,
+        duration: 9002,
       });
     } finally {
       setIsSubmitting(false);

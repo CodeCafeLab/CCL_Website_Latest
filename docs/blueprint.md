@@ -6,7 +6,7 @@
 - Animated Product Cards: Interactive product cards with animations and stack details. Offers "View Demo" CTA.
 - AI Product Discovery: A tool to showcase in-house AI innovations and GPT-based products. The LLM powering this tool decides which product to highlight and how the products relate to the users prompts or other signals
 - Company Timeline: A timeline of company growth and milestones. Displayed to enhance the 'Company' section.
-- Blog Filtering: SEO-optimized blog layout with category filtering. To improve content discovery and user experience.
+- Blog Filtering: SEO-optimized blog layout with categories filtering. To improve content discovery and user experience.
 - Theme Toggle: A toggle for switching between dark and light themes. Users can customize their viewing preferences.
 
 ## Style Guidelines:

@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon, Clock, Car, QrCode, Package, Home as HomeIcon, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, FileText, BarChartHorizontalBig, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, Code, Layers, Palette, Cloud } from "lucide-react";
+import { Menu, ChevronDown, type LucideIcon, Info, Briefcase, Mail, ArrowRight, CircleDollarSign, Users2, Award, Handshake, CalendarPlus, Lightbulb, Smartphone, Globe, Server, Brain, GitMerge, LayoutGrid, Puzzle, TrendingUp, Settings, DollarSign, Star, Link as LinkIcon, Clock, Car, QrCode, Package, Home as HomeIcon, School, ChefHat, MessageSquare as MessageSquareIcon, Wrench, Truck, MonitorSmartphone, BarChart3, FileText, BarChartHorizontalBig, DownloadCloud, Newspaper, CalendarClock, HelpCircle, BookOpenText, MailPlus, Code, Layers, Palette, Cloud, Zap, Shield, PlayCircle } from "lucide-react";
 import { NAV_LINKS, SERVICES_DATA, SITE_NAME, COMPANY_SUB_LINKS, PRODUCT_SUB_LINKS, RESOURCES_SUB_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import type { ServiceMenuItem } from '@/types';
 import React from "react";
+import axios from 'axios';
 
 
 export default function Header() {
@@ -44,18 +45,18 @@ export default function Header() {
 
   const HOVER_MENU_CLOSE_DELAY = 200; 
 
-  const servicesByCategory = React.useMemo(() => {
+  const servicesBycategories = React.useMemo(() => {
     return SERVICES_DATA.reduce((acc, service) => {
-      const category = service.category;
-      if (!acc[category]) {
-        acc[category] = [];
+      const categories = service.categories;
+      if (!acc[categories]) {
+        acc[categories] = [];
       }
-      acc[category].push(service);
+      acc[categories].push(service);
       return acc;
     }, {} as Record<string, ServiceMenuItem[]>);
   }, []);
 
-  const categoryIcons: Record<string, LucideIcon> = {
+  const categoriesIcons: Record<string, LucideIcon> = {
     Development: Code,
     Design: Palette,
     Marketing: TrendingUp,
@@ -241,11 +242,11 @@ export default function Header() {
                       >
                           <div className="bg-background shadow-xl rounded-lg border-border">
                               <div className="container mx-auto py-4 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[75vh] overflow-y-auto">
-                              {Object.entries(servicesByCategory).map(([category, services]) => (
-                                  <div key={category}>
+                              {Object.entries(servicesBycategories).map(([categories, services]) => (
+                                  <div key={categories}>
                                   <h4 className="font-semibold text-base mb-2 flex items-center gap-2 text-primary px-3 py-1">
-                                      {React.createElement(categoryIcons[category] || Layers, { className: "h-5 w-5" })}
-                                      {category}
+                                      {React.createElement(categoriesIcons[categories] || Layers, { className: "h-5 w-5" })}
+                                      {categories}
                                   </h4>
                                   <ul className="space-y-1">
                                       {services.map((service) => (
@@ -403,7 +404,7 @@ export default function Header() {
                                 <h3 className="text-lg font-semibold mb-1 flex items-center">
                                     <CalendarPlus className="mr-2 h-5 w-5"/> Book a Demo
                                 </h3>
-                                <p className="text-sm opacity-90 mb-3">See our products in action. Schedule a personalized demonstration.</p>
+                                <p className="text-sm opacity-90 mb-3">See our projects in action. Schedule a personalized demonstration.</p>
                                 <span className="inline-flex items-center text-sm font-medium group-hover:underline">
                                     Request Now <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                 </span>
@@ -555,15 +556,15 @@ export default function Header() {
                           </AccordionTrigger>
                           <AccordionContent className="pt-1 pb-0 pl-2 space-y-1">
                             <Accordion type="multiple" className="w-full">
-                              {Object.entries(servicesByCategory).map(([category, services]) => (
-                                <AccordionItem value={category} key={category} className="border-b-0">
+                              {Object.entries(servicesBycategories).map(([categories, services]) => (
+                                <AccordionItem value={categories} key={categories} className="border-b-0">
                                   <AccordionTrigger className={cn(
                                     "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline [&[data-state=open]]:text-primary focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                                     "text-foreground/80 hover:text-white" 
                                   )}>
                                     <div className="flex items-center gap-2">
-                                      {React.createElement(categoryIcons[category] || Layers, { className: "h-4 w-4" })}
-                                      {category}
+                                      {React.createElement(categoriesIcons[categories] || Layers, { className: "h-4 w-4" })}
+                                      {categories}
                                     </div>
                                   </AccordionTrigger>
                                   <AccordionContent className="pt-1 pb-0 pl-3 space-y-0.5">
@@ -744,6 +745,51 @@ export default function Header() {
                                 </div>
                               </Link>
                             ))}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    );
+                  }
+                  if (link.label === "Projects") {
+                    const isProjectsActive = pathname.startsWith(link.href) || pathname === "/projects";
+                    return (
+                      <Accordion type="single" collapsible key={link.href} className="w-full">
+                        <AccordionItem value="projects" className="border-none">
+                          <AccordionTrigger className={cn(
+                            "py-2 text-sm font-medium transition-colors hover:text-primary focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                            isProjectsActive ? "text-primary font-semibold" : "text-foreground/60"
+                          )}>
+                            {link.label}
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-2 pb-0">
+                            <div className="grid grid-cols-1 gap-2">
+                              {PRODUCT_SUB_LINKS.map((subLink) => (
+                                <Link
+                                  key={subLink.label}
+                                  href={subLink.href}
+                                  onClick={closeSheet}
+                                  className={cn(
+                                    "flex items-start gap-3 px-3 py-2 text-sm transition-colors rounded-md hover:bg-muted/30",
+                                    (pathname === subLink.href) && "font-semibold bg-muted/30"
+                                  )}
+                                >
+                                  {subLink.icon && <subLink.icon className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />}
+                                  <div className="flex-1">
+                                    <span className="font-medium text-primary">{subLink.label}</span>
+                                    {subLink.subtitle && (
+                                      <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
+                                        {subLink.subtitle}
+                                      </p>
+                                    )}
+                                    {subLink.description && (
+                                      <p className="text-xs text-muted-foreground/80">
+                                        {subLink.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>

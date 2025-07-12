@@ -32,6 +32,7 @@ export default function ServicesPage() {
                    <CardTitle className="text-2xl">{service.title}</CardTitle>
               </div>
             </CardHeader>
+            
             <CardContent className="flex-grow">
                <CardDescription>{service.description}</CardDescription>
             </CardContent>
