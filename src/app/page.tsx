@@ -36,6 +36,8 @@ import { categories, BlogPost, Product } from "@/types";
 import axios from "axios";
 import { getProducts } from "@/lib/api";
 
+
+
 type ClientReview = {
   id: number;
   client_name: string;
@@ -57,7 +59,7 @@ export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
 
-  // Fetch categories (keep your current logic)
+ 
   useEffect(() => {
     fetch("http://localhost:5000/api/categories")
       .then((res) => res.json())
