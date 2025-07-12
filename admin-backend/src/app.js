@@ -12,7 +12,6 @@ const careerRoutes = require('./routes/careerRoutes');
 const jobApplicationRoutes = require('./routes/jobApplicationRoutes');
 const teamRoutes = require('./routes/teamRoutes');
 
-// New dynamic section routes
 const whyChooseUsRoutes = require('./routes/whyChooseUsRoutes');
 const caseStudyRoutes = require('./routes/caseStudyRoutes');
 const whitepaperRoutes = require('./routes/whitepaperRoutes');
