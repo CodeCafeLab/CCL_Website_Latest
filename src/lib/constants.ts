@@ -104,6 +104,8 @@ export const NAV_LINKS: NavItem[] = [
   { href: "/projects", label: "Projects", icon: Smartphone },
   { href: "/company", label: "Company", icon: Building2 },
   { href: "/blog", label: "Resources", icon: FileText },
+  // Add here if you want any as top-level
+  // { href: "/why-choose-us", label: "Why Choose Us", icon: Award },
 ];
 
 export const COMPANY_SUB_LINKS: NavItem[] = [
@@ -149,7 +151,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
       "Photos, bios, and roles of key team members (adds a human touch).",
   },
   {
-    href: "#",
+    href: "/why-choose-us",
     label: "Why Choose Us",
     icon: Award,
     description:
@@ -287,54 +289,69 @@ export const RESOURCES_SUB_LINKS: NavItem[] = [
       "Articles on tech trends, case studies, coding tips, AI advancements, and startup advice.",
   },
   {
-    href: "#",
+    href: "/case-studies",
     label: "Case Studies",
     icon: BarChartHorizontalBig,
     description:
       "Real client success stories with challenges, solutions, results, and testimonials.",
   },
   {
-    href: "#",
-    label: "Whitepapers & Reports",
+    href: "/whitepapers",
+    label: "Whitepapers",
     icon: DownloadCloud,
     description:
       "Downloadable PDFs on industry insights, AI, blockchain, or software strategy.",
   },
   {
-    href: "#",
+    href: "/reports",
+    label: "Reports",
+    icon: BarChartBig,
+    description:
+      "Industry and company reports, research, and analytics.",
+  },
+  {
+    href: "/news",
     label: "News & Announcements",
     icon: Newspaper,
     description:
       "Product launches, event participation, partnerships, awards, or media mentions.",
   },
   {
-    href: "#",
+    href: "/assignments",
+    label: "Assignments",
+    icon: FileCode,
+    description:
+      "Technical and business assignments, challenges, and tasks.",
+  },
+  {
+    href: "/webinars",
     label: "Webinars & Events",
     icon: CalendarClock,
     description:
       "Upcoming webinars, past recordings, tech meetups, or training events.",
   },
   {
-    href: "#",
+    href: "/help",
     label: "Help Center / FAQs",
     icon: HelpCircle,
     description:
       "Support articles, onboarding guides, and general help topics.",
   },
   {
-    href: "#",
+    href: "/tutorials",
     label: "Tutorials & How-Tos",
     icon: BookOpenText,
     description:
       "Technical tutorials, integrations, and walkthroughs for developers and clients.",
   },
   {
-    href: "#",
-    label: "Newsletter Signup",
+    href: "/newsletters",
+    label: "Newsletter Archive",
     icon: MailPlus,
     description:
-      "A place to collect emails for a monthly newsletter on company updates and tech trends.",
+      "A place to collect and view our monthly newsletters on company updates and tech trends.",
   },
+  
 ];
 
 export const SERVICES_DATA: ServiceMenuItem[] = [

@@ -63,12 +63,7 @@ export default function ContactPage() {
   const onSubmit: SubmitHandler<ContactFormData> = async (data) => {
     setIsSubmitting(true);
     try {
-      await apiClient
-        .post("api/contact", {
-          body: JSON.stringify(data),
-        })
-        .then((res) => setJobs(res.data))
-        .finally(() => setLoading(false));
+      await apiClient.post("/contact", data);
       toast({
         title: "Message Sent Successfully!",
         description: "Thank you! We'll get back to you as soon as possible.",
