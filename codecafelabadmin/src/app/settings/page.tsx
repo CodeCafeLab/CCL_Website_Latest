@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import AdminLayout from '@/components/AdminLayout';
-import { FaUser, FaLock, FaCamera, FaSave } from 'react-icons/fa';
-import apiClient from '@/lib/axios';
-import Image from 'next/image';
+import React, { useState, useEffect } from "react";
+import AdminLayout from "@/components/AdminLayout";
+import { FaUser, FaLock, FaCamera, FaSave } from "react-icons/fa";
+import apiClient from "@/lib/axios";
+import Image from "next/image";
 
 const SettingsPage: React.FC = () => {
   const [profileData, setProfileData] = useState({
-    name: '',
-    email: '',
-    bio: '',
-    avatar: ''
+    name: "",
+    email: "",
+    bio: "",
+    avatar: "",
   });
 
   const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -25,21 +25,24 @@ const SettingsPage: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log("Frontend token:", token);
-    apiClient.get('/auth/profile')
-      .then(res => setProfileData(res.data))
+    apiClient
+      .get("/auth/profile")
+      .then((res) => setProfileData(res.data))
       .catch((err) => {
         console.error("Profile fetch error:", err);
       });
   }, []);
 
-  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleProfileChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setProfileData(prev => ({ ...prev, [name]: value }));
+    setProfileData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPasswordData(prev => ({ ...prev, [name]: value }));
+    setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +50,10 @@ const SettingsPage: React.FC = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setProfileData(prev => ({ ...prev, avatar: e.target?.result as string }));
+        setProfileData((prev) => ({
+          ...prev,
+          avatar: e.target?.result as string,
+        }));
       };
       reader.readAsDataURL(file);
     }
@@ -58,22 +64,26 @@ const SettingsPage: React.FC = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      alert('Profile updated successfully!');
+      alert("Profile updated successfully!");
     }, 1000);
   };
 
   const handleChangePassword = async () => {
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('New passwords do not match!');
+      alert("New passwords do not match!");
       return;
     }
-    
+
     setIsLoading(true);
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      alert('Password changed successfully!');
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      alert("Password changed successfully!");
     }, 1000);
   };
 
@@ -84,14 +94,18 @@ const SettingsPage: React.FC = () => {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-            <p className="text-gray-600">Manage your account settings and preferences</p>
+            <p className="text-gray-600">
+              Manage your account settings and preferences
+            </p>
           </div>
 
           {/* Profile Section */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
             <div className="flex items-center space-x-4 mb-6">
               <FaUser className="text-blue-600 text-xl" />
-              <h2 className="text-xl font-semibold text-gray-900">Profile Information</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Profile Information
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -106,7 +120,7 @@ const SettingsPage: React.FC = () => {
                         width={128}
                         height={128}
                         className="rounded-full object-cover border-4 border-gray-200"
-                        style={{ width: '8rem', height: '8rem' }}
+                        style={{ width: "8rem", height: "8rem" }}
                       />
                     ) : (
                       // Optionally, render a placeholder image or a default avatar
@@ -133,7 +147,10 @@ const SettingsPage: React.FC = () => {
               {/* Profile Form */}
               <div className="md:col-span-2 space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Full Name
                   </label>
                   <input
@@ -147,7 +164,10 @@ const SettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Email Address
                   </label>
                   <input
@@ -161,7 +181,10 @@ const SettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="bio"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Bio
                   </label>
                   <textarea
@@ -181,7 +204,7 @@ const SettingsPage: React.FC = () => {
                   className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <FaSave />
-                  <span>{isLoading ? 'Saving...' : 'Save Profile'}</span>
+                  <span>{isLoading ? "Saving..." : "Save Profile"}</span>
                 </button>
               </div>
             </div>
@@ -191,12 +214,17 @@ const SettingsPage: React.FC = () => {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center space-x-4 mb-6">
               <FaLock className="text-blue-600 text-xl" />
-              <h2 className="text-xl font-semibold text-gray-900">Change Password</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Change Password
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="currentPassword"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Current Password
                 </label>
                 <input
@@ -211,7 +239,10 @@ const SettingsPage: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="newPassword"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   New Password
                 </label>
                 <input
@@ -226,7 +257,10 @@ const SettingsPage: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Confirm New Password
                 </label>
                 <input
@@ -248,7 +282,7 @@ const SettingsPage: React.FC = () => {
                 className="flex items-center space-x-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <FaLock />
-                <span>{isLoading ? 'Changing...' : 'Change Password'}</span>
+                <span>{isLoading ? "Changing..." : "Change Password"}</span>
               </button>
             </div>
           </div>

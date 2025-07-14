@@ -22,6 +22,7 @@ const webinarRoutes = require('./routes/webinarRoutes');
 const helpRoutes = require('./routes/helpRoutes');
 const tutorialRoutes = require('./routes/tutorialRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
+const quoteRoutes = require('./routes/quoteRoutes');
 
 const morgan = require('morgan');
 // const sequelize = require('./config/db');
@@ -60,6 +61,7 @@ app.use('/api/webinars', webinarRoutes);
 app.use('/api/help', helpRoutes);
 app.use('/api/tutorials', tutorialRoutes);
 app.use('/api/newsletters', newsletterRoutes);
+app.use('/api/quotes', quoteRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
