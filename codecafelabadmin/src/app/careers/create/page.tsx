@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminLayout from "@/components/AdminLayout";
 import { FaSave, FaTimes } from "react-icons/fa";
 import { createCareer, Career } from "@/lib/careerApi";
+import { slugify } from "@/lib/slugify";
 
 interface FormData {
   title: string;
@@ -44,6 +45,13 @@ const CreateCareerPage: React.FC = () => {
     featured: false,
   });
   const [isLoading, setIsLoading] = useState(false);
+
+    // Auto-generate slug from title
+    useEffect(() => {
+      if (formData.title) {
+        setFormData((prev) => ({ ...prev, slug: slugify(formData.title) }));
+      }
+    }, [formData.title]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>

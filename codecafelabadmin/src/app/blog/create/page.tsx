@@ -8,6 +8,7 @@ import apiClient from "@/lib/axios";
 import Image from "next/image";
 import ReactQuillEditor from "@/app/blog/ReactQuillEditor/ReactQuillEditor";
 import { getCategories } from "@/lib/categoryApi";
+import { slugify } from "@/lib/slugify";
 
 interface FormData {
   title: string;
@@ -102,13 +103,7 @@ const CreateBlogPage: React.FC = () => {
   // Auto-generate slug from title
   useEffect(() => {
     if (formData.title) {
-      const slug = formData.title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
-        .trim();
-      setFormData((prev) => ({ ...prev, slug }));
+      setFormData((prev) => ({ ...prev, slug: slugify(formData.title) }));
     }
   }, [formData.title]);
 
