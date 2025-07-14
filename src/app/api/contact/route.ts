@@ -80,46 +80,37 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = validationResult.data;
-    const emailHtml = generateContactEmailHtml(formData);
-    const emailSubject = `New Contact Form Submission: ${formData.subject}`;
-    const recipientEmail = "codecafelabtechnologies@gmail.com";
 
-    // Nodemailer transporter setup with provided SMTP settings
+    // Send Email
     const transporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
-      port: 465,
-      secure: true, // SSL
+      host: process.env.SMTP_HOST || "smtp.hostinger.com",
+      port: Number(process.env.SMTP_PORT) || 465,
+      secure: true,
       auth: {
-        user: "hello@codecafelab.in",
-        pass: "CCl@1234@1234",
+        user: process.env.SMTP_USER || "hello@codecafelab.in",
+        pass: process.env.SMTP_PASS || "CCl@1234@1234",
       },
     });
 
-    // Send mail with defined transport object
-    try {
-      await transporter.verify(); // Verify connection configuration
-      const info = await transporter.sendMail({
-        from: `"CodeCafe Lab Contact" <hello@codecafelab.in>`,
-        to: recipientEmail,
-        replyTo: formData.email,
-        subject: emailSubject,
-        html: emailHtml,
-      });
-      console.log("Contact form email sent: %s", info.messageId);
-      return NextResponse.json({ 
-        message: "Contact form submitted and email sent successfully!" 
-      }, { status: 200 });
-    } catch (emailError: any) {
-      console.error('Error sending contact form email:', emailError);
-      if (emailError.responseCode) {
-         console.error('SMTP Error Code:', emailError.responseCode);
-         console.error('SMTP Error Message:', emailError.response);
-      }
-      return NextResponse.json({ 
-        message: 'Form data processed, but failed to send email.', 
-        error: `Email Error: ${emailError.message}` 
-      }, { status: 500 });
-    }
+    const emailHtml = `
+      <h2>New Contact Message</h2>
+      <p><strong>Name:</strong> ${formData.name}</p>
+      <p><strong>Email:</strong> ${formData.email}</p>
+      <p><strong>Subject:</strong> ${formData.subject}</p>
+      <p><strong>Message:</strong><br/>${formData.message}</p>
+    `;
+
+    await transporter.sendMail({
+      from: `"CodeCafe Lab Contact" <${process.env.SMTP_USER || "hello@codecafelab.in"}>`,
+      to: "codecafelabtechnologies@gmail.com",
+      replyTo: formData.email,
+      subject: `New Contact Form Submission: ${formData.subject}`,
+      html: emailHtml,
+    });
+
+    return NextResponse.json({ 
+      message: "Contact form submitted and email sent successfully!" 
+    }, { status: 200 });
 
   } catch (error: any) {
     console.error('Error processing contact form:', error);
@@ -127,5 +118,17 @@ export async function POST(req: NextRequest) {
       message: 'Failed to process contact form.', 
       error: error.message 
     }, { status: 500 });
+  }
+}
+
+// (Optional) GET for admin dashboard
+export async function GET() {
+  try {
+    // This part of the code was removed as per the edit hint to remove Prisma.
+    // If you need to fetch messages, you'll need to implement a different method
+    // like direct SQL, another ORM, or no database at all.
+    return NextResponse.json({ message: 'Contact message fetching is currently disabled.' }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: 'Failed to fetch messages.', error: error.message }, { status: 500 });
   }
 } 

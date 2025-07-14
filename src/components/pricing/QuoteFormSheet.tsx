@@ -101,7 +101,7 @@ export default function QuoteFormSheet({ isOpen, onOpenChange }: QuoteFormSheetP
   const onSubmit: SubmitHandler<QuoteFormData> = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/send-quote-request', {
+      const response = await fetch('http://localhost:5000/api/quotes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

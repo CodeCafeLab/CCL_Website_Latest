@@ -16,7 +16,6 @@ import {
 import {
   SERVICES_DATA,
   TECH_STACK_DATA,
-  TESTIMONIALS_DATA,
 } from "@/lib/constants";
 import {
   ArrowRight,
@@ -35,6 +34,7 @@ import QuoteFormSheet from "@/components/pricing/QuoteFormSheet";
 import { categories, BlogPost, Product } from "@/types";
 import axios from "axios";
 import { getProducts } from "@/lib/api";
+import ProtectedRoute from "@/components/ProtectedRoute/page";
 
 
 
@@ -59,7 +59,6 @@ export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
 
- 
   useEffect(() => {
     fetch("http://localhost:5000/api/categories")
       .then((res) => res.json())
@@ -139,7 +138,7 @@ export default function HomePage() {
   };
 
   return (
-    <>
+    <ProtectedRoute>
       <div className="space-y-16 md:space-y-24">
         {/* Hero Section */}
         <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden shadow-lg">
@@ -567,6 +566,6 @@ export default function HomePage() {
         isOpen={isQuoteSheetOpen}
         onOpenChange={setIsQuoteSheetOpen}
       />
-    </>
+    </ProtectedRoute>
   );
 }
