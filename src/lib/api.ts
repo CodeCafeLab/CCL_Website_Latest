@@ -86,3 +86,27 @@ export interface JobApplication {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface TeamMember {
+  id?: string;
+  name: string;
+  position: string;
+  department?: string;
+  bio?: string;
+  avatar_url?: string;
+  email?: string;
+  phone?: string;
+  linkedin_url?: string;
+  twitter_url?: string;
+  github_url?: string;
+  portfolio_url?: string;
+  skills?: string[];
+  experience_years?: number;
+  education?: string;
+  certifications?: string[];
+  status: 'active' | 'inactive';
+  featured: boolean;
+  sort_order?: number;
+  created_at?: string;
+  updated_at?: string;
+}

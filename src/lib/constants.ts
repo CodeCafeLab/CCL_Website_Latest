@@ -142,7 +142,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
       "Current job openings, work culture, benefits, hiring process, and intern programs.",
   },
   {
-    href: "#",
+    href: "/teams",
     label: "Our Team",
     icon: Users2,
     description:
