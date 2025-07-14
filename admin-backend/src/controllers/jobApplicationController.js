@@ -44,8 +44,40 @@ exports.getApplicationById = async (req, res) => {
 // Submit job application
 exports.submitApplication = async (req, res) => {
   try {
+    const {
+      job_id,
+      applicant_name,
+      applicant_email,
+      applicant_phone,
+      resume_url,
+      portfolio_url,
+      linkedin_url,
+      github_url,
+      experience_years,
+      current_company,
+      current_position,
+      expected_salary,
+      notice_period,
+      resume,
+      cover_letter
+    } = req.body;
+
     const applicationData = {
-      ...req.body,
+      job_id,
+      applicant_name,
+      applicant_email,
+      applicant_phone,
+      resume_url,
+      portfolio_url,
+      linkedin_url,
+      github_url,
+      experience_years,
+      current_company,
+      current_position,
+      expected_salary,
+      notice_period,
+      resume,
+      cover_letter
     };
 
     // Validate required fields

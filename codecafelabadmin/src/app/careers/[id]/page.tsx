@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import AdminLayout from "@/components/AdminLayout";
-import { getCareer, deleteCareer, Career } from "@/lib/careerApi";
+import { getCareer, deleteCareer, Career, submitApplication } from "@/lib/careerApi";
 import { FaArrowLeft, FaEdit, FaTrash, FaBriefcase, FaMapMarkerAlt, FaMoneyBillWave, FaStar, FaEye } from "react-icons/fa";
 
 const CareerDetailPage: React.FC = () => {
@@ -12,6 +12,17 @@ const CareerDetailPage: React.FC = () => {
   const [career, setCareer] = useState<Career | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showApplyForm, setShowApplyForm] = useState(false);
+  const [application, setApplication] = useState({
+    applicant_name: "",
+    applicant_email: "",
+    applicant_phone: "",
+    resume_url: "",
+    cover_letter: "",
+  });
+  const [applying, setApplying] = useState(false);
+  const [applySuccess, setApplySuccess] = useState<string | null>(null);
+  const [applyError, setApplyError] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -48,6 +59,50 @@ const CareerDetailPage: React.FC = () => {
       } finally {
         setIsDeleting(false);
       }
+    }
+  };
+
+  const handleApplicationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setApplication((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleApply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setApplying(true);
+    setApplySuccess(null);
+    setApplyError(null);
+    try {
+      await submitApplication({
+        ...application,
+        job_id: id as string,
+        status: 'pending',
+      });
+      setApplySuccess("Application submitted successfully!");
+      setApplication({
+        applicant_name: "",
+        applicant_email: "",
+        applicant_phone: "",
+        resume_url: "",
+        cover_letter: "",
+      });
+      setShowApplyForm(false);
+    } catch (err: unknown) {
+      let errorMsg = "Failed to submit application.";
+      if (
+        err &&
+        typeof err === "object" &&
+        "response" in err &&
+        err.response &&
+        typeof err.response === "object" &&
+        ("data" in err.response)
+      ) {
+        // @ts-expect-error: accessing dynamic error response shape from axios
+        errorMsg = err.response.data?.error || err.response.data?.message || errorMsg;
+      }
+      setApplyError(errorMsg);
+    } finally {
+      setApplying(false);
     }
   };
 
@@ -286,7 +341,43 @@ const CareerDetailPage: React.FC = () => {
                     <FaArrowLeft />
                     <span>Back to List</span>
                   </button>
+                  <button
+                    onClick={() => setShowApplyForm((v) => !v)}
+                    className="w-full flex items-center justify-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    <span>{showApplyForm ? "Cancel Application" : "Apply for this Job"}</span>
+                  </button>
                 </div>
+                {showApplyForm && (
+                  <form className="mt-6 bg-gray-50 p-4 rounded-lg border" onSubmit={handleApply}>
+                    <h4 className="text-md font-semibold mb-2">Job Application</h4>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium mb-1">Name</label>
+                      <input type="text" name="applicant_name" value={application.applicant_name} onChange={handleApplicationChange} required className="w-full border px-3 py-2 rounded" />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium mb-1">Email</label>
+                      <input type="email" name="applicant_email" value={application.applicant_email} onChange={handleApplicationChange} required className="w-full border px-3 py-2 rounded" />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium mb-1">Phone</label>
+                      <input type="text" name="applicant_phone" value={application.applicant_phone} onChange={handleApplicationChange} className="w-full border px-3 py-2 rounded" />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium mb-1">Resume URL</label>
+                      <input type="url" name="resume_url" value={application.resume_url} onChange={handleApplicationChange} className="w-full border px-3 py-2 rounded" />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium mb-1">Cover Letter</label>
+                      <textarea name="cover_letter" value={application.cover_letter} onChange={handleApplicationChange} className="w-full border px-3 py-2 rounded" />
+                    </div>
+                    <button type="submit" disabled={applying} className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 mt-2">
+                      {applying ? "Submitting..." : "Submit Application"}
+                    </button>
+                    {applySuccess && <div className="text-green-600 mt-2">{applySuccess}</div>}
+                    {applyError && <div className="text-red-600 mt-2">{applyError}</div>}
+                  </form>
+                )}
               </div>
             </div>
           </div>
