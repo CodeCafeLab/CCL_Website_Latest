@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api";
+import Link from "next/link";
+import { User, Tag, Star, Calendar, Clock, Eye, Video } from "lucide-react";
 
 export default function TutorialsPage() {
   const [items, setItems] = useState<any[]>([]);
@@ -19,13 +21,69 @@ export default function TutorialsPage() {
     <div className="container mx-auto py-12">
       <h1 className="text-3xl font-bold mb-8">Tutorials & How-Tos</h1>
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((item, idx) => (
-          <div key={item.id || idx} className="p-6 bg-card rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
-            <p className="text-muted-foreground">{item.summary || item.description}</p>
-            {item.link && (
-              <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-primary underline">Read More</a>
+        {items.map((item) => (
+          <div key={item.id} className="p-6 bg-card rounded-lg shadow flex flex-col">
+            {item.thumbnail_url && (
+              <img
+                src={item.thumbnail_url}
+                alt={item.title}
+                className="w-full h-48 object-cover rounded mb-4"
+              />
             )}
+            <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
+            <div className="mb-2 text-sm text-muted-foreground flex flex-wrap gap-2">
+              <span className="flex items-center gap-1">
+                <User className="h-4 w-4" /> {item.author}
+              </span>
+              <span className="flex items-center gap-1">
+                <Tag className="h-4 w-4" /> {item.category}
+              </span>
+              <span className="flex items-center gap-1">
+                <Star className="h-4 w-4 text-yellow-500" /> {item.status}
+              </span>
+              <span className="flex items-center gap-1">
+                <Clock className="h-4 w-4" /> {item.duration} min
+              </span>
+              <span className="flex items-center gap-1">
+                <Eye className="h-4 w-4" /> {item.views}
+              </span>
+              <span className="flex items-center gap-1">
+                <Video className="h-4 w-4" /> {item.difficulty}
+              </span>
+            </div>
+            <p className="mb-2 line-clamp-3">{item.description}</p>
+            {item.tags && item.tags.length > 0 && (
+              <div className="mb-2">
+                <span className="font-medium">Tags:</span>{" "}
+                {item.tags.map((tag: string, idx: number) => (
+                  <span key={idx} className="inline-block bg-primary/10 text-primary px-2 py-1 rounded mr-1 text-xs">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="mt-auto flex flex-col gap-2">
+              <Link
+                href={`/tutorials/${item.id}`}
+                className="inline-block mt-2 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 text-center font-semibold"
+              >
+                Read More
+              </Link>
+              {item.video_url && (
+                <a
+                  href={item.video_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 px-4 py-2 bg-accent text-accent-foreground rounded hover:bg-accent/90 text-center font-semibold"
+                >
+                  Watch Video
+                </a>
+              )}
+            </div>
+            <div className="text-xs text-muted-foreground mt-2">
+              <Calendar className="inline h-3 w-3 mr-1" />
+              {new Date(item.created_at).toLocaleDateString()}
+            </div>
           </div>
         ))}
       </div>

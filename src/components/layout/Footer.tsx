@@ -41,9 +41,10 @@ export default function Footer() {
             <Link href="/" className="inline-block mb-2" aria-label={`${SITE_NAME} Home`}>
               <Image
                 src="/codecafe_logo_dark.png"
+                width={120}
+                height={40}
+                style={{ height: "auto" }}
                 alt={`${SITE_NAME} Logo`}
-                width={150}
-                height={38}
                 priority 
                 data-ai-hint="company logo dark"
               />

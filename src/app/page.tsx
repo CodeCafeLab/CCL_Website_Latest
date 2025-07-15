@@ -13,10 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  SERVICES_DATA,
-  TECH_STACK_DATA,
-} from "@/lib/constants";
+import { SERVICES_DATA, TECH_STACK_DATA } from "@/lib/constants";
 import {
   ArrowRight,
   Bot,
@@ -35,8 +32,6 @@ import { categories, BlogPost, Product } from "@/types";
 import axios from "axios";
 import { getProducts } from "@/lib/api";
 import ProtectedRoute from "@/components/ProtectedRoute/page";
-
-
 
 type ClientReview = {
   id: number;
@@ -131,8 +126,12 @@ export default function HomePage() {
 
   // Helper function to get a safe image URL
   const getSafeImageUrl = (imageUrl: string | undefined) => {
-    if (!imageUrl || imageUrl === 'https://example.com/mug.jpg' || imageUrl.includes('example.com')) {
-      return 'https://placehold.co/600x400/6366f1/ffffff?text=Project+Image';
+    if (
+      !imageUrl ||
+      imageUrl === "https://example.com/mug.jpg" ||
+      imageUrl.includes("example.com")
+    ) {
+      return "https://placehold.co/600x400/6366f1/ffffff?text=Project+Image";
     }
     return imageUrl;
   };
@@ -273,7 +272,9 @@ export default function HomePage() {
             {productsLoading ? (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Loading featured projects...</p>
+                <p className="text-muted-foreground">
+                  Loading featured projects...
+                </p>
               </div>
             ) : featuredProducts.length > 0 ? (
               <div className="grid md:grid-cols-2 gap-8">
@@ -290,7 +291,8 @@ export default function HomePage() {
                       className="rounded-md object-cover w-full md:w-[150px] h-auto md:h-[100px]"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        target.src = 'https://placehold.co/600x400/6366f1/ffffff?text=Project+Image';
+                        target.src =
+                          "https://placehold.co/600x400/6366f1/ffffff?text=Project+Image";
                       }}
                     />
                     <div className="flex-1">
@@ -316,7 +318,9 @@ export default function HomePage() {
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-muted-foreground">No featured projects available at the moment.</p>
+                <p className="text-muted-foreground">
+                  No featured projects available at the moment.
+                </p>
               </div>
             )}
             <div className="text-center mt-12">
@@ -327,8 +331,7 @@ export default function HomePage() {
                 className="text-accent hover:text-accent/90 hover:bg-accent/10"
               >
                 <Link href="/projects">
-                  Explore All Projects{" "}
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  Explore All Projects <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
             </div>
@@ -447,42 +450,51 @@ export default function HomePage() {
                 style={{ willChange: "transform" }}
               >
                 {[...clientReviews, ...clientReviews].map((review, index) => (
-                  <Card
+                  <div
                     key={`${review.id}-${index}`}
-                    className="flex-shrink-0 w-72 md:w-80 mx-4 bg-card flex flex-col"
+                    className="flex-shrink-0 w-80 mx-4"
                   >
-                    <CardContent className="p-6 flex flex-col h-full">
+                    <div className="relative bg-card rounded-2xl shadow-lg border border-primary/20 p-6 flex flex-col h-full transition-transform hover:shadow-2xl">
+                      {/* Quotation Mark Icon */}
+                      <span className="absolute top-4 right-6 text-5xl text-accent/10 pointer-events-none select-none">
+                        &ldquo; 
+                      </span>
+                      {/* Avatar and Name */}
                       <div className="flex items-center mb-4">
                         <Image
                           src={review.avatar_url}
                           alt={review.client_name}
                           width={60}
                           height={60}
-                          className="rounded-full mr-4 object-cover"
+                          className="rounded-full aspect-square border-4 border-primary/20 shadow-sm"
                           data-ai-hint="client avatar"
                         />
-                        <div>
-                          <h4 className="font-semibold">{review.client_name}</h4>
+                        <div className="ml-4">
+                          <h4 className="font-semibold text-lg text-primary">
+                            {review.client_name}
+                          </h4>
                           {/* Optionally show date or other info */}
                         </div>
                       </div>
+                      {/* Rating */}
                       <div className="flex mb-3">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <Star
                             key={`star-${review.id}-${index}-${i}`}
                             className={`h-5 w-5 ${
                               i < review.rating
-                                ? "text-primary fill-primary"
+                                ? "text-yellow-400 fill-yellow-400"
                                 : "text-muted-foreground/30"
                             }`}
                           />
                         ))}
                       </div>
-                      <p className="text-sm text-muted-foreground italic flex-grow line-clamp-3">
-                        "{review.review_text}"
+                      {/* Review Text */}
+                      <p className="text-base text-muted-foreground italic flex-grow line-clamp-4 relative z-10">
+                        {review.review_text}
                       </p>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>

@@ -17,7 +17,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <CardHeader className="p-0">
         <div className="relative aspect-video overflow-hidden">
           <Image
-            src={product.imageUrl}
+            src={product.image_url}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -39,7 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </CardContent>
       <CardFooter className="p-6 pt-0">
         <Button asChild variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-          <Link href={product.demoUrl}>
+          <Link href={product.demoUrl || "#"}>
             <PlayCircle className="mr-2 h-4 w-4" /> View Demo
           </Link>
         </Button>

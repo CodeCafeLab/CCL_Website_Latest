@@ -1,6 +1,9 @@
 // ... existing code ...
 const nextConfig = {
   // ...other config...
+  experimental: {
+    serverActions: true,
+  },
   images: {
     domains: [
       'res.cloudinary.com',
@@ -8,5 +11,5 @@ const nextConfig = {
     ],
   },
 };
-
 export default nextConfig;
+

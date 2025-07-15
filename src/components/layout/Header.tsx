@@ -94,23 +94,20 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
+  // All hooks at the top!
   const { user, login, logout, loading } = useAuth();
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
   const [productsMenuOpen, setProductsMenuOpen] = useState(false);
   const [resourcesMenuOpen, setResourcesMenuOpen] = useState(false);
-
   const servicesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
   const companyMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
   const productsMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
   const resourcesMenuTimerRef = useRef<NodeJS.Timeout | null>(null);
-
   const HOVER_MENU_CLOSE_DELAY = 200;
-
   const servicesBycategories = React.useMemo(() => {
     return SERVICES_DATA.reduce((acc, service) => {
       const categories = service.categories;
@@ -121,13 +118,13 @@ export default function Header() {
       return acc;
     }, {} as Record<string, ServiceMenuItem[]>);
   }, []);
-
   const categoriesIcons: Record<string, LucideIcon> = {
     Development: Code,
     Design: Palette,
     Marketing: TrendingUp,
     Infrastructure: Cloud,
   };
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -142,9 +139,6 @@ export default function Header() {
         clearTimeout(resourcesMenuTimerRef.current);
     };
   }, []);
-
-  const logoSrc = "/codecafe_logo_dark.png";
-  const logoAlt = `${SITE_NAME} Logo (Dark Mode)`;
 
   if (!isMounted) {
     return (
@@ -276,8 +270,6 @@ export default function Header() {
     );
   };
 
-  const router = useRouter();
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-24 items-center justify-between px-4">
@@ -287,13 +279,13 @@ export default function Header() {
           aria-label={`${SITE_NAME} Home`}
         >
           <Image
-            src={logoSrc}
-            alt={logoAlt}
+            src="/codecafe_logo_dark.png"
+            alt={`${SITE_NAME} Logo (Dark Mode)`}
             width={171}
             height={43}
             priority
             data-ai-hint="company logo dark"
-            key={logoSrc}
+            key="/codecafe_logo_dark.png"
           />
         </Link>
 
@@ -757,12 +749,12 @@ export default function Header() {
               <SheetHeader className="p-4 border-b border-border">
                 <SheetTitle className="flex items-center gap-2">
                   <Image
-                    src={logoSrc}
-                    alt={logoAlt}
+                    src="/codecafe_logo_dark.png"
+                    alt={`${SITE_NAME} Logo (Dark Mode)`}
                     width={140}
                     height={35}
                     data-ai-hint="company logo dark"
-                    key={`sheet-${logoSrc}`}
+                    key="sheet-logo"
                   />
                 </SheetTitle>
               </SheetHeader>
