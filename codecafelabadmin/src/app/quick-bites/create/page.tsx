@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import AdminLayout from "@/components/AdminLayout";
 import { FaSave, FaTimes, FaUpload, FaEye, FaEyeSlash } from "react-icons/fa";
 import { createQuickBite } from "@/lib/quickBiteApi";
-import Image from "next/image";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 interface FormData {
@@ -48,7 +47,7 @@ const CreateQuickBitePage: React.FC = () => {
     }));
   };
 
-  const handleVideoUpload = async (e) => {
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const formData = new FormData();

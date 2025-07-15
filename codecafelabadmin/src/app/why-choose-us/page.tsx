@@ -3,13 +3,20 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, } from "react-icons/fa";
-import { getWhyChooseUs, deleteWhyChooseUs, WhyChooseUs } from "@/lib/whyChooseUsApi";
+import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import {
+  getWhyChooseUs,
+  deleteWhyChooseUs,
+  WhyChooseUs,
+} from "@/lib/whyChooseUsApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const WhyChooseUsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "active" | "inactive"
+  >("all");
   const [items, setItems] = useState<WhyChooseUs[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -32,9 +39,11 @@ const WhyChooseUsPage: React.FC = () => {
   };
 
   const filteredItems = items.filter((item) => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || item.status === statusFilter;
+    const matchesSearch =
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || item.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -56,9 +65,12 @@ const WhyChooseUsPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "inactive":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -72,7 +84,7 @@ const WhyChooseUsPage: React.FC = () => {
               Why Choose Us Management
             </h1>
             <p className="text-gray-600">
-              Manage your "Why Choose Us" section content
+              Manage your Why Choose Us section content
             </p>
           </div>
           <Link
@@ -102,7 +114,11 @@ const WhyChooseUsPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "active" | "inactive"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -133,7 +149,11 @@ const WhyChooseUsPage: React.FC = () => {
                         {item.title}
                       </h3>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(item.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            item.status
+                          )}`}
+                        >
                           {item.status}
                         </span>
                         <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
@@ -148,14 +168,12 @@ const WhyChooseUsPage: React.FC = () => {
                   </p>
 
                   {item.icon && (
-                    <div className="text-2xl mb-4">
-                      {item.icon}
-                    </div>
+                    <div className="text-2xl mb-4">{item.icon}</div>
                   )}
 
                   {item.image_url && (
                     <div className="mb-4">
-                      <img
+                      <Image
                         src={item.image_url}
                         alt={item.title}
                         className="w-full h-32 object-cover rounded-lg"
@@ -222,4 +240,4 @@ const WhyChooseUsPage: React.FC = () => {
   );
 };
 
-export default WhyChooseUsPage; 
+export default WhyChooseUsPage;

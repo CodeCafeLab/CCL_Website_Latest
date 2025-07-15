@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import AdminLayout from "@/components/AdminLayout";
 import { FaSave, FaTimes } from "react-icons/fa";
 import { createWhitepaper } from "@/lib/whitepaperApi";
+import Image from "next/image";
 
 const defaultForm = {
   title: "",
@@ -158,7 +159,7 @@ export default function CreateWhitepaperPage() {
                     }
                   }} className="mt-2" />
                   {form.cover_image && (
-                    <img src={form.cover_image} alt="Preview" className="mt-2 h-24 rounded border" />
+                    <Image src={form.cover_image} alt="Preview" className="mt-2 h-24 rounded border" />
                   )}
                 </div>
               </div>

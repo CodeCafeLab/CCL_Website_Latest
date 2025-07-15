@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminLayout from "@/components/AdminLayout";
 import { FaSave, FaTimes } from "react-icons/fa";
-import { createWhyChooseUs, WhyChooseUs } from "@/lib/whyChooseUsApi";
+import { createWhyChooseUs } from "@/lib/whyChooseUsApi";
 
 interface FormData {
   title: string;
@@ -48,6 +48,7 @@ const CreateWhyChooseUsPage: React.FC = () => {
       setIsLoading(false);
       router.push("/why-choose-us");
     } catch (err) {
+      console.log(err)
       setIsLoading(false);
       alert("Failed to create item");
     }
@@ -67,7 +68,7 @@ const CreateWhyChooseUsPage: React.FC = () => {
                 Create Why Choose Us Item
               </h1>
               <p className="text-gray-600">
-                Add a new item to the "Why Choose Us" section
+                Add a new item to the Why Choose Us section
               </p>
             </div>
           </div>

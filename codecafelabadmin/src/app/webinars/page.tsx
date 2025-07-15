@@ -3,13 +3,23 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaStar, FaCalendarAlt } from "react-icons/fa";
+import {
+  FaPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaStar,
+} from "react-icons/fa";
 import { getWebinars, deleteWebinar, Webinar } from "@/lib/webinarApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const WebinarsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "upcoming" | "live" | "completed" | "cancelled">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "upcoming" | "live" | "completed" | "cancelled"
+  >("all");
   const [webinars, setWebinars] = useState<Webinar[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -32,9 +42,11 @@ const WebinarsPage: React.FC = () => {
   };
 
   const filteredWebinars = webinars.filter((webinar) => {
-    const matchesSearch = webinar.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         webinar.speaker.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || webinar.status === statusFilter;
+    const matchesSearch =
+      webinar.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      webinar.speaker.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || webinar.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -56,21 +68,26 @@ const WebinarsPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'upcoming': return 'bg-blue-100 text-blue-800';
-      case 'live': return 'bg-green-100 text-green-800';
-      case 'completed': return 'bg-gray-100 text-gray-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "upcoming":
+        return "bg-blue-100 text-blue-800";
+      case "live":
+        return "bg-green-100 text-green-800";
+      case "completed":
+        return "bg-gray-100 text-gray-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -114,7 +131,11 @@ const WebinarsPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "upcoming" | "live" | "completed"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -142,7 +163,7 @@ const WebinarsPage: React.FC = () => {
               >
                 {webinar.thumbnail_url && (
                   <div className="h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={webinar.thumbnail_url}
                       alt={webinar.title}
                       className="w-full h-full object-cover"
@@ -156,7 +177,11 @@ const WebinarsPage: React.FC = () => {
                         {webinar.title}
                       </h3>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(webinar.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            webinar.status
+                          )}`}
+                        >
                           {webinar.status}
                         </span>
                         {webinar.featured && (
@@ -174,10 +199,20 @@ const WebinarsPage: React.FC = () => {
                   </p>
 
                   <div className="text-sm text-gray-600 mb-4">
-                    <p><strong>Speaker:</strong> {webinar.speaker}</p>
-                    <p><strong>Date:</strong> {formatDate(webinar.date_time)}</p>
-                    <p><strong>Duration:</strong> {webinar.duration}</p>
-                    <p><strong>Participants:</strong> {webinar.registered_participants}/{webinar.max_participants}</p>
+                    <p>
+                      <strong>Speaker:</strong> {webinar.speaker}
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(webinar.date_time)}
+                    </p>
+                    <p>
+                      <strong>Duration:</strong> {webinar.duration}
+                    </p>
+                    <p>
+                      <strong>Participants:</strong>{" "}
+                      {webinar.registered_participants}/
+                      {webinar.max_participants}
+                    </p>
                   </div>
 
                   <div className="flex items-center space-x-2">
@@ -239,4 +274,4 @@ const WebinarsPage: React.FC = () => {
   );
 };
 
-export default WebinarsPage; 
+export default WebinarsPage;

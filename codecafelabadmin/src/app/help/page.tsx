@@ -3,13 +3,22 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaStar, FaQuestionCircle } from "react-icons/fa";
+import {
+  FaPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaStar,
+} from "react-icons/fa";
 import { getHelpArticles, deleteHelpArticle, HelpArticle } from "@/lib/helpApi";
 import { useRouter } from "next/navigation";
 
 const HelpPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft" | "archived">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "published" | "draft" | "archived"
+  >("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [helpArticles, setHelpArticles] = useState<HelpArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,10 +42,13 @@ const HelpPage: React.FC = () => {
   };
 
   const filteredHelpArticles = helpArticles.filter((article) => {
-    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.content.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || article.status === statusFilter;
-    const matchesCategory = categoryFilter === "all" || article.category === categoryFilter;
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.content.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || article.status === statusFilter;
+    const matchesCategory =
+      categoryFilter === "all" || article.category === categoryFilter;
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
@@ -58,14 +70,20 @@ const HelpPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published': return 'bg-green-100 text-green-800';
-      case 'draft': return 'bg-yellow-100 text-yellow-800';
-      case 'archived': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "published":
+        return "bg-green-100 text-green-800";
+      case "draft":
+        return "bg-yellow-100 text-yellow-800";
+      case "archived":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
-  const categories = Array.from(new Set(helpArticles.map(article => article.category)));
+  const categories = Array.from(
+    new Set(helpArticles.map((article) => article.category))
+  );
 
   return (
     <AdminLayout adminName="John Doe">
@@ -107,7 +125,11 @@ const HelpPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "published" | "draft" | "archived"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -122,7 +144,9 @@ const HelpPage: React.FC = () => {
               >
                 <option value="all">All Categories</option>
                 {categories.map((category) => (
-                  <option key={category} value={category}>{category}</option>
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
                 ))}
               </select>
             </div>
@@ -149,7 +173,11 @@ const HelpPage: React.FC = () => {
                         {article.title}
                       </h3>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(article.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            article.status
+                          )}`}
+                        >
                           {article.status}
                         </span>
                         {article.featured && (
@@ -167,10 +195,18 @@ const HelpPage: React.FC = () => {
                   </p>
 
                   <div className="text-sm text-gray-600 mb-4">
-                    <p><strong>Author:</strong> {article.author}</p>
-                    <p><strong>Category:</strong> {article.category}</p>
-                    <p><strong>Views:</strong> {article.views}</p>
-                    <p><strong>Helpful Votes:</strong> {article.helpful_votes}</p>
+                    <p>
+                      <strong>Author:</strong> {article.author}
+                    </p>
+                    <p>
+                      <strong>Category:</strong> {article.category}
+                    </p>
+                    <p>
+                      <strong>Views:</strong> {article.views}
+                    </p>
+                    <p>
+                      <strong>Helpful Votes:</strong> {article.helpful_votes}
+                    </p>
                   </div>
 
                   <div className="flex items-center space-x-2">
@@ -216,15 +252,17 @@ const HelpPage: React.FC = () => {
                 ? "Try adjusting your search or filter criteria."
                 : "Get started by adding your first help article."}
             </p>
-            {!searchTerm && statusFilter === "all" && categoryFilter === "all" && (
-              <Link
-                href="/help/create"
-                className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                <FaPlus />
-                <span>Add Your First Help Article</span>
-              </Link>
-            )}
+            {!searchTerm &&
+              statusFilter === "all" &&
+              categoryFilter === "all" && (
+                <Link
+                  href="/help/create"
+                  className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <FaPlus />
+                  <span>Add Your First Help Article</span>
+                </Link>
+              )}
           </div>
         )}
       </div>

@@ -124,6 +124,16 @@ const BlogManagementPage: React.FC = () => {
                   </option>
                 ))}
               </select>
+              {/* Add this for status filter */}
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as "all" | "published" | "draft")}
+                className="px-4 py-2 border border-gray-300 rounded-lg"
+              >
+                <option value="all">All Statuses</option>
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
             </div>
           </div>
         </div>

@@ -27,14 +27,9 @@ const QuickBiteCard: React.FC<QuickBiteCardProps> = ({
   onDelete,
   onLike,
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
-  const handlePlayPause = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsPlaying(!isPlaying);
-  };
+
 
   const handleLike = (e: React.MouseEvent) => {
     e.preventDefault();

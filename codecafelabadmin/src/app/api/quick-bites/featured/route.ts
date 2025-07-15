@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   const backendRes = await fetch("http://localhost:5000/api/quick-bites/featured", {

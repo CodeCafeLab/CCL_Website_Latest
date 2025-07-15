@@ -1,4 +1,5 @@
 "use client";
+import { ContactMessage } from "@/lib/contactUS";
 import React, { useEffect, useState } from "react";
 export default function ContactMessages() {
   const [messages, setMessages] = useState([]);
@@ -9,8 +10,8 @@ export default function ContactMessages() {
     <div>
       <h1>Contact Messages</h1>
       <ul>
-        {messages.map((msg: any) => (
-          <li key={msg._id}>
+        {messages.map((msg: ContactMessage) => (
+          <li key={msg.id}>
             <b>{msg.name}</b> ({msg.email}): {msg.subject} <br /> {msg.message}
           </li>
         ))}

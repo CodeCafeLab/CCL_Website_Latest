@@ -3,13 +3,24 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaDownload, FaStar } from "react-icons/fa";
+import {
+  FaPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaDownload,
+  FaStar,
+} from "react-icons/fa";
 import { getReports, deleteReport, Report } from "@/lib/reportApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const ReportsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft" | "archived">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "published" | "draft" | "archived"
+  >("all");
   const [reports, setReports] = useState<Report[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -32,9 +43,11 @@ const ReportsPage: React.FC = () => {
   };
 
   const filteredReports = reports.filter((report) => {
-    const matchesSearch = report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         report.author.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || report.status === statusFilter;
+    const matchesSearch =
+      report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      report.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || report.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -56,10 +69,14 @@ const ReportsPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published': return 'bg-green-100 text-green-800';
-      case 'draft': return 'bg-yellow-100 text-yellow-800';
-      case 'archived': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "published":
+        return "bg-green-100 text-green-800";
+      case "draft":
+        return "bg-yellow-100 text-yellow-800";
+      case "archived":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -103,7 +120,11 @@ const ReportsPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "published" | "draft" | "archived"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -130,7 +151,7 @@ const ReportsPage: React.FC = () => {
               >
                 {report.cover_image && (
                   <div className="h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={report.cover_image}
                       alt={report.title}
                       className="w-full h-full object-cover"
@@ -144,7 +165,11 @@ const ReportsPage: React.FC = () => {
                         {report.title}
                       </h3>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(report.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            report.status
+                          )}`}
+                        >
                           {report.status}
                         </span>
                         {report.featured && (
@@ -162,9 +187,15 @@ const ReportsPage: React.FC = () => {
                   </p>
 
                   <div className="text-sm text-gray-600 mb-4">
-                    <p><strong>Author:</strong> {report.author}</p>
-                    <p><strong>Category:</strong> {report.category}</p>
-                    <p><strong>Downloads:</strong> {report.download_count}</p>
+                    <p>
+                      <strong>Author:</strong> {report.author}
+                    </p>
+                    <p>
+                      <strong>Category:</strong> {report.category}
+                    </p>
+                    <p>
+                      <strong>Downloads:</strong> {report.download_count}
+                    </p>
                   </div>
 
                   <div className="flex items-center space-x-2">
@@ -233,4 +264,4 @@ const ReportsPage: React.FC = () => {
   );
 };
 
-export default ReportsPage; 
+export default ReportsPage;

@@ -5,7 +5,8 @@ const nextConfig = {
       'example.com',
       'images.unsplash.com',
       'via.placeholder.com',
-      'picsum.photos'
+      'picsum.photos',
+      'your-other-domains.com'
     ],
   },
 };

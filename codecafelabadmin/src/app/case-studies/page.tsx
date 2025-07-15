@@ -3,13 +3,23 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaStar } from "react-icons/fa";
+import {
+  FaPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaStar,
+} from "react-icons/fa";
 import { getCaseStudies, deleteCaseStudy, CaseStudy } from "@/lib/caseStudyApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const CaseStudiesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft" | "archived">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "published" | "draft" | "archived"
+  >("all");
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -32,9 +42,11 @@ const CaseStudiesPage: React.FC = () => {
   };
 
   const filteredCaseStudies = caseStudies.filter((caseStudy) => {
-    const matchesSearch = caseStudy.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         caseStudy.client_name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || caseStudy.status === statusFilter;
+    const matchesSearch =
+      caseStudy.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      caseStudy.client_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || caseStudy.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -56,10 +68,14 @@ const CaseStudiesPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published': return 'bg-green-100 text-green-800';
-      case 'draft': return 'bg-yellow-100 text-yellow-800';
-      case 'archived': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "published":
+        return "bg-green-100 text-green-800";
+      case "draft":
+        return "bg-yellow-100 text-yellow-800";
+      case "archived":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -103,7 +119,11 @@ const CaseStudiesPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "published" | "draft" | "archived"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -129,11 +149,14 @@ const CaseStudiesPage: React.FC = () => {
                 className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
               >
                 {caseStudy.image_url && (
-                  <div className="h-48 overflow-hidden">
-                    <img
+                  <div className="h-48 overflow-hidden relative">
+                    <Image
                       src={caseStudy.image_url}
                       alt={caseStudy.title}
+                      width={600}
+                      height={300}
                       className="w-full h-full object-cover"
+                      style={{ objectFit: "cover" }}
                     />
                   </div>
                 )}
@@ -144,7 +167,11 @@ const CaseStudiesPage: React.FC = () => {
                         {caseStudy.title}
                       </h3>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(caseStudy.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            caseStudy.status
+                          )}`}
+                        >
                           {caseStudy.status}
                         </span>
                         {caseStudy.featured && (
@@ -162,15 +189,25 @@ const CaseStudiesPage: React.FC = () => {
                   </p>
 
                   <div className="text-sm text-gray-600 mb-4">
-                    <p><strong>Client:</strong> {caseStudy.client_name}</p>
-                    <p><strong>Industry:</strong> {caseStudy.industry}</p>
-                    <p><strong>Duration:</strong> {caseStudy.duration}</p>
-                    <p><strong>Views:</strong> {caseStudy.views}</p>
+                    <p>
+                      <strong>Client:</strong> {caseStudy.client_name}
+                    </p>
+                    <p>
+                      <strong>Industry:</strong> {caseStudy.industry}
+                    </p>
+                    <p>
+                      <strong>Duration:</strong> {caseStudy.duration}
+                    </p>
+                    <p>
+                      <strong>Views:</strong> {caseStudy.views}
+                    </p>
                   </div>
 
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => router.push(`/case-studies/${caseStudy.id}`)}
+                      onClick={() =>
+                        router.push(`/case-studies/${caseStudy.id}`)
+                      }
                       className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 text-sm"
                     >
                       <FaEye />

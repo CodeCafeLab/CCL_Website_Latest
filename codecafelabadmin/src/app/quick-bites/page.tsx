@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 const QuickBitesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
-  const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [quickBites, setQuickBites] = useState<QuickBite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -43,9 +42,7 @@ const QuickBitesPage: React.FC = () => {
       );
     const matchesStatus =
       statusFilter === "all" || quickBite.status === statusFilter;
-    const matchesCategory =
-      categoryFilter === "all" || quickBite.category === categoryFilter;
-    return matchesSearch && matchesStatus && matchesCategory;
+    return matchesSearch && matchesStatus;
   });
 
   const handleEdit = (id: string) => {
@@ -158,11 +155,11 @@ const QuickBitesPage: React.FC = () => {
               No quick bites found
             </h3>
             <p className="text-gray-600 mb-6">
-              {searchTerm || statusFilter !== "all" || categoryFilter !== "all"
+              {searchTerm || statusFilter !== "all"
                 ? "Try adjusting your search or filter criteria."
                 : "Get started by creating your first quick bite video."}
             </p>
-            {!searchTerm && statusFilter === "all" && categoryFilter === "all" && (
+            {!searchTerm && statusFilter === "all" && (
               <Link
                 href="/quick-bites/create"
                 className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"

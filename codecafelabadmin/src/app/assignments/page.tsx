@@ -114,7 +114,7 @@ const AssignmentsPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={e => setStatusFilter(e.target.value as "all" | "published" | "draft" | "archived")}
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -124,7 +124,7 @@ const AssignmentsPage: React.FC = () => {
               </select>
               <select
                 value={difficultyFilter}
-                onChange={(e) => setDifficultyFilter(e.target.value as any)}
+                onChange={e => setDifficultyFilter(e.target.value as "all" | "beginner" | "intermediate" | "advanced")}
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Difficulties</option>

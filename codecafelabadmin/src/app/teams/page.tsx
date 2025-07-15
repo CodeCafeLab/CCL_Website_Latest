@@ -3,14 +3,26 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaFilter, FaUsers, FaEye, FaEdit, FaTrash, FaStar, FaSort } from "react-icons/fa";
+import {
+  FaPlus,
+  FaSearch,
+  FaFilter,
+  FaUsers,
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaStar,
+  FaSort,
+} from "react-icons/fa";
 import { getTeamMembers, deleteTeamMember, TeamMember } from "@/lib/teamApi";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const TeamsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "active" | "inactive"
+  >("all");
   const [departmentFilter, setDepartmentFilter] = useState<string>("all");
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,20 +78,29 @@ const TeamsPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "inactive":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getDepartmentColor = (department: string) => {
     switch (department) {
-      case 'Leadership': return 'bg-purple-100 text-purple-800';
-      case 'Technology': return 'bg-blue-100 text-blue-800';
-      case 'Engineering': return 'bg-indigo-100 text-indigo-800';
-      case 'Design': return 'bg-pink-100 text-pink-800';
-      case 'Operations': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "Leadership":
+        return "bg-purple-100 text-purple-800";
+      case "Technology":
+        return "bg-blue-100 text-blue-800";
+      case "Engineering":
+        return "bg-indigo-100 text-indigo-800";
+      case "Design":
+        return "bg-pink-100 text-pink-800";
+      case "Operations":
+        return "bg-orange-100 text-orange-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -124,7 +145,11 @@ const TeamsPage: React.FC = () => {
               <FaFilter className="text-gray-400" />
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "active" | "inactive"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -181,15 +206,25 @@ const TeamsPage: React.FC = () => {
                           <h3 className="text-lg font-semibold text-gray-900 mb-1">
                             {member.name}
                           </h3>
-                          <p className="text-sm text-gray-600">{member.position}</p>
+                          <p className="text-sm text-gray-600">
+                            {member.position}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(member.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            member.status
+                          )}`}
+                        >
                           {member.status}
                         </span>
                         {member.department && (
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${getDepartmentColor(member.department)}`}>
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${getDepartmentColor(
+                              member.department
+                            )}`}
+                          >
                             {member.department}
                           </span>
                         )}
@@ -278,19 +313,23 @@ const TeamsPage: React.FC = () => {
               No team members found
             </h3>
             <p className="text-gray-600 mb-6">
-              {searchTerm || statusFilter !== "all" || departmentFilter !== "all"
+              {searchTerm ||
+              statusFilter !== "all" ||
+              departmentFilter !== "all"
                 ? "Try adjusting your search or filter criteria."
                 : "Get started by adding your first team member."}
             </p>
-            {!searchTerm && statusFilter === "all" && departmentFilter === "all" && (
-              <Link
-                href="/teams/create"
-                className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                <FaPlus />
-                <span>Add Your First Team Member</span>
-              </Link>
-            )}
+            {!searchTerm &&
+              statusFilter === "all" &&
+              departmentFilter === "all" && (
+                <Link
+                  href="/teams/create"
+                  className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <FaPlus />
+                  <span>Add Your First Team Member</span>
+                </Link>
+              )}
           </div>
         )}
       </div>
@@ -298,4 +337,4 @@ const TeamsPage: React.FC = () => {
   );
 };
 
-export default TeamsPage; 
+export default TeamsPage;

@@ -3,14 +3,27 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaStar, FaPlay } from "react-icons/fa";
+import {
+  FaPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaStar,
+  FaPlay,
+} from "react-icons/fa";
 import { getTutorials, deleteTutorial, Tutorial } from "@/lib/tutorialApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const TutorialsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft" | "archived">("all");
-  const [difficultyFilter, setDifficultyFilter] = useState<"all" | "beginner" | "intermediate" | "advanced">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "published" | "draft" | "archived"
+  >("all");
+  const [difficultyFilter, setDifficultyFilter] = useState<
+    "all" | "beginner" | "intermediate" | "advanced"
+  >("all");
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -33,10 +46,13 @@ const TutorialsPage: React.FC = () => {
   };
 
   const filteredTutorials = tutorials.filter((tutorial) => {
-    const matchesSearch = tutorial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tutorial.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || tutorial.status === statusFilter;
-    const matchesDifficulty = difficultyFilter === "all" || tutorial.difficulty === difficultyFilter;
+    const matchesSearch =
+      tutorial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tutorial.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || tutorial.status === statusFilter;
+    const matchesDifficulty =
+      difficultyFilter === "all" || tutorial.difficulty === difficultyFilter;
     return matchesSearch && matchesStatus && matchesDifficulty;
   });
 
@@ -58,19 +74,27 @@ const TutorialsPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published': return 'bg-green-100 text-green-800';
-      case 'draft': return 'bg-yellow-100 text-yellow-800';
-      case 'archived': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "published":
+        return "bg-green-100 text-green-800";
+      case "draft":
+        return "bg-yellow-100 text-yellow-800";
+      case "archived":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'beginner': return 'bg-green-100 text-green-800';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800';
-      case 'advanced': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "beginner":
+        return "bg-green-100 text-green-800";
+      case "intermediate":
+        return "bg-yellow-100 text-yellow-800";
+      case "advanced":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -114,7 +138,11 @@ const TutorialsPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "published" | "draft" | "archived"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -124,7 +152,15 @@ const TutorialsPage: React.FC = () => {
               </select>
               <select
                 value={difficultyFilter}
-                onChange={(e) => setDifficultyFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setDifficultyFilter(
+                    e.target.value as
+                      | "all"
+                      | "beginner"
+                      | "intermediate"
+                      | "advanced"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Difficulties</option>
@@ -151,7 +187,7 @@ const TutorialsPage: React.FC = () => {
               >
                 {tutorial.thumbnail_url && (
                   <div className="h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={tutorial.thumbnail_url}
                       alt={tutorial.title}
                       className="w-full h-full object-cover"
@@ -165,10 +201,18 @@ const TutorialsPage: React.FC = () => {
                         {tutorial.title}
                       </h3>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(tutorial.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            tutorial.status
+                          )}`}
+                        >
                           {tutorial.status}
                         </span>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getDifficultyColor(tutorial.difficulty)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getDifficultyColor(
+                            tutorial.difficulty
+                          )}`}
+                        >
                           {tutorial.difficulty}
                         </span>
                         {tutorial.featured && (
@@ -186,10 +230,18 @@ const TutorialsPage: React.FC = () => {
                   </p>
 
                   <div className="text-sm text-gray-600 mb-4">
-                    <p><strong>Author:</strong> {tutorial.author}</p>
-                    <p><strong>Category:</strong> {tutorial.category}</p>
-                    <p><strong>Duration:</strong> {tutorial.duration}</p>
-                    <p><strong>Views:</strong> {tutorial.views}</p>
+                    <p>
+                      <strong>Author:</strong> {tutorial.author}
+                    </p>
+                    <p>
+                      <strong>Category:</strong> {tutorial.category}
+                    </p>
+                    <p>
+                      <strong>Duration:</strong> {tutorial.duration}
+                    </p>
+                    <p>
+                      <strong>Views:</strong> {tutorial.views}
+                    </p>
                   </div>
 
                   <div className="flex items-center space-x-2">
@@ -202,7 +254,9 @@ const TutorialsPage: React.FC = () => {
                     </button>
                     {tutorial.video_url && (
                       <button
-                        onClick={() => window.open(tutorial.video_url, '_blank')}
+                        onClick={() =>
+                          window.open(tutorial.video_url, "_blank")
+                        }
                         className="flex items-center space-x-1 text-green-600 hover:text-green-700 text-sm"
                       >
                         <FaPlay />
@@ -240,19 +294,23 @@ const TutorialsPage: React.FC = () => {
               No tutorials found
             </h3>
             <p className="text-gray-600 mb-6">
-              {searchTerm || statusFilter !== "all" || difficultyFilter !== "all"
+              {searchTerm ||
+              statusFilter !== "all" ||
+              difficultyFilter !== "all"
                 ? "Try adjusting your search or filter criteria."
                 : "Get started by adding your first tutorial."}
             </p>
-            {!searchTerm && statusFilter === "all" && difficultyFilter === "all" && (
-              <Link
-                href="/tutorials/create"
-                className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                <FaPlus />
-                <span>Add Your First Tutorial</span>
-              </Link>
-            )}
+            {!searchTerm &&
+              statusFilter === "all" &&
+              difficultyFilter === "all" && (
+                <Link
+                  href="/tutorials/create"
+                  className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <FaPlus />
+                  <span>Add Your First Tutorial</span>
+                </Link>
+              )}
           </div>
         )}
       </div>
@@ -260,4 +318,4 @@ const TutorialsPage: React.FC = () => {
   );
 };
 
-export default TutorialsPage; 
+export default TutorialsPage;

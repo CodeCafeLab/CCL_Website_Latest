@@ -6,6 +6,7 @@ import AdminLayout from "@/components/AdminLayout";
 import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaStar } from "react-icons/fa";
 import { getNews, deleteNews, News } from "@/lib/newsApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const NewsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -103,7 +104,7 @@ const NewsPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={e => setStatusFilter(e.target.value as "all" | "published" | "draft" | "archived")}
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -130,7 +131,7 @@ const NewsPage: React.FC = () => {
               >
                 {item.image_url && (
                   <div className="h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={item.image_url}
                       alt={item.title}
                       className="w-full h-full object-cover"

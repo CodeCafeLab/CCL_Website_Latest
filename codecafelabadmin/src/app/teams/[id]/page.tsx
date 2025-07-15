@@ -16,22 +16,21 @@ const TeamMemberDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
+      const fetchTeamMember = async () => {
+        try {
+          setIsLoading(true);
+          const response = await getTeamMember(id as string);
+          setTeamMember(response.data);
+        } catch (error) {
+          console.error("Error fetching team member:", error);
+          alert("Failed to fetch team member details");
+        } finally {
+          setIsLoading(false);
+        }
+      };
       fetchTeamMember();
     }
   }, [id]);
-
-  const fetchTeamMember = async () => {
-    try {
-      setIsLoading(true);
-      const response = await getTeamMember(id as string);
-      setTeamMember(response.data);
-    } catch (error) {
-      console.error("Error fetching team member:", error);
-      alert("Failed to fetch team member details");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleEdit = () => {
     router.push(`/teams/edit/${id}`);
@@ -90,7 +89,7 @@ const TeamMemberDetailPage: React.FC = () => {
         <div className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
           <div className="text-center py-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Team Member Not Found</h2>
-            <p className="text-gray-600 mb-6">The team member you're looking for doesn't exist or has been removed.</p>
+            <p className="text-gray-600 mb-6">The team member you are looking for does not exist or has been removed.</p>
             <button
               onClick={() => router.push("/teams")}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"

@@ -32,25 +32,30 @@ export default function CreateAssignmentPage() {
     }
   }, [form.title]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" && "checked" in e.target
+        ? (e.target as HTMLInputElement).checked
+        : value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       await createAssignment({
         ...form,
+        difficulty: form.difficulty as "beginner" | "intermediate" | "advanced",
+        status: form.status as "draft" | "published" | "archived",
         tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
       });
       setIsLoading(false);
       router.push("/assignments");
     } catch (err) {
+      console.log(err)
       setIsLoading(false);
       alert("Failed to create assignment.");
     }

@@ -3,13 +3,26 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaStar, FaEnvelope } from "react-icons/fa";
-import { getNewsletters, deleteNewsletter, Newsletter } from "@/lib/newsletterApi";
+import {
+  FaPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaStar,
+} from "react-icons/fa";
+import {
+  getNewsletters,
+  deleteNewsletter,
+  Newsletter,
+} from "@/lib/newsletterApi";
 import { useRouter } from "next/navigation";
 
 const NewslettersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "draft" | "scheduled" | "sent" | "archived">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "draft" | "scheduled" | "sent" | "archived"
+  >("all");
   const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -32,9 +45,11 @@ const NewslettersPage: React.FC = () => {
   };
 
   const filteredNewsletters = newsletters.filter((newsletter) => {
-    const matchesSearch = newsletter.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         newsletter.subject_line.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || newsletter.status === statusFilter;
+    const matchesSearch =
+      newsletter.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      newsletter.subject_line.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || newsletter.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -56,22 +71,27 @@ const NewslettersPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'scheduled': return 'bg-blue-100 text-blue-800';
-      case 'sent': return 'bg-green-100 text-green-800';
-      case 'archived': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "draft":
+        return "bg-gray-100 text-gray-800";
+      case "scheduled":
+        return "bg-blue-100 text-blue-800";
+      case "sent":
+        return "bg-green-100 text-green-800";
+      case "archived":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const formatDate = (dateString: string) => {
-    if (!dateString) return 'Not set';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    if (!dateString) return "Not set";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -115,7 +135,16 @@ const NewslettersPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as
+                      | "all"
+                      | "draft"
+                      | "scheduled"
+                      | "sent"
+                      | "archived"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -148,7 +177,11 @@ const NewslettersPage: React.FC = () => {
                         {newsletter.title}
                       </h3>
                       <div className="flex items-center space-x-2 mb-3">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(newsletter.status)}`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            newsletter.status
+                          )}`}
+                        >
                           {newsletter.status}
                         </span>
                         {newsletter.featured && (
@@ -166,23 +199,42 @@ const NewslettersPage: React.FC = () => {
                   </p>
 
                   <div className="text-sm text-gray-600 mb-4">
-                    <p><strong>Subject:</strong> {newsletter.subject_line}</p>
-                    <p><strong>Author:</strong> {newsletter.author}</p>
-                    <p><strong>Category:</strong> {newsletter.category}</p>
-                    <p><strong>Recipients:</strong> {newsletter.recipient_count}</p>
-                    {newsletter.status === 'sent' && (
+                    <p>
+                      <strong>Subject:</strong> {newsletter.subject_line}
+                    </p>
+                    <p>
+                      <strong>Author:</strong> {newsletter.author}
+                    </p>
+                    <p>
+                      <strong>Category:</strong> {newsletter.category}
+                    </p>
+                    <p>
+                      <strong>Recipients:</strong> {newsletter.recipient_count}
+                    </p>
+                    {newsletter.status === "sent" && (
                       <>
-                        <p><strong>Open Rate:</strong> {newsletter.open_rate}%</p>
-                        <p><strong>Click Rate:</strong> {newsletter.click_rate}%</p>
+                        <p>
+                          <strong>Open Rate:</strong> {newsletter.open_rate}%
+                        </p>
+                        <p>
+                          <strong>Click Rate:</strong> {newsletter.click_rate}%
+                        </p>
                       </>
                     )}
-                    <p><strong>Scheduled:</strong> {formatDate(newsletter.scheduled_at!)}</p>
-                    <p><strong>Sent:</strong> {formatDate(newsletter.sent_at!)}</p>
+                    <p>
+                      <strong>Scheduled:</strong>{" "}
+                      {formatDate(newsletter.scheduled_at!)}
+                    </p>
+                    <p>
+                      <strong>Sent:</strong> {formatDate(newsletter.sent_at!)}
+                    </p>
                   </div>
 
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => router.push(`/newsletters/${newsletter.id}`)}
+                      onClick={() =>
+                        router.push(`/newsletters/${newsletter.id}`)
+                      }
                       className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 text-sm"
                     >
                       <FaEye />
@@ -239,4 +291,4 @@ const NewslettersPage: React.FC = () => {
   );
 };
 
-export default NewslettersPage; 
+export default NewslettersPage;

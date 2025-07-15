@@ -85,7 +85,7 @@ const CreateCaseStudyPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await createCaseStudy(formData);
+      await createCaseStudy({ ...formData, views: 0 }); // Add views property here
       setIsLoading(false);
       router.push("/case-studies");
     } catch (err) {

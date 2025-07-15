@@ -69,10 +69,10 @@ export default function BlogDetailPage() {
               {Array.isArray(blog.category)
                 ? blog.category.map((cat) => (
                     <span
-                      key={cat}
+                      key={typeof cat === "string" ? cat : cat.id}
                       className="bg-yellow-100 text-[var(--accent)] px-3 py-1 rounded-full text-xs font-medium"
                     >
-                      {cat}
+                      {typeof cat === "string" ? cat : cat.name}
                     </span>
                   ))
                 : blog.category && (

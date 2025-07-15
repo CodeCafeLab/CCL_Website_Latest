@@ -61,15 +61,6 @@ export default function ContactUsPage() {
     setLoading(false);
   };
 
-  // Optional: Delete message (admin only)
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this message?")) return;
-    // You need to implement a deleteContactMessage API in your backend and lib/contactUS.ts
-    // await deleteContactMessage(id);
-    // fetchMessages();
-    alert("Delete functionality not implemented yet.");
-  };
-
   return (
     <AdminLayout adminName="Admin">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-8">

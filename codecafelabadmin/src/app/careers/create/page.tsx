@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminLayout from "@/components/AdminLayout";
 import { FaSave, FaTimes } from "react-icons/fa";
-import { createCareer, Career } from "@/lib/careerApi";
+import { createCareer } from "@/lib/careerApi";
 import { slugify } from "@/lib/slugify";
 
 interface FormData {
@@ -89,12 +89,15 @@ const CreateCareerPage: React.FC = () => {
       const payload = {
         ...formData,
         tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean),
+        views: 0,
+        applications_count: 0,
       };
 
       await createCareer(payload);
       setIsLoading(false);
       router.push("/careers");
     } catch (err) {
+      console.log(err)
       setIsLoading(false);
       alert("Failed to create career.");
     }

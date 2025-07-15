@@ -6,6 +6,7 @@ import AdminLayout from "@/components/AdminLayout";
 import { FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaDownload, FaStar } from "react-icons/fa";
 import { getWhitepapers, deleteWhitepaper, Whitepaper } from "@/lib/whitepaperApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const WhitepapersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -103,7 +104,7 @@ const WhitepapersPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={e => setStatusFilter(e.target.value as "all" | "published" | "draft" | "archived")}
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Status</option>
@@ -130,7 +131,7 @@ const WhitepapersPage: React.FC = () => {
               >
                 {whitepaper.cover_image && (
                   <div className="h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={whitepaper.cover_image}
                       alt={whitepaper.title}
                       className="w-full h-full object-cover"
