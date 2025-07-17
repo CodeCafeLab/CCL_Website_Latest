@@ -25,6 +25,7 @@ import {
   FaCalendarAlt,
   FaQuestionCircle,
   FaPlay,
+  FaRobot,
 } from "react-icons/fa";
 import { useAuth } from "@/components/AuthContext";
 import apiClient from "@/lib/axios";
@@ -42,6 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({ adminName = "Admin" }) => {
 
   const navItems = [
     // Main Navigation
+    { href: "/ai", icon: <FaRobot />, label: "AI" },
     { href: "/dashboard", icon: <FaTachometerAlt />, label: "Dashboard" },
 
     // Content Management
