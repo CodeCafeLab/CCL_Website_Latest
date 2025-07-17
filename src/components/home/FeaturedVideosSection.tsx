@@ -114,42 +114,45 @@ export default function FeaturedVideosSection() {
             <h3 className="text-xl font-semibold text-center lg:text-left">
               Featured Quick Bites
             </h3>
-            <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
-              {featuredVideos.map((video) => (
-                <div
-                  key={video.id}
-                  className="block flex-shrink-0 w-56 group cursor-pointer"
-                  onClick={() => handleVideoClick(video.videoSrc)}
-                >
-                  <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
-                    <CardHeader className="p-0 relative">
-                      <div className="aspect-[9/16] w-full relative overflow-hidden">
-                        <video
-                          ref={el => {
-                            videoPreviewRefs.current.set(video.id, el);
-                          }}
-                          src={video.videoSrc}
-                          autoPlay
-                          muted
-                          loop
-                          controls
-                          playsInline
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </CardHeader>
-                  </Card>
-                </div>
-              ))}
-            </div>
+            {featuredVideos.length > 0 ? (
+              <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
+                {featuredVideos.map((video) => (
+                  <div
+                    key={video.id}
+                    className="block flex-shrink-0 w-56 group cursor-pointer"
+                    onClick={() => handleVideoClick(video.videoSrc)}
+                  >
+                    <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                      <CardHeader className="p-0 relative">
+                        {/* Changed aspect ratio to 16/9 for a shorter video card */}
+                        <div className="aspect-[16/9] w-full relative">
+                          <video
+                            ref={el => {
+                              videoPreviewRefs.current.set(video.id, el);
+                            }}
+                            src={video.videoSrc}
+                            autoPlay
+                            muted
+                            loop
+                            controls
+                            playsInline
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground">No featured videos available.</p>
+            )}
           </div>
 
           {/* Right Column: Main YouTube Embed */}
           <div className="space-y-6">
-            <h3 className="font-brittany text-4xl text-primary text-center mt-4 mb-4">
-              Let's See, whats brewing in our codecafe lab
-            </h3>
-            <div className="aspect-video w-full rounded-lg overflow-hidden shadow-lg">
+            
+            <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mt-12">
               <iframe
                 width="100%"
                 height="100%"
@@ -158,7 +161,7 @@ export default function FeaturedVideosSection() {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                className="border-0"
+                className="border-0 w-full h-full"
               ></iframe>
             </div>
           </div>

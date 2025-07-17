@@ -6,8 +6,9 @@ import type { BlogPost } from "@/types";
 export default async function BlogPage() {
   let data: BlogPost[] = [];
   try {
-    const res = await apiClient.get("/blogs");
-    data = res.data.map((blog: any) => ({
+    const res = await fetch("http://localhost:5000/api/blogs");
+    const blogs = await res.json();
+    data = blogs.map((blog: any) => ({
       ...blog,
       imageUrl: blog.coverImage,
       date: blog.createdAt,

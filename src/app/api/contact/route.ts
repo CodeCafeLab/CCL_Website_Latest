@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from 'next/server';
-import { z } from 'zod';
-import nodemailer from 'nodemailer';
+import { NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
+import nodemailer from "nodemailer";
 
 // Contact form schema
 const contactFormSchema = z.object({
@@ -24,7 +24,7 @@ function generateContactEmailHtml(data: ContactFormData): string {
     th: `text-align: left; padding: 8px; background-color: #f9f9f9; border: 1px solid #ddd; font-weight: bold; color: #555; min-width: 120px; vertical-align: top;`,
     td: `text-align: left; padding: 8px; border: 1px solid #ddd; vertical-align: top;`,
     footer: `text-align: center; font-size: 12px; color: #777; margin-top: 20px;`,
-    paragraph: `white-space: pre-wrap; word-wrap: break-word;`
+    paragraph: `white-space: pre-wrap; word-wrap: break-word;`,
   };
 
   const htmlContent = `
@@ -37,15 +37,23 @@ function generateContactEmailHtml(data: ContactFormData): string {
       <body style="${styles.body}">
         <div style="${styles.container}">
           <div style="${styles.header}">
-            <h1 style="${styles.headerTitle}">CodeCafe Lab - New Contact Form Submission</h1>
+            <h1 style="${
+              styles.headerTitle
+            }">CodeCafe Lab - New Contact Form Submission</h1>
           </div>
           
           <div style="${styles.section}">
             <h2 style="${styles.sectionTitle}">Contact Information</h2>
             <table style="${styles.table}">
-              <tr><th style="${styles.th}">Name:</th><td style="${styles.td}">${data.name}</td></tr>
-              <tr><th style="${styles.th}">Email:</th><td style="${styles.td}">${data.email}</td></tr>
-              <tr><th style="${styles.th}">Subject:</th><td style="${styles.td}">${data.subject}</td></tr>
+              <tr><th style="${styles.th}">Name:</th><td style="${styles.td}">${
+    data.name
+  }</td></tr>
+              <tr><th style="${styles.th}">Email:</th><td style="${
+    styles.td
+  }">${data.email}</td></tr>
+              <tr><th style="${styles.th}">Subject:</th><td style="${
+    styles.td
+  }">${data.subject}</td></tr>
             </table>
           </div>
 
@@ -73,10 +81,13 @@ export async function POST(req: NextRequest) {
     const validationResult = contactFormSchema.safeParse(rawData);
 
     if (!validationResult.success) {
-      return NextResponse.json({ 
-        message: "Invalid form data.", 
-        errors: validationResult.error.flatten().fieldErrors 
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          message: "Invalid form data.",
+          errors: validationResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const formData = validationResult.data;
@@ -101,34 +112,43 @@ export async function POST(req: NextRequest) {
     `;
 
     await transporter.sendMail({
-      from: `"CodeCafe Lab Contact" <${process.env.SMTP_USER || "hello@codecafelab.in"}>`,
+      from: `"CodeCafe Lab Contact" <${
+        process.env.SMTP_USER || "hello@codecafelab.in"
+      }>`,
       to: "codecafelabtechnologies@gmail.com",
       replyTo: formData.email,
       subject: `New Contact Form Submission: ${formData.subject}`,
       html: emailHtml,
     });
 
-    return NextResponse.json({ 
-      message: "Contact form submitted and email sent successfully!" 
-    }, { status: 200 });
-
+    return NextResponse.json(
+      {
+        message: "Contact form submitted and email sent successfully!",
+      },
+      { status: 200 }
+    );
   } catch (error: any) {
-    console.error('Error processing contact form:', error);
-    return NextResponse.json({ 
-      message: 'Failed to process contact form.', 
-      error: error.message 
-    }, { status: 500 });
+    console.error("Error processing contact form:", error);
+    return NextResponse.json(
+      {
+        message: "Failed to process contact form.",
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
 }
 
-// (Optional) GET for admin dashboard
 export async function GET() {
   try {
-    // This part of the code was removed as per the edit hint to remove Prisma.
-    // If you need to fetch messages, you'll need to implement a different method
-    // like direct SQL, another ORM, or no database at all.
-    return NextResponse.json({ message: 'Contact message fetching is currently disabled.' }, { status: 200 });
+    return NextResponse.json(
+      { message: "Contact message fetching is currently disabled." },
+      { status: 200 }
+    );
   } catch (error: any) {
-    return NextResponse.json({ message: 'Failed to fetch messages.', error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to fetch messages.", error: error.message },
+      { status: 500 }
+    );
   }
-} 
+}

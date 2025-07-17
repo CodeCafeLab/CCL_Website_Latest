@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { getProduct } from "@/lib/api";
 import type { Product } from "@/types";
+import QuoteFormSheet from "@/components/pricing/QuoteFormSheet"; // 1. Import the sheet
 
 export default function ProjectDetailPage() {
   const { id } = useParams();
@@ -39,6 +40,7 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false); // 2. Add state
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -60,8 +62,8 @@ export default function ProjectDetailPage() {
 
   // Helper function to get a safe image URL
   const getSafeImageUrl = (imageUrl: string | undefined) => {
-    if (!imageUrl || imageUrl === 'https://example.com/mug.jpg' || imageUrl.includes('example.com')) {
-      return 'https://placehold.co/800x600/6366f1/ffffff?text=Project+Image';
+    if (!imageUrl || imageUrl.trim() === "" || imageUrl.includes("example.com")) {
+      return "/fallback.png"; // or your placeholder
     }
     return imageUrl;
   };
@@ -174,11 +176,10 @@ export default function ProjectDetailPage() {
             </div>
 
             <div className="flex flex-wrap gap-4 pt-4">
-              <Button asChild>
-                <Link href="/contact">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Get Quote
-                </Link>
+              {/* 3. Replace Link with a button to open the sheet */}
+              <Button onClick={() => setIsQuoteSheetOpen(true)}>
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Get Quote
               </Button>
               <Button asChild variant="outline">
                 <Link href="/contact">
@@ -357,11 +358,9 @@ export default function ProjectDetailPage() {
                   Original: {formatPrice(project.discount_price)}
                 </div>
               )}
-              <Button asChild className="w-full">
-                <Link href="/contact">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Get Quote
-                </Link>
+              <Button className="w-full" onClick={() => setIsQuoteSheetOpen(true)}>
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Get Quote
               </Button>
             </CardContent>
           </Card>
@@ -372,11 +371,9 @@ export default function ProjectDetailPage() {
               <CardTitle className="text-lg">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button asChild className="w-full">
-                <Link href="/contact">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Get Quote
-                </Link>
+              <Button className="w-full" onClick={() => setIsQuoteSheetOpen(true)}>
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Get Quote
               </Button>
               <Button asChild variant="outline" className="w-full">
                 <Link href="/contact">
@@ -394,6 +391,12 @@ export default function ProjectDetailPage() {
           </Card>
         </div>
       </section>
+
+      {/* 4. Render the QuoteFormSheet */}
+      <QuoteFormSheet
+        isOpen={isQuoteSheetOpen}
+        onOpenChange={setIsQuoteSheetOpen}
+      />
     </div>
   );
 }

@@ -10,9 +10,9 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const usefulLinks = [
-    { href: "#", label: "Terms & Conditions" },
-    { href: "#", label: "Privacy Policy" },
-    { href: "#", label: "Return Policy" },
+    { href: "/terms-and-conditions", label: "Terms & Conditions" },
+    { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/return-policy", label: "Return Policy" },
   ];
 
   const resourceLinks = [

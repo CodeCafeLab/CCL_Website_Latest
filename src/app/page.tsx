@@ -124,17 +124,24 @@ export default function HomePage() {
   const techStackRow2Count = 12;
   const techStackRow3Count = 10;
 
-  // Helper function to get a safe image URL
   const getSafeImageUrl = (imageUrl: string | undefined) => {
     if (
       !imageUrl ||
-      imageUrl === "https://example.com/mug.jpg" ||
+      imageUrl.trim() === "" ||
       imageUrl.includes("example.com")
     ) {
-      return "https://placehold.co/600x400/6366f1/ffffff?text=Project+Image";
+      return "/fallback.png";
     }
     return imageUrl;
   };
+
+  const clientLogos = [
+    { src: "/clients/client1.jpeg", name: "Acme Corp", country: "USA" },
+    { src: "/clients/client2.jpeg", name: "Tech Solutions", country: "Germany" },
+    { src: "/clients/client3.jpeg", name: "Innovate UK", country: "UK" },
+    { src: "/clients/client4.jpeg", name: "Asia Holdings", country: "Singapore" },
+    { src: "/clients/client1.jpeg", name: "Oz Ventures", country: "Australia" },
+  ];
 
   return (
     <ProtectedRoute>
@@ -212,7 +219,7 @@ export default function HomePage() {
                     asChild
                     className="mt-4 px-0 text-primary"
                   >
-                    <Link href={`/services#${service.slug}`}>
+                    <Link href={`/services/${service.slug}`}>
                       Learn More <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
@@ -417,18 +424,19 @@ export default function HomePage() {
         </section>
 
         {/* Trusted By Section */}
-        <section>
-          <h2 className="text-5xl text-center mb-12 font-brittany text-royal-shine">
+        <section className="mt-8 md:mt-12">
+          <h2 className="text-3xl p-10 text-center mb-12 font-brittany text-royal-shine">
             Trusted By
           </h2>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {[...Array(5)].map((_, i) => (
+            {clientLogos.map((client, i) => (
               <Image
-                key={`client-logo-${i}`}
-                src={`https://placehold.co/120x60.png`}
-                alt={`Client Logo ${i + 1}`}
+                key={client.name}
+                src={client.src}
+                alt={`${client.name} Logo`}
                 width={120}
                 height={60}
+                title={`${client.name} (${client.country})`}
                 className="opacity-70 hover:opacity-100 transition-opacity duration-300"
                 data-ai-hint="tech client logo"
               />
@@ -457,7 +465,7 @@ export default function HomePage() {
                     <div className="relative bg-card rounded-2xl shadow-lg border border-primary/20 p-6 flex flex-col h-full transition-transform hover:shadow-2xl">
                       {/* Quotation Mark Icon */}
                       <span className="absolute top-4 right-6 text-5xl text-accent/10 pointer-events-none select-none">
-                        &ldquo; 
+                        &ldquo;
                       </span>
                       {/* Avatar and Name */}
                       <div className="flex items-center mb-4">
@@ -563,13 +571,11 @@ export default function HomePage() {
               your business forward.
             </p>
             <Button
-              asChild
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              onClick={() => setIsQuoteSheetOpen(true)}
             >
-              <Link href="/projects">
-                Start a Project <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              Start a Project <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </section>

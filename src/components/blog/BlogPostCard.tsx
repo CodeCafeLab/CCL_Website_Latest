@@ -16,6 +16,18 @@ interface BlogPostCardProps {
   post: BlogPost;
 }
 
+const getSafeImageUrl = (imageUrl: string | undefined) => {
+  if (
+    !imageUrl ||
+    typeof imageUrl !== "string" ||
+    imageUrl.trim() === "" ||
+    imageUrl.includes("example.com")
+  ) {
+    return "/fallback.png";
+  }
+  return imageUrl;
+};
+
 export default function BlogPostCard({ post }: BlogPostCardProps) {
   const categoriesNames = Array.isArray(post.categories)
     ? post.categories.map((cat) => cat.name).join(", ")
@@ -24,21 +36,28 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
     : "";
 
   console.log(categoriesNames, "categoriesNamescategoriesNames");
-  const imageSrc = post.thumbnail || post.coverImage || null;
+  const imageSrc = getSafeImageUrl(post.thumbnail || post.coverImage || "");
+
+  if (!post.thumbnail && !post.coverImage) {
+    console.warn("Blog post is missing both thumbnail and coverImage", post);
+  }
   return (
     <Card className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1">
       <Link href={`/blog/detailPage/${post.id}`} className="block">
         <CardHeader className="p-0">
           <div className="relative aspect-video overflow-hidden">
-            {imageSrc && (
+            {imageSrc && typeof imageSrc === "string" && imageSrc.trim() !== "" ? (
               <Image
                 src={imageSrc}
                 alt={post.title}
                 fill
-                // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className=" transition-transform duration-500 group-hover:scale-105"
+                className="transition-transform duration-500 group-hover:scale-105"
                 data-ai-hint={post.title}
               />
+            ) : (
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <span className="text-muted-foreground">No Image</span>
+              </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
           </div>

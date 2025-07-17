@@ -64,8 +64,8 @@ export default function ProjectsPage() {
 
   // Helper function to get a safe image URL
   const getSafeImageUrl = (imageUrl: string | undefined) => {
-    if (!imageUrl || imageUrl === 'https://example.com/mug.jpg' || imageUrl.includes('example.com')) {
-      return 'https://placehold.co/600x400/6366f1/ffffff?text=Project+Image';
+    if (!imageUrl || imageUrl.trim() === "" || imageUrl.includes("example.com")) {
+      return "/fallback.png"; // or your placeholder
     }
     return imageUrl;
   };
