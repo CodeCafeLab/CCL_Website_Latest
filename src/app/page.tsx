@@ -31,8 +31,7 @@ import Image from "next/image";
 import BlogPostCard from "@/components/blog/BlogPostCard";
 import QuoteFormSheet from "@/components/pricing/QuoteFormSheet";
 import { categories, BlogPost, Product } from "@/types";
-import axios from "axios";
-import { getProducts } from "@/lib/api";
+import { apiClient, getProducts } from "@/lib/api";
 import ProtectedRoute from "@/components/ProtectedRoute/page";
 
 type ClientReview = {
@@ -57,28 +56,28 @@ export default function HomePage() {
   const [productsLoading, setProductsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/categories")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-        setLoading(false);
+    apiClient.get("/categories")
+      .then((res) => {
+        setCategories(res.data);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        // Handle error silently or show a message
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
-  // Fetch blogs (new logic)
+  // Fetch blogs using apiClient
   useEffect(() => {
     const fetchBlogs = async () => {
+      setPostsLoading(true);
       try {
-        const res = await fetch("/api/blogs"); // Use relative path for client-side fetch
-        if (!res.ok) {
-          console.error("Failed to fetch blogs for homepage");
-          throw new Error("Failed to fetch blogs");
-        }
-        const data = await res.json();
+        const res = await apiClient.get("/blogs");
+        const data = res.data;
         const mapped = data.map((blog: any) => ({
           ...blog,
-          imageUrl: blog.coverImage,
+          imageUrl: blog.coverImage || blog.thumbnail, // Fallback to thumbnail
           date: blog.createdAt,
           excerpt: blog.summary,
         }));
@@ -95,6 +94,7 @@ export default function HomePage() {
   // Fetch featured products from API
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
+      setProductsLoading(true);
       try {
         const response = await getProducts();
         // Filter featured products and take first 2
@@ -113,14 +113,18 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/client-reviews")
+    setReviewsLoading(true);
+    apiClient.get("/client-reviews")
       .then((res) => {
         // Filter only published reviews if needed
         setClientReviews(res.data.filter((r: any) => r.published));
-        setReviewsLoading(false);
       })
-      .catch(() => setReviewsLoading(false));
+      .catch(() => {
+        // Handle error
+      })
+      .finally(() => {
+        setReviewsLoading(false)
+      });
   }, []);
 
   const heroTexts = [
@@ -141,7 +145,7 @@ export default function HomePage() {
       imageUrl.trim() === "" ||
       imageUrl.includes("example.com")
     ) {
-      return "https://placehold.co/60x60.png";
+      return "/fallback.png";
     }
     return imageUrl;
   };
