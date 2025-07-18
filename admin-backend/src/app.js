@@ -25,7 +25,9 @@ const newsletterRoutes = require("./routes/newsletterRoutes");
 const quoteRoutes = require("./routes/quoteRoutes");
 const aiFeatureRoutes = require("./routes/aiFeatureRoutes"); // Add this line
 const aiGenRoutes = require('./routes/aiGenRoutes');
+const aiDemoRoutes = require("./routes/aiDemoRoutes");
 
+const rateLimit = require('express-rate-limit');
 
 const morgan = require("morgan");
 // const sequelize = require('./config/db');
@@ -67,6 +69,16 @@ app.use("/api/newsletters", newsletterRoutes);
 app.use("/api/quotes", quoteRoutes);
 app.use("/api/ai", aiFeatureRoutes);
 app.use('/api/ai-gen', aiGenRoutes);
+
+// 1. Create the limiter
+const aiDemoLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 20, // allow 20 requests per minute per IP
+  message: { error: "Too many requests, please try again later." }
+});
+
+// 2. Apply the limiter BEFORE your ai-demo route
+app.use('/api/ai-demo', aiDemoLimiter, require('./routes/aiDemoRoutes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
