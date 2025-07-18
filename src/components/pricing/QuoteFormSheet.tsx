@@ -101,7 +101,7 @@ export default function QuoteFormSheet({ isOpen, onOpenChange }: QuoteFormSheetP
   const onSubmit: SubmitHandler<QuoteFormData> = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5000/api/quotes', {
+      const response = await fetch('/api/send-quote-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,9 +113,6 @@ export default function QuoteFormSheet({ isOpen, onOpenChange }: QuoteFormSheetP
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to submit quote request.');
       }
-
-      // const responseData = await response.json(); // Contains { message: "...", emailContent: "..." }
-      // console.log("Email content that would be sent:", responseData.emailContent); // For debugging
 
       toast({
         title: "Quote Request Submitted!",
