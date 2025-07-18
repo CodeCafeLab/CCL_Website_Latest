@@ -1,39 +1,44 @@
-import type { Metadata } from 'next';
-import AIProductDiscoveryClient from '@/components/ai/AIProductDiscoveryClient';
-import { BrainCircuit, Cpu, Bot } from 'lucide-react';
-import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+"use client";
+import AIProductDiscoveryClient from "@/components/ai/AIProductDiscoveryClient";
+import { BrainCircuit, Cpu, Bot } from "lucide-react";
+import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
 
-export const metadata: Metadata = {
-  title: 'AI Innovations',
-  description: 'Explore CodeCafe Lab\'s cutting-edge AI innovations, GPT-based products, and automation bots. Try our AI Product Discovery tool.',
-};
+interface AiFeature {
+  id: number;
+  title: string;
+  description: string;
+  image_url?: string;
+  category: string;
+  tags?: string[] | string;
+  link?: string;
+}
 
-const aiFeatures = [
-    {
-        icon: BrainCircuit,
-        title: "Advanced Machine Learning",
-        description: "We build sophisticated ML models for prediction, classification, and clustering to solve complex business problems.",
-        image: "https://placehold.co/600x400.png",
-        dataAiHint: "machine learning model"
-    },
-    {
-        icon: Cpu,
-        title: "Natural Language Processing",
-        description: "Our NLP solutions understand and process human language, enabling intelligent chatbots, sentiment analysis, and more.",
-        image: "https://placehold.co/600x400.png",
-        dataAiHint: "natural language"
-    },
-    {
-        icon: Bot,
-        title: "Automation Bots",
-        description: "We develop custom automation bots to streamline repetitive tasks, improve efficiency, and reduce operational costs.",
-        image: "https://placehold.co/600x400.png",
-        dataAiHint: "robot automation"
-    }
-];
+const fallbackImage = "/fallback.png";
+
+const getSafeImageUrl = (url?: string) =>
+  url && url !== "" ? url : fallbackImage;
 
 export default function AIPage() {
+  const [aiFeatures, setAiFeatures] = useState<AiFeature[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/ai");
+        const data = await res.json();
+        setAiFeatures(data);
+      } catch (e) {
+        setAiFeatures([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatures();
+  }, []);
+
   return (
     <div className="space-y-16">
       <section className="text-center">
@@ -42,7 +47,10 @@ export default function AIPage() {
           AI at CodeCafe Lab
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          We are at the forefront of AI innovation, developing intelligent solutions that redefine possibilities. Explore our AI capabilities and discover how we can help you leverage the power of artificial intelligence.
+          We are at the forefront of AI innovation, developing intelligent
+          solutions that redefine possibilities. Explore our AI capabilities and
+          discover how we can help you leverage the power of artificial
+          intelligence.
         </p>
       </section>
 
@@ -51,33 +59,98 @@ export default function AIPage() {
       </section>
 
       <section className="space-y-12">
-        <h2 className="text-3xl font-bold text-center">Our AI Capabilities</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-            {aiFeatures.map(feature => (
-                 <Card key={feature.title} className="text-center hover:shadow-xl transition-shadow duration-300">
-                    <CardHeader className="items-center">
-                        <div className="p-4 bg-primary/10 rounded-full inline-block mb-4">
-                            <feature.icon className="h-10 w-10 text-primary" />
-                        </div>
-                        <CardTitle>{feature.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <Image src={feature.image} alt={feature.title} width={300} height={200} className="rounded-md mb-4 mx-auto object-cover" data-ai-hint={feature.dataAiHint} />
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                    </CardContent>
-                 </Card>
-            ))}
+        <div className="container mx-auto py-12 space-y-12">
+          <section className="text-center">
+            <h1 className="text-4xl font-bold mb-4">
+              AI Features & Innovations
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Explore our cutting-edge AI products and solutions, designed to
+              empower your business with the latest in artificial intelligence
+              and machine learning.
+            </p>
+          </section>
+          {loading ? (
+            <div className="text-center py-12">Loading...</div>
+          ) : aiFeatures.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
+              No AI features found.
+            </div>
+          ) : (
+            <section>
+              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                {aiFeatures.map((feature) => (
+                  <div
+                    key={feature.id}
+                    className="p-6 bg-card rounded-lg shadow flex flex-col"
+                  >
+                    <img
+                      src={getSafeImageUrl(feature.image_url)}
+                      alt={feature.title}
+                      className="w-full h-48 object-cover rounded mb-4 bg-muted"
+                      onError={(e) => (e.currentTarget.src = fallbackImage)}
+                    />
+                    <h2 className="text-xl font-semibold mb-2">
+                      {feature.title}
+                    </h2>
+                    <div className="mb-2 text-sm text-muted-foreground">
+                      <span className="font-medium">Category:</span>{" "}
+                      {feature.category}
+                    </div>
+                    <p className="mb-2">{feature.description}</p>
+                    {feature.tags && (
+                      <div className="mb-2">
+                        <span className="font-medium">Tags:</span>{" "}
+                        {(Array.isArray(feature.tags)
+                          ? feature.tags
+                          : [feature.tags]
+                        ).map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-block bg-primary/10 text-primary px-2 py-1 rounded mr-1 text-xs"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {feature.link && (
+                      <a
+                        href={feature.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-auto text-accent underline text-sm"
+                      >
+                        Learn More
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </section>
 
       <section className="text-center bg-card p-8 md:p-12 rounded-xl shadow-lg">
         <Bot className="h-12 w-12 text-accent mx-auto mb-4" />
-        <h2 className="text-3xl font-bold mb-4">Interactive AI Demo (Coming Soon)</h2>
+        <h2 className="text-3xl font-bold mb-4">
+          Interactive AI Demo (Coming Soon)
+        </h2>
         <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-          Experience our AI in action! We&apos;re working on an interactive demo that will showcase the power and versatility of our AI solutions. Stay tuned!
+          Experience our AI in action! We&apos;re working on an interactive demo
+          that will showcase the power and versatility of our AI solutions. Stay
+          tuned!
         </p>
         <div className="mt-6">
-            <Image src="https://placehold.co/800x450.png" alt="AI Demo Placeholder" width={800} height={450} className="rounded-lg mx-auto shadow-md" data-ai-hint="interactive demo" />
+          <Image
+            src="https://placehold.co/800x450.png"
+            alt="AI Demo Placeholder"
+            width={800}
+            height={450}
+            className="rounded-lg mx-auto shadow-md"
+            data-ai-hint="interactive demo"
+          />
         </div>
       </section>
     </div>

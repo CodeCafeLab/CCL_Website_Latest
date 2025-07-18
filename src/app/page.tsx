@@ -137,9 +137,17 @@ export default function HomePage() {
 
   const clientLogos = [
     { src: "/clients/client1.jpeg", name: "Acme Corp", country: "USA" },
-    { src: "/clients/client2.jpeg", name: "Tech Solutions", country: "Germany" },
+    {
+      src: "/clients/client2.jpeg",
+      name: "Tech Solutions",
+      country: "Germany",
+    },
     { src: "/clients/client3.jpeg", name: "Innovate UK", country: "UK" },
-    { src: "/clients/client4.jpeg", name: "Asia Holdings", country: "Singapore" },
+    {
+      src: "/clients/client4.jpeg",
+      name: "Asia Holdings",
+      country: "Singapore",
+    },
     { src: "/clients/client1.jpeg", name: "Oz Ventures", country: "Australia" },
   ];
 

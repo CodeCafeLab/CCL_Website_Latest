@@ -57,8 +57,7 @@ User Interest: {{{userInterest}}}
 Current Trends: {{{currentTrends}}}
 
 Reasoning: Provide a detailed explanation of why you chose these specific products, and how they align with the user's interests and current trends.
-
-{{output schema=AIProductDiscoveryOutputSchema}}
+Return your answer as a JSON object matching the required output schema.
 `,
 });
 
