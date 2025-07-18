@@ -1,8 +1,10 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
 import type { Blogcategories, categories } from "@/types";
 import { useEffect, useState } from "react";
+import { apiClient } from "@/lib/api";
 
 interface BlogFilterProps {
   selectedcategories: string;
@@ -17,14 +19,20 @@ export default function BlogFilter({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/categories")
-      .then((res) => res.json())
-      .then((data) => {
-        setBlogPosts(data);
-        setLoading(false);
+    // Using the new API route for consistency
+    apiClient.get("/categories")
+      .then((res) => {
+        setBlogPosts(res.data);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("Failed to fetch categories for filter:", err);
+        setBlogPosts([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
   return (
     <div className="flex flex-wrap gap-2 mb-8 justify-center">
       {/* Add the "All" button */}
