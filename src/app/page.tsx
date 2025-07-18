@@ -130,7 +130,7 @@ export default function HomePage() {
       imageUrl.trim() === "" ||
       imageUrl.includes("example.com")
     ) {
-      return "/fallback.png";
+      return "https://placehold.co/60x60.png";
     }
     return imageUrl;
   };
@@ -478,7 +478,7 @@ export default function HomePage() {
                       {/* Avatar and Name */}
                       <div className="flex items-center mb-4">
                         <Image
-                          src={review.avatar_url}
+                          src={getSafeImageUrl(review.avatar_url)}
                           alt={review.client_name}
                           width={60}
                           height={60}
