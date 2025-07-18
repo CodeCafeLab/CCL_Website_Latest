@@ -24,6 +24,7 @@ const tutorialRoutes = require("./routes/tutorialRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
 const quoteRoutes = require("./routes/quoteRoutes");
 const aiFeatureRoutes = require("./routes/aiFeatureRoutes"); // Add this line
+const aiGenRoutes = require('./routes/aiGenRoutes');
 
 
 const morgan = require("morgan");
@@ -65,6 +66,7 @@ app.use("/api/tutorials", tutorialRoutes);
 app.use("/api/newsletters", newsletterRoutes);
 app.use("/api/quotes", quoteRoutes);
 app.use("/api/ai", aiFeatureRoutes);
+app.use('/api/ai-gen', aiGenRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));

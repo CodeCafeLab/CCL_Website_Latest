@@ -1,189 +1,156 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import apiClient from "@/lib/axios";
-import Image from "next/image";
 import AdminLayout from "@/components/AdminLayout";
-import image from "./../../../public/file.svg";
-
-interface AiTool {
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaExternalLinkAlt,
+} from "react-icons/fa";
+import Image from "next/image";
+interface AiFeature {
   id: number;
   title: string;
   description: string;
-  category: string;
   image_url?: string;
+  category: string;
+  tags?: string;
   link?: string;
-  tags?: string | string[];
 }
 
+// const emptyForm = {
+//   title: "",
+//   description: "",
+//   image_url: "",
+//   category: "",
+//   tags: "",
+//   link: "",
+// };
+
 export default function AiToolsGridPage() {
-  const [aiTools, setAiTools] = useState<AiTool[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
-  const [filtered, setFiltered] = useState<AiTool[]>([]);
+  const router = useRouter();
+  const [features, setFeatures] = useState<AiFeature[]>([]);
+  // Remove form, mode, editingId, modalOpen, and related state
+  const [loading, setLoading] = useState(false);
 
-  // Fetch data
-  useEffect(() => {
-    setLoading(true);
-    // TEMP: Hardcoded data for testing
-    setAiTools([
-      {
-        id: 1,
-        title: "Test AI Tool",
-        description: "This is a test tool.",
-        category: "Productivity",
-        image_url: image,
-        link: "https://example.com",
-        tags: ["test", "ai"],
-      },
-    ]);
-    setLoading(false);
-  }, []);
+  // Remove all modal and form logic
 
-  // Get unique categories for dropdown
-  const categories = React.useMemo(() => {
-    const cats = aiTools.map((t) => t.category).filter(Boolean);
-    return ["all", ...Array.from(new Set(cats))];
-  }, [aiTools]);
+  // Remove openModal, closeModal, handleSubmit, handleChange, handleImageUpload, etc.
 
-  // Filter logic
-  useEffect(() => {
-    let data = aiTools;
-    if (category !== "all") {
-      data = data.filter((tool) => tool.category === category);
-    }
-    if (search.trim()) {
-      const s = search.trim().toLowerCase();
-      data = data.filter((tool) => {
-        const inTitle = tool.title.toLowerCase().includes(s);
-        let tagsArr: string[] = [];
-        if (Array.isArray(tool.tags)) tagsArr = tool.tags;
-        else if (typeof tool.tags === "string")
-          tagsArr = tool.tags.split(",").map((t) => t.trim());
-        const inTags = tagsArr.some((tag) => tag.toLowerCase().includes(s));
-        return inTitle || inTags;
-      });
-    }
-    setFiltered(data);
-  }, [aiTools, search, category]);
+  // Delete function handleAdd and modal code
 
-  const handleCardClick = async (id: number, link?: string) => {
+  // Fetch features
+  const fetchFeatures = async () => {
     try {
-      await apiClient.patch(`/ai/${id}/view`);
-    } catch {
-      // Optionally handle error
-    }
-    if (link) {
-      window.open(link, "_blank", "noopener,noreferrer");
+      const res = await fetch("http://localhost:5000/api/ai");
+      if (!res.ok) {
+        setFeatures([]);
+        return;
+      }
+      const data = await res.json();
+      setFeatures(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.log(err);
+      setFeatures([]);
     }
   };
 
-  // 2. Wrap everything in AdminLayout and refine the design
+  useEffect(() => {
+    fetchFeatures();
+  }, []);
+
+  // Delete
+  const handleDelete = async (id: number) => {
+    if (!confirm("Delete this feature?")) return;
+    setLoading(true);
+    const res = await fetch(`http://localhost:5000/api/ai/${id}`, {
+      method: "DELETE",
+    });
+    setLoading(false);
+    if (res.ok) fetchFeatures();
+    else alert("Error deleting feature");
+  };
+
   return (
-    <AdminLayout adminName="John Doe">
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 md:p-12">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center drop-shadow-sm">
-            AI Tools Gallery
-          </h1>
-          {/* Search and Filter */}
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0 mb-10 bg-white/80 rounded-xl shadow p-4 border border-gray-200">
-            <input
-              type="text"
-              placeholder="Search by title or tags..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
-            >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat === "all" ? "All Categories" : cat}
-                </option>
-              ))}
-            </select>
+    <AdminLayout>
+      <div className="max-w-5xl mx-auto py-8">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold">AI Features</h1>
+          <button
+            onClick={() => router.push("/ai/create")}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow transition"
+          >
+            <FaPlus /> Add Feature
+          </button>
+        </div>
+
+        {/* Empty State */}
+        {features.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+            <FaPlus size={48} />
+            <p className="mt-4 text-lg">
+              No AI features found. Click Add Feature to create one!
+            </p>
           </div>
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {filtered.map((tool) => (
-                <div
-                  key={tool.id}
-                  className="bg-white rounded-2xl shadow-lg border border-gray-200 flex flex-col overflow-hidden hover:shadow-2xl transition-shadow cursor-pointer group"
-                  onClick={() => handleCardClick(tool.id, tool.link)}
-                >
-                  {tool.image_url && (
-                    <div className="relative w-full h-40 bg-gray-100">
-                      <Image
-                        src={tool.image_url}
-                        alt={tool.title}
-                        fill
-                        className="object-cover transition-transform duration-200 group-hover:scale-105"
-                        style={{
-                          borderTopLeftRadius: "1rem",
-                          borderTopRightRadius: "1rem",
-                        }}
-                      />
-                    </div>
-                  )}
-                  <div className="flex-1 flex flex-col p-6">
-                    <div className="flex items-center mb-2">
-                      {tool.category && (
-                        <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mr-2">
-                          {tool.category}
-                        </span>
-                      )}
-                    </div>
-                    <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors">
-                      {tool.title}
-                    </h2>
-                    <p className="text-gray-700 text-sm flex-1 mb-4 line-clamp-3">
-                      {tool.description}
-                    </p>
-                    {tool.tags && (
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {(Array.isArray(tool.tags)
-                          ? tool.tags
-                          : tool.tags?.split(",") || []
-                        ).map((tag, i) => (
-                          <span
-                            key={i}
-                            className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {tool.link && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleCardClick(tool.id, tool.link);
-                        }}
-                        className="mt-auto inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow"
-                      >
-                        Visit Tool
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {filtered.length === 0 && (
-                <div className="col-span-full text-center text-gray-400 py-20">
-                  No AI tools found.
-                </div>
+        )}
+
+        {/* Grid of Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {features.map((f) => (
+            <div
+              key={f.id}
+              className="bg-white rounded-xl shadow p-4 flex flex-col justify-between hover:shadow-lg transition"
+            >
+              {f.image_url && (
+                <Image
+                  src={f.image_url}
+                  alt={f.title}
+                  width={400}
+                  height={200}
+                  className="rounded-lg object-cover w-full h-32 mb-3"
+                  unoptimized
+                />
               )}
+              <div className="flex-1">
+                <div className="font-bold text-lg mb-1">{f.title}</div>
+                <div className="text-gray-600 text-sm mb-2 line-clamp-2">
+                  {f.description}
+                </div>
+                <div className="text-xs text-gray-400 mb-1">{f.category}</div>
+                {f.tags && (
+                  <div className="text-xs text-gray-500 mb-1">
+                    Tags: {Array.isArray(f.tags) ? f.tags.join(", ") : f.tags}
+                  </div>
+                )}
+                {f.link && (
+                  <a
+                    href={f.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-600 hover:underline text-xs"
+                  >
+                    Visit <FaExternalLinkAlt className="ml-1" size={12} />
+                  </a>
+                )}
+              </div>
+              <div className="flex gap-2 mt-4">
+                <button
+                  onClick={() => router.push(`/ai/${f.id}`)}
+                  className="flex-1 flex items-center justify-center gap-1 bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
+                >
+                  <FaEdit /> Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(f.id)}
+                  className="flex-1 flex items-center justify-center gap-1 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+                  disabled={loading}
+                >
+                  <FaTrash /> Delete
+                </button>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       </div>
     </AdminLayout>

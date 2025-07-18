@@ -1,82 +1,272 @@
-// src/app/ai/[id]/page.tsx
 "use client";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 import AdminLayout from "@/components/AdminLayout";
-import { FaArrowLeft } from "react-icons/fa";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import {
+  FaExternalLinkAlt,
+  FaEdit,
+  FaArrowLeft,
+  FaSave,
+  FaTimes,
+} from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-interface AiItem {
-  id: string;
+interface AiFeature {
+  id: number;
   title: string;
   description: string;
-  // Add other fields as needed
+  image_url?: string;
+  category: string;
+  tags?: string[] | string;
+  link?: string;
 }
-
+ 
 export default function AiDetailPage() {
-  const { id } = useParams();
   const router = useRouter();
-  const [aiItem, setAiItem] = useState<AiItem | null>(null);
+  const { id } = useParams();
+  const [feature, setFeature] = useState<AiFeature | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    image_url: "",
+    category: "",
+    tags: "",
+    link: "",
+  });
 
   useEffect(() => {
-    if (id) {
-      fetch(`/api/ai/${id}`)
-        .then((res) => res.json())
-        .then((data) => setAiItem(data))
-        .finally(() => setLoading(false));
+    async function fetchFeature() {
+      setLoading(true);
+      const res = await fetch(`http://localhost:5000/api/ai/${id}`);
+      const data = await res.json();
+      setFeature(data);
+      setForm({
+        title: data.title,
+        description: data.description,
+        image_url: data.image_url || "",
+        category: data.category,
+        tags: Array.isArray(data.tags) ? data.tags.join(", ") : data.tags || "",
+        link: data.link || "",
+      });
+      setLoading(false);
     }
+    fetchFeature();
   }, [id]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleEdit = () => setEditMode(true);
+  const handleCancel = () => setEditMode(false);
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      ...form,
+      tags: form.tags
+        ? form.tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean)
+        : [],
+    };
+    const res = await fetch(`http://localhost:5000/api/ai/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      setEditMode(false);
+      const updated = await res.json();
+      setFeature(updated);
+    } else {
+      alert("Failed to update feature");
+    }
+  };
 
   if (loading) {
     return (
-      <AdminLayout adminName="John Doe">
-        <div className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading AI item...</p>
-          </div>
-        </div>
-      </AdminLayout>
+      <div className="flex items-center justify-center h-96">
+        <span className="text-gray-400 text-lg">Loading...</span>
+      </div>
     );
   }
-
-  if (!aiItem) {
+          
+  if (!feature) {
     return (
-      <AdminLayout adminName="John Doe">
-        <div className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">AI Item Not Found</h2>
-            <p className="text-gray-600 mb-6">
-              The AI item you&apos;re looking for doesn&apos;t exist or has been removed.
-            </p>
-            <button
-              onClick={() => router.push("/ai")}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Back to AI List
-            </button>
-          </div>
-        </div>
-      </AdminLayout>
+      <div className="flex flex-col items-center justify-center h-96">
+        <span className="text-gray-400 text-lg">AI Feature not found.</span>
+        <button
+          onClick={() => router.push("/ai")}
+          className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg flex items-center gap-2 hover:bg-blue-700"
+        >
+          <FaArrowLeft /> Back to AI Features
+        </button>
+      </div>
     );
   }
-
+              
   return (
     <AdminLayout adminName="John Doe">
-      <div className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-        <div className="max-w-2xl mx-auto">
-          <button
-            onClick={() => router.push("/ai")}
-            className="mb-6 flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <FaArrowLeft />
-            <span>Back to AI List</span>
-          </button>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{aiItem.title}</h1>
-            <p className="text-gray-700 text-lg mb-6">{aiItem.description}</p>
-            {/* Add more fields here as needed */}
+      <div className="mx-auto py-10 px-4">
+        {/* Back Button */}
+        <button
+          onClick={() => router.push("/ai")}
+          className="mb-6 px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center gap-2 hover:bg-blue-700"
+        >
+          <FaArrowLeft /> Back to AI Features
+        </button>
+
+        {/* Card Container */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          {/* Image */}
+          {feature.image_url && (
+            <div className="flex justify-center mb-6">
+              <Image
+                src={feature.image_url}
+                alt={feature.title}
+                width={320}
+                height={180}
+                className="rounded-lg object-cover w-80 h-40"
+                unoptimized
+              />
+            </div>
+          )}
+
+          {/* Title and Edit */}
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-3xl font-bold">
+              {editMode ? (
+                <input
+                  type="text"
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
+                  className="w-full px-2 py-1 border rounded"
+                  required
+                />
+              ) : (
+                feature.title
+              )}
+            </h1>
+            {!editMode && (
+              <button
+                onClick={handleEdit}
+                className="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+              >
+                <FaEdit /> Edit
+              </button>
+            )}
           </div>
+
+          {/* Category */}
+          <div className="text-sm text-gray-500 mb-4">
+            Category:{" "}
+            {editMode ? (
+              <input
+                type="text"
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="px-2 py-1 border rounded"
+              />
+            ) : (
+              <span className="font-medium">{feature.category}</span>
+            )}
+          </div>
+
+          {/* Description */}
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold mb-1">Description</h2>
+            {editMode ? (
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                className="w-full px-2 py-1 border rounded"
+                rows={3}
+                required
+              />
+            ) : (
+              <p className="text-gray-700">{feature.description}</p>
+            )}
+          </div>
+
+          {/* Tags */}
+          <div className="mb-4">
+            <span className="text-sm text-gray-600">
+              Tags:{" "}
+              {editMode ? (
+                <input
+                  type="text"
+                  name="tags"
+                  value={form.tags}
+                  onChange={handleChange}
+                  className="px-2 py-1 border rounded"
+                  placeholder="Comma separated"
+                />
+              ) : (
+                <span className="font-medium">
+                  {Array.isArray(feature.tags)
+                    ? feature.tags.join(", ")
+                    : feature.tags}
+                </span>
+              )}
+            </span>
+          </div>
+
+          {/* Link */}
+          <div className="mb-4">
+            {editMode ? (
+              <>
+                <label className="block text-sm font-medium mb-1">Link</label>
+                <input
+                  type="url"
+                  name="link"
+                  value={form.link}
+                  onChange={handleChange}
+                  className="w-full px-2 py-1 border rounded"
+                  placeholder="https://example.com"
+                />
+              </>
+            ) : (
+              feature.link && (
+                <a
+                  href={feature.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:underline text-sm"
+                >
+                  Visit Tool <FaExternalLinkAlt className="ml-1" size={14} />
+                </a>
+              )
+            )}
+          </div>
+
+          {/* Edit Mode Buttons */}
+          {editMode && (
+            <form onSubmit={handleSave} className="flex gap-2 justify-end mt-6">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="flex items-center gap-2 bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600"
+              >
+                <FaTimes /> Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+              >
+                <FaSave /> Save
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </AdminLayout>
