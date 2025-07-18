@@ -33,16 +33,10 @@ import { Loader2, Sparkles, Wand2 } from "lucide-react";
 import Image from "next/image";
 
 const formSchema = z.object({
-  userInterest: z
+  query: z
     .string()
-    .min(5, "Please describe your interest in a bit more detail.")
-    .max(500)
-    .optional(),
-  currentTrends: z
-    .string()
-    .min(5, "Please describe current trends in a bit more detail.")
-    .max(500)
-    .optional(),
+    .min(5, "Please describe your interest or trend in a bit more detail.")
+    .max(500),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -56,8 +50,7 @@ export default function AIProductDiscoveryClient() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userInterest: "",
-      currentTrends: "",
+      query: "",
     },
   });
 
@@ -66,9 +59,10 @@ export default function AIProductDiscoveryClient() {
     setResult(null);
     startTransition(async () => {
       try {
-        const response = await discoverAIProducts(
-          data as AIProductDiscoveryInput
-        );
+        const response = await discoverAIProducts({
+          userInterest: data.query,
+          currentTrends: data.query,
+        });
         setResult(response);
       } catch (e) {
         console.error(e);
@@ -80,20 +74,44 @@ export default function AIProductDiscoveryClient() {
   const handleDiscover = async () => {
     setError(null);
     setGeneratedContent(null);
-    const userInterests = form.getValues("userInterest");
-    const aiTrends = form.getValues("currentTrends");
-    const prompt = `User interests: ${userInterests}. AI trends: ${aiTrends}. Suggest relevant AI solutions.`;
-    try {
-      const res = await fetch("http://localhost:5000/api/ai-gen/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      setGeneratedContent(text || "No result");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "An unknown error occurred.");
+    const query = form.getValues("query");
+    const prompt = `User query: ${query}. Suggest relevant AI solutions.`;
+
+    let retries = 0;
+    const MAX_RETRIES = 10;
+    let success = false;
+
+    while (retries < MAX_RETRIES && !success) {
+      try {
+        const res = await fetch("/api/ai-demo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt }),
+        });
+        const data = await res.json();
+
+        if (res.status === 503 && data.error?.includes("overloaded")) {
+          retries++;
+          if (retries < MAX_RETRIES) {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            continue;
+          } else {
+            setError("The AI model is overloaded. Please try again later.");
+            break;
+          }
+        }
+
+        if (!res.ok) {
+          setError(data.error || "An error occurred.");
+          break;
+        }
+
+        setGeneratedContent(data.response || "No result");
+        success = true;
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "An unknown error occurred.");
+        break;
+      }
     }
   };
 
@@ -123,43 +141,21 @@ export default function AIProductDiscoveryClient() {
             <CardContent className="space-y-6">
               <FormField
                 control={form.control}
-                name="userInterest"
+                name="query"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Your Interests (Optional)
+                      What AI solution are you looking for? <span className="text-muted-foreground">(Interest or Trend)</span>
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., 'automating customer support', 'AI for healthcare', 'creative content generation'"
+                        placeholder="e.g., 'AI for healthcare automation', 'Latest in generative AI', 'Chatbot for customer support'..."
                         {...field}
                         rows={3}
                       />
                     </FormControl>
                     <FormDescription>
-                      What are you passionate about or looking to achieve with AI?
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="currentTrends"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Current AI Trends (Optional)
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="e.g., 'Large Language Models', 'Generative AI in media', 'Ethical AI development'"
-                        {...field}
-                        rows={3}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      What AI trends are you currently following or interested in?
+                      Describe your interest or the AI trend you're curious about.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

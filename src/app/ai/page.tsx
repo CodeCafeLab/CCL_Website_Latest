@@ -4,6 +4,7 @@ import { BrainCircuit, Cpu, Bot } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+import InteractiveAIDemo from "@/components/ai/InteractiveAIDemo";
 
 interface AiFeature {
   id: number;
@@ -132,26 +133,8 @@ export default function AIPage() {
         </div>
       </section>
 
-      <section className="text-center bg-card p-8 md:p-12 rounded-xl shadow-lg">
-        <Bot className="h-12 w-12 text-accent mx-auto mb-4" />
-        <h2 className="text-3xl font-bold mb-4">
-          Interactive AI Demo (Coming Soon)
-        </h2>
-        <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-          Experience our AI in action! We&apos;re working on an interactive demo
-          that will showcase the power and versatility of our AI solutions. Stay
-          tuned!
-        </p>
-        <div className="mt-6">
-          <Image
-            src="https://placehold.co/800x450.png"
-            alt="AI Demo Placeholder"
-            width={800}
-            height={450}
-            className="rounded-lg mx-auto shadow-md"
-            data-ai-hint="interactive demo"
-          />
-        </div>
+      <section>
+        <InteractiveAIDemo />
       </section>
     </div>
   );
