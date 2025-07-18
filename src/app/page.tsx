@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -24,6 +25,7 @@ import {
   Star,
   CalendarPlus,
   Handshake,
+  Quote,
 } from "lucide-react";
 import Image from "next/image";
 import BlogPostCard from "@/components/blog/BlogPostCard";
@@ -66,19 +68,28 @@ export default function HomePage() {
 
   // Fetch blogs (new logic)
   useEffect(() => {
-    fetch("http://localhost:5000/api/blogs")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch("/api/blogs"); // Use relative path for client-side fetch
+        if (!res.ok) {
+          console.error("Failed to fetch blogs for homepage");
+          throw new Error("Failed to fetch blogs");
+        }
+        const data = await res.json();
         const mapped = data.map((blog: any) => ({
           ...blog,
           imageUrl: blog.coverImage,
           date: blog.createdAt,
           excerpt: blog.summary,
         }));
-        setBlogPosts(mapped.slice(0, 3)); // Show only latest 3
+        setBlogPosts(mapped.slice(0, 3));
+      } catch (err) {
+        console.error("Error fetching blogs for homepage:", err);
+      } finally {
         setPostsLoading(false);
-      })
-      .catch(() => setPostsLoading(false));
+      }
+    };
+    fetchBlogs();
   }, []);
 
   // Fetch featured products from API
@@ -124,7 +135,7 @@ export default function HomePage() {
   const techStackRow2Count = 12;
   const techStackRow3Count = 10;
 
-  const getSafeImageUrl = (imageUrl: string | undefined) => {
+  const getSafeImageUrl = (imageUrl: string | undefined | null) => {
     if (
       !imageUrl ||
       imageUrl.trim() === "" ||
@@ -470,45 +481,40 @@ export default function HomePage() {
                     key={`${review.id}-${index}`}
                     className="flex-shrink-0 w-80 mx-4"
                   >
-                    <div className="relative bg-card rounded-2xl shadow-lg border border-primary/20 p-6 flex flex-col h-full transition-transform hover:shadow-2xl">
-                      {/* Quotation Mark Icon */}
-                      <span className="absolute top-4 right-6 text-5xl text-accent/10 pointer-events-none select-none">
-                        &ldquo;
-                      </span>
-                      {/* Avatar and Name */}
-                      <div className="flex items-center mb-4">
-                        <Image
-                          src={getSafeImageUrl(review.avatar_url)}
-                          alt={review.client_name}
-                          width={60}
-                          height={60}
-                          className="rounded-full aspect-square border-4 border-primary/20 shadow-sm"
-                          data-ai-hint="client avatar"
-                        />
-                        <div className="ml-4">
-                          <h4 className="font-semibold text-lg text-primary">
-                            {review.client_name}
-                          </h4>
-                          {/* Optionally show date or other info */}
+                    <div className="relative bg-card rounded-2xl shadow-lg border border-border/20 p-6 flex flex-col h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                      <Quote className="absolute top-4 right-6 h-12 w-12 text-primary/10" />
+                      <div className="relative z-10 flex flex-col h-full">
+                        <div className="flex items-center mb-4">
+                          <Image
+                            src={getSafeImageUrl(review.avatar_url)}
+                            alt={review.client_name}
+                            width={50}
+                            height={50}
+                            className="rounded-full aspect-square border-2 border-primary/30 shadow-sm"
+                            data-ai-hint="client avatar"
+                          />
+                          <div className="ml-4">
+                            <h4 className="font-semibold text-lg text-primary">
+                              {review.client_name}
+                            </h4>
+                          </div>
+                        </div>
+                        <p className="text-base text-muted-foreground italic flex-grow mb-4 line-clamp-4">
+                          "{review.review_text}"
+                        </p>
+                        <div className="flex mt-auto">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={`star-${review.id}-${index}-${i}`}
+                              className={`h-5 w-5 ${
+                                i < review.rating
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-muted-foreground/30"
+                              }`}
+                            />
+                          ))}
                         </div>
                       </div>
-                      {/* Rating */}
-                      <div className="flex mb-3">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={`star-${review.id}-${index}-${i}`}
-                            className={`h-5 w-5 ${
-                              i < review.rating
-                                ? "text-yellow-400 fill-yellow-400"
-                                : "text-muted-foreground/30"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      {/* Review Text */}
-                      <p className="text-base text-muted-foreground italic flex-grow line-clamp-4 relative z-10">
-                        {review.review_text}
-                      </p>
                     </div>
                   </div>
                 ))}
