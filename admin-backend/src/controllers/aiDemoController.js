@@ -1,34 +1,29 @@
-// admin-backend/src/controllers/aiDemoController.js
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const OpenAI = require("openai");
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 exports.runAIDemo = async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) return res.status(400).json({ error: "Prompt is required" });
 
-  // Use the prompt directly, without any template
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // or "gpt-4", etc.
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 512,
-      temperature: 0.7,
-    });
-
-    const answer = completion.choices[0].message.content.trim();
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent(prompt);
+    const answer = result.response.text();
     res.json({ answer });
   } catch (err) {
-    if (err.status === 429) {
-      res.status(429).json({
-        error: "AI request failed",
-        details: "You have exceeded your OpenAI API quota. Please check your OpenAI account usage and billing."
-      });
-    } else {
-      res.status(500).json({ error: "AI request failed", details: err.message });
-    }
+    res.status(500).json({ error: "AI request failed", details: err.message });
   }
+};
+
+// GET endpoint for AI demo info
+exports.getAIDemoInfo = (req, res) => {
+  res.json({
+    message: "This is the AI Demo endpoint. Use POST to /api/ai-demo with a 'prompt' to get a response from Gemini AI.",
+    usage: {
+      method: "POST",
+      endpoint: "/api/ai-demo",
+      body: { prompt: "<your prompt here>" }
+    }
+  });
 };
