@@ -16,7 +16,7 @@ export interface SubService {
 export interface ServiceMenuItem {
   title: string;
   slug: string;
-  icon: LucideIcon;
+  icon: string;
   categories: string;
   image: string;
   dataAiHint: string;

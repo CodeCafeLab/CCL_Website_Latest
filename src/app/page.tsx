@@ -23,9 +23,8 @@ import {
   FileText,
   Brain,
   Star,
-  CalendarPlus,
-  Handshake,
   Quote,
+  Globe,
 } from "lucide-react";
 import Image from "next/image";
 import BlogPostCard from "@/components/blog/BlogPostCard";
@@ -33,6 +32,7 @@ import QuoteFormSheet from "@/components/pricing/QuoteFormSheet";
 import { categories, BlogPost, Product } from "@/types";
 import { apiClient, getProducts } from "@/lib/api";
 import ProtectedRoute from "@/components/ProtectedRoute/page";
+import * as LucideIcons from "lucide-react";
 
 type ClientReview = {
   id: number;
@@ -220,35 +220,43 @@ export default function HomePage() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredServices.map((service) => (
-              <Card
-                key={service.slug}
-                className="hover:shadow-xl transition-shadow duration-300 flex flex-col"
-              >
-                <CardHeader>
-                  <div className="flex items-center gap-4 mb-2">
-                    <service.icon className="h-10 w-10 text-primary" />
-                    <CardTitle className="text-2xl">{service.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardDescription>
-                    {service.description || "Explore our expert services."}
-                  </CardDescription>
-                </CardContent>
-                <CardFooter>
-                  <Button
-                    variant="link"
-                    asChild
-                    className="mt-4 px-0 text-primary"
-                  >
-                    <Link href={`/services/${service.slug}`}>
-                      Learn More <ArrowRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+            {featuredServices.map((service) => {
+              const MaybeIcon = LucideIcons[service.icon as keyof typeof LucideIcons];
+              const Icon =
+                typeof MaybeIcon === "function" ||
+                (typeof MaybeIcon === "object" && MaybeIcon !== null && "$$typeof" in MaybeIcon)
+                  ? (MaybeIcon as React.ElementType)
+                  : LucideIcons["Globe"];
+              return (
+                <Card
+                  key={service.slug}
+                  className="hover:shadow-xl transition-shadow duration-300 flex flex-col"
+                >
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      {Icon && <Icon className="h-10 w-10 text-primary" />}
+                      <CardTitle className="text-2xl">{service.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardDescription>
+                      {service.description || "Explore our expert services."}
+                    </CardDescription>
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      variant="link"
+                      asChild
+                      className="mt-4 px-0 text-primary"
+                    >
+                      <Link href={`/services/${service.slug}`}>
+                        Learn More <ArrowRight className="ml-1 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              );
+            })}
             {/* See All Services Card */}
             <Card
               key="see-all-services"

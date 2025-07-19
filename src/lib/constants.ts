@@ -358,7 +358,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
   {
     title: "Web Development",
     slug: "web-development",
-    icon: Globe,
+    icon: "Globe",
     categories: "Development",
     image: "/undraw_web-development_0wdh.svg",
     dataAiHint: "web development code",
@@ -382,7 +382,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
   {
     title: "Mobile App Development",
     slug: "mobile-app-development",
-    icon: Smartphone,
+    icon: "Smartphone",
     categories: "Development",
     image: "/undraw_design_ewba.svg",
     dataAiHint: "mobile app ui",
@@ -399,7 +399,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
   {
     title: "UI/UX Design",
     slug: "ui-ux-design",
-    icon: Palette,
+    icon: "Palette",
     categories: "Design",
     image: "/undraw_design_ewba.svg",
     dataAiHint: "ux wireframe",
@@ -422,7 +422,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
   {
     title: "SEO Services",
     slug: "seo-services",
-    icon: Search,
+    icon: "Search",
     categories: "Marketing",
     image: "/undraw_search-engines_k649.svg",
     dataAiHint: "seo analytics",
@@ -445,7 +445,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
   {
     title: "Cloud & DevOps",
     slug: "cloud-devops",
-    icon: Cloud,
+    icon: "Cloud",
     categories: "Infrastructure",
     image: "/undraw_server-status_f685.svg",
     dataAiHint: "cloud infrastructure",

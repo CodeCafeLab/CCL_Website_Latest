@@ -26,6 +26,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import * as LucideIcons from "lucide-react";
 
 export default function ServiceDetailClient({
   service,
@@ -39,6 +40,13 @@ export default function ServiceDetailClient({
   faqItems: { value: string; question: string; answer: string }[];
 }) {
   const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false);
+
+  const MaybeIcon = LucideIcons[service.icon as keyof typeof LucideIcons];
+  const Icon =
+    typeof MaybeIcon === "function" ||
+    (typeof MaybeIcon === "object" && MaybeIcon !== null && "$$typeof" in MaybeIcon)
+      ? (MaybeIcon as React.ElementType)
+      : LucideIcons["Globe"];
 
   return (
     <>
@@ -60,7 +68,7 @@ export default function ServiceDetailClient({
             </Badge>
             <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
               <div className="p-3 bg-primary/10 rounded-full">
-                <service.icon className="h-10 w-10 text-primary" />
+                {Icon && <Icon className="h-10 w-10 text-primary" />}
               </div>
               {service.title}
             </h1>

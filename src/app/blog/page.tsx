@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 import { apiClient } from "@/lib/api";
 import BlogClient from "./BlogClient";
@@ -8,8 +7,8 @@ export default async function BlogPage() {
   let data: BlogPost[] = [];
   try {
     // Using apiClient for consistency
-    const res = await apiClient.get("/blogs");
-    const blogs = res.data; // Axios wraps response in 'data'
+    const res = await fetch("http://localhost:5000/api/blogs");
+    const blogs = await res.json();
     data = blogs.map((blog: any) => ({
       ...blog,
       imageUrl: blog.coverImage,
