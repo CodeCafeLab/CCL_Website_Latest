@@ -33,3 +33,11 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function GET() {
+  // Example static demo info, replace with your logic
+  return NextResponse.json({
+    message: "Welcome to the AI Demo! Ask anything to see Gemini in action.",
+    examplePrompt: "Tell me a fun fact about AI.",
+  });
+}
