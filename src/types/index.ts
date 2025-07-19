@@ -14,6 +14,7 @@ export interface SubService {
 }
 
 export interface ServiceMenuItem {
+  id: string;
   title: string;
   slug: string;
   icon: string;

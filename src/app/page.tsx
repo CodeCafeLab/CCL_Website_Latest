@@ -249,7 +249,7 @@ export default function HomePage() {
                       asChild
                       className="mt-4 px-0 text-primary"
                     >
-                      <Link href={`/services/${service.slug}`}>
+                      <Link href={`/services/${service.id}`}>
                         Learn More <ArrowRight className="ml-1 h-4 w-4" />
                       </Link>
                     </Button>

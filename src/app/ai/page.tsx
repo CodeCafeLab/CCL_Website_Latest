@@ -81,51 +81,67 @@ export default function AIPage() {
             <section>
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {aiFeatures.map((feature) => (
-                  <div
+                  <Card
                     key={feature.id}
-                    className="p-6 bg-card rounded-lg shadow flex flex-col"
+                    className="flex flex-col transition-shadow duration-200 hover:shadow-xl group h-full"
                   >
-                    <img
-                      src={getSafeImageUrl(feature.image_url)}
-                      alt={feature.title}
-                      className="w-full h-48 object-cover rounded mb-4 bg-muted"
-                      onError={(e) => (e.currentTarget.src = fallbackImage)}
-                    />
-                    <h2 className="text-xl font-semibold mb-2">
-                      {feature.title}
-                    </h2>
-                    <div className="mb-2 text-sm text-muted-foreground">
-                      <span className="font-medium">Category:</span>{" "}
-                      {feature.category}
-                    </div>
-                    <p className="mb-2">{feature.description}</p>
-                    {feature.tags && (
-                      <div className="mb-2">
-                        <span className="font-medium">Tags:</span>{" "}
-                        {(Array.isArray(feature.tags)
-                          ? feature.tags
-                          : [feature.tags]
-                        ).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-block bg-primary/10 text-primary px-2 py-1 rounded mr-1 text-xs"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                    <CardHeader className="p-0">
+                      <div className="relative w-full h-40 rounded-t-lg overflow-hidden bg-muted">
+                        <img
+                          src={getSafeImageUrl(feature.image_url)}
+                          alt={feature.title}
+                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => (e.currentTarget.src = fallbackImage)}
+                        />
                       </div>
-                    )}
-                    {feature.link && (
-                      <a
-                        href={feature.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-auto text-accent underline text-sm"
-                      >
-                        Learn More
-                      </a>
-                    )}
-                  </div>
+                    </CardHeader>
+                    <CardContent className="flex flex-col flex-1 p-6">
+                      <h2 className="text-xl font-semibold mb-2 line-clamp-2">
+                        {feature.title}
+                      </h2>
+                      <div className="mb-2 text-sm text-muted-foreground">
+                        <span className="font-medium">Category:</span>{" "}
+                        {feature.category}
+                      </div>
+                      <p className="mb-2 text-sm text-foreground line-clamp-3">
+                        {feature.description}
+                      </p>
+                      {feature.tags && (
+                        <div className="mb-2">
+                          <span className="font-medium">Tags:</span>{" "}
+                          {(Array.isArray(feature.tags)
+                            ? feature.tags
+                            : [feature.tags]
+                          ).map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="inline-block bg-primary/10 text-primary px-2 py-1 rounded mr-1 text-xs"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <div className="mt-auto flex flex-col gap-2 w-full">
+                        <a
+                          href={`/ai/${feature.id}`}
+                          className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-green-600 text-center font-semibold transition block"
+                        >
+                          Read More
+                        </a>
+                        {feature.link && (
+                          <a
+                            href={feature.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full px-4 py-2 bg-accent text-accent-foreground rounded hover:bg-green-600 text-center font-semibold transition block"
+                          >
+                            Visit Website
+                          </a>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </section>

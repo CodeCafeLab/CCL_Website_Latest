@@ -1,51 +1,11 @@
 // @ts-nocheck
-import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { SERVICES_DATA } from "@/lib/constants";
 import ServiceDetailClient from "./ServiceDetailClient";
 
-export async function generateStaticParams() {
-  return SERVICES_DATA.map((service) => ({
-    slug: service.slug,
-  }));
-}
-
-export async function generateMetadata(
-  { params }: { params: { slug: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const { slug } = await params;
-  const service = SERVICES_DATA.find((s) => s.slug === slug);
-
-  if (!service) {
-    return {
-      title: "Service Not Found",
-    };
-  }
-
-  return {
-    title: service.title,
-    description: service.description,
-    openGraph: {
-      title: service.title,
-      description: service.description,
-      images: [
-        {
-          url: service.image,
-          width: 1200,
-          height: 800,
-          alt: service.title,
-        },
-      ],
-    },
-  };
-}
-
-type Props = { params: { slug: string } }
-
-export default async function Page({ params }: Props) {
-  const { slug } = params;
-  const service = SERVICES_DATA.find((s) => s.slug === slug);
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const service = SERVICES_DATA.find((s) => s.id === id);
 
   if (!service) {
     notFound();

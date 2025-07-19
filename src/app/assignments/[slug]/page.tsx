@@ -21,7 +21,7 @@ export default function AssignmentDetailPage() {
   if (!assignment) return <div className="text-center py-12">Assignment not found.</div>;
 
   return (
-    <div className="container mx-auto py-12 max-w-3xl">
+    <div className="container mx-auto py-12">
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/assignments" className="inline-flex items-center gap-2 text-primary hover:underline">

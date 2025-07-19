@@ -357,7 +357,7 @@ export default function Header() {
                                   {services.map((service) => (
                                     <li key={service.slug} className="group">
                                       <Link
-                                        href={`/services/${service.slug}`}
+                                        href={`/services/${service.id}`}
                                         className={cn(
                                           "block text-sm font-medium rounded-md transition-colors px-3 py-1.5 text-foreground/80 hover:text-white"
                                         )}
@@ -820,16 +820,16 @@ export default function Header() {
                                     <AccordionContent className="pt-1 pb-0 pl-3 space-y-0.5">
                                       {services.map((service) => (
                                         <div
-                                          key={service.slug}
+                                          key={service.id}
                                           className="py-1"
                                         >
                                           <Link
-                                            href={`/services/${service.slug}`}
+                                            href={`/services/${service.id}`}
                                             onClick={closeSheet}
                                             className={cn(
                                               "block w-full text-left text-sm rounded-md transition-colors group focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                                               pathname ===
-                                                `/services/${service.slug}`
+                                                `/services/${service.id}`
                                                 ? "text-primary font-semibold"
                                                 : "text-foreground/80 hover:text-white"
                                             )}

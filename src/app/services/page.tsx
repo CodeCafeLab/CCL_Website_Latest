@@ -63,7 +63,7 @@ export default function ServicesPage() {
                   variant="outline"
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                 >
-                  <Link href={`/services/${service.slug}`}>
+                  <Link href={`/services/${service.id}`}>
                     View Details <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

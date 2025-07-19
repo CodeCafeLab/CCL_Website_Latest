@@ -43,8 +43,7 @@ export default function ServiceDetailClient({
 
   const MaybeIcon = LucideIcons[service.icon as keyof typeof LucideIcons];
   const Icon =
-    typeof MaybeIcon === "function" ||
-    (typeof MaybeIcon === "object" && MaybeIcon !== null && "$$typeof" in MaybeIcon)
+    typeof MaybeIcon === "function"
       ? (MaybeIcon as React.ElementType)
       : LucideIcons["Globe"];
 
@@ -217,7 +216,7 @@ export default function ServiceDetailClient({
                   <CardHeader>
                     <div className="flex items-center gap-3">
                       <div className="p-3 bg-primary/10 rounded-full">
-                        <related.icon className="h-7 w-7 text-primary" />
+                        <Icon className="h-7 w-7 text-primary" />
                       </div>
                       <CardTitle className="text-xl">{related.title}</CardTitle>
                     </div>
@@ -233,7 +232,7 @@ export default function ServiceDetailClient({
                       variant="link"
                       className="p-0 text-primary group-hover:underline"
                     >
-                      <Link href={`/services/${related.slug}`}>
+                      <Link href={`/services/${related.id}`}>
                         Learn More{" "}
                         <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </Link>

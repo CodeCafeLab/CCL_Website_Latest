@@ -356,6 +356,7 @@ export const RESOURCES_SUB_LINKS: NavItem[] = [
 
 export const SERVICES_DATA: ServiceMenuItem[] = [
   {
+    id: "1",
     title: "Web Development",
     slug: "web-development",
     icon: "Globe",
@@ -380,6 +381,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
     },
   },
   {
+    id: "2",
     title: "Mobile App Development",
     slug: "mobile-app-development",
     icon: "Smartphone",
@@ -397,6 +399,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
     },
   },
   {
+    id: "3",
     title: "UI/UX Design",
     slug: "ui-ux-design",
     icon: "Palette",
@@ -420,6 +423,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
     },
   },
   {
+    id: "4",
     title: "SEO Services",
     slug: "seo-services",
     icon: "Search",
@@ -443,6 +447,7 @@ export const SERVICES_DATA: ServiceMenuItem[] = [
     },
   },
   {
+    id: "5",
     title: "Cloud & DevOps",
     slug: "cloud-devops",
     icon: "Cloud",
