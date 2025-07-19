@@ -1,5 +1,5 @@
-
 "use client";
+
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,7 +27,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-// Accept props as needed (e.g. service data)
 export default function ServiceDetailClient({
   service,
   relatedServices,
@@ -132,8 +131,7 @@ export default function ServiceDetailClient({
                   size="lg"
                   className="w-full"
                 >
-                  Request a Custom Quote{" "}
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  Request a Custom Quote <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
             </Card>

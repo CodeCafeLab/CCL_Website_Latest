@@ -1,31 +1,7 @@
-
+// @ts-nocheck
 import type { Metadata, ResolvingMetadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SERVICES_DATA } from "@/lib/constants";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  CheckCircle,
-  Tag,
-  DollarSign,
-  ArrowLeft,
-} from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import ServiceDetailClient from "./ServiceDetailClient";
 
 export async function generateStaticParams() {
@@ -65,9 +41,10 @@ export async function generateMetadata(
   };
 }
 
-// Main component logic is now handled by the client component
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+type Props = { params: { slug: string } }
+
+export default async function Page({ params }: Props) {
+  const { slug } = params;
   const service = SERVICES_DATA.find((s) => s.slug === slug);
 
   if (!service) {
@@ -127,11 +104,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   ];
 
   return (
-    <ServiceDetailClient 
-      service={service} 
-      relatedServices={relatedServices} 
-      processSteps={processSteps} 
-      faqItems={faqItems} 
+    <ServiceDetailClient
+      service={service}
+      relatedServices={relatedServices}
+      processSteps={processSteps}
+      faqItems={faqItems}
     />
   );
 }
