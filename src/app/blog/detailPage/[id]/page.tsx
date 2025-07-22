@@ -1,8 +1,9 @@
+
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import type { BlogPost } from "@/types";
+import type { BlogPost, categories } from "@/types";
 import { Tag as TagIcon, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,13 +14,17 @@ export default function BlogDetailPage() {
   const [blog, setBlog] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // <-- Move this up here, with other hooks
+  const router = useRouter();
 
   useEffect(() => {
     if (!id) return;
     apiClient.get(`/blogs/${id}`)
       .then((res) => {
-        setBlog(res.data);
+        const blogData = res.data;
+        // Ensure categories is an array of objects, not strings, if possible.
+        // Based on the provided API structure, it's an array of strings.
+        // We will adapt the rendering to handle this.
+        setBlog(blogData);
       })
       .catch((err) => {
         setError(err.message || "Failed to fetch blog");
@@ -39,9 +44,33 @@ export default function BlogDetailPage() {
     return <div className="text-red-500 text-center py-8">Error: {error}</div>;
   if (!blog) return <div className="text-center py-8">No blog found.</div>;
 
+  // Handle categories being an array of strings
+  const renderCategories = () => {
+    if (!blog.categories || blog.categories.length === 0) return null;
+
+    return (
+      <div className="mb-4">
+        <h4 className="mb-2">Categories :</h4>
+        <div className="flex flex-wrap gap-2">
+          {blog.categories.map((cat, idx) => {
+            const categoryName = typeof cat === 'string' ? cat : (cat as categories).name;
+            return (
+              <button
+                key={idx}
+                className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium cursor-pointer hover:bg-primary/80"
+                onClick={() => router.push(`/blog?categories=${encodeURIComponent(categoryName)}`)}
+              >
+                {categoryName}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="mx-auto p-4 md:p-8 bg-card rounded-xl shadow-lg mt-6 mb-12">
-      {/* Back to Blogs Button */}
       <div className="mb-6">
         <Link href="/blog">
           <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground font-semibold shadow hover:bg-primary/90 transition-colors">
@@ -51,7 +80,6 @@ export default function BlogDetailPage() {
         </Link>
       </div>
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        {/* Blog Image */}
         {blog.coverImage && (
           <div className="relative w-full md:w-2/5 aspect-video md:aspect-[4/5] rounded-lg overflow-hidden bg-primary flex items-center justify-center min-h-[220px] max-h-[420px] md:min-h-[320px] md:max-h-[520px]">
             <Image
@@ -64,7 +92,6 @@ export default function BlogDetailPage() {
             />
           </div>
         )}
-        {/* Blog Content */}
         <div className="flex-1 w-full">
           <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight break-words">
             {blog.title}
@@ -107,35 +134,16 @@ export default function BlogDetailPage() {
               </span>
             )}
           </div>
-          {/* Categories */}
-          {blog.categories && blog.categories.length > 0 && (
-            <div className="mb-4">
-              <h4 className="mb-2">Categories :</h4>
-              <div className="flex flex-wrap gap-2">
-                {blog.categories.map((cat, idx) => (
-                  <button
-                    key={idx}
-                    className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium cursor-pointer hover:bg-primary/80"
-                    onClick={() => router.push(`/blog?category=${encodeURIComponent(cat.name)}`)}
-                  >
-                    {cat.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-          {/* Summary */}
+          {renderCategories()}
           {blog.summary && (
             <div className="bg-primary/10 p-4 rounded-lg mb-6 text-base text-foreground">
               <p className="font-medium">{blog.summary}</p>
             </div>
           )}
-          {/* Blog Content */}
           <div
             className="prose prose-base md:prose-lg max-w-none text-foreground mb-8"
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
-          {/* Tags */}
           {blog.tags && blog.tags.length > 0 && (
             <div className="mt-8 pt-6 border-t border-border">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
