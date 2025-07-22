@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import BlogFilter from "@/components/blog/BlogFilter";
@@ -5,36 +6,60 @@ import BlogPostCard from "@/components/blog/BlogPostCard";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import type { BlogPost } from "@/types";
-import type { categories } from "@/types";
 import { useSearchParams } from "next/navigation";
+import { apiClient } from "@/lib/api";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface BlogClientProps {
-  initialPosts: BlogPost[];
-}
+const BlogSkeleton = () => (
+    <div className="flex flex-col space-y-3">
+        <Skeleton className="h-[225px] w-full rounded-xl" />
+        <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+        </div>
+    </div>
+)
 
-export default function BlogClient({ initialPosts }: BlogClientProps) {
+export default function BlogClient() {
   const searchParams = useSearchParams();
   const initialcategories = searchParams.get("categories") || "all";
-  const [selectedcategories, setSelectedcategories] = useState<string>(initialcategories);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedcategories, setSelectedcategories] =
+    useState<string>(initialcategories);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(initialPosts);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    let posts = initialPosts;
+    setLoading(true);
+    apiClient.get("/blogs").then((res) => {
+      const blogs = res.data.map((blog: any) => ({
+        ...blog,
+        imageUrl: blog.coverImage,
+        date: blog.createdAt,
+        excerpt: blog.summary,
+      }));
+      setPosts(blogs);
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    let newFilteredPosts = posts;
     if (selectedcategories !== "all") {
-      posts = posts.filter(post =>
-        post.categories?.some(cat => cat.id === selectedcategories)
+      newFilteredPosts = newFilteredPosts.filter((post) =>
+        post.categories?.some((cat) => cat.id === selectedcategories)
       );
     }
     if (searchTerm) {
-      posts = posts.filter(
-        post =>
+      newFilteredPosts = newFilteredPosts.filter(
+        (post) =>
           post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           post.summary.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    setFilteredPosts(posts);
-  }, [selectedcategories, searchTerm, initialPosts]);
+    setFilteredPosts(newFilteredPosts);
+  }, [selectedcategories, searchTerm, posts]);
 
   return (
     <div className="space-y-12">
@@ -64,7 +89,13 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
         />
       </section>
       <section>
-        {filteredPosts.length > 0 ? (
+        {loading ? (
+             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                 <BlogSkeleton />
+                 <BlogSkeleton />
+                 <BlogSkeleton />
+            </div>
+        ) : filteredPosts.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
               <BlogPostCard key={post.id} post={post} />
