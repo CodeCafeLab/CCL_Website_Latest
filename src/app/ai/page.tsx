@@ -4,7 +4,7 @@ import AIProductDiscoveryClient from "@/components/ai/AIProductDiscoveryClient";
 import { BrainCircuit, Cpu, Bot, Search, Filter, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import InteractiveAIDemo from "@/components/ai/InteractiveAIDemo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,7 @@ export default function AIPage() {
   const [aiFeatures, setAiFeatures] = useState<AiFeature[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
     const fetchFeatures = async () => {
@@ -65,11 +66,20 @@ export default function AIPage() {
     fetchFeatures();
   }, []);
   
-  const filteredFeatures = aiFeatures.filter(feature => 
-    feature.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    feature.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    feature.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const categories = useMemo(() => {
+    const allCategories = new Set(aiFeatures.map(f => f.category));
+    return ["all", ...Array.from(allCategories)];
+  }, [aiFeatures]);
+
+  const filteredFeatures = useMemo(() => {
+    return aiFeatures.filter(feature => {
+      const matchesCategory = selectedCategory === "all" || feature.category === selectedCategory;
+      const matchesSearch = 
+        feature.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        feature.description.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [aiFeatures, searchTerm, selectedCategory]);
 
   return (
     <div className="space-y-20">
@@ -113,7 +123,7 @@ export default function AIPage() {
         </div>
         
         {/* Search and Filter */}
-        <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+        <div className="flex flex-col gap-4 max-w-2xl mx-auto">
             <div className="relative flex-grow">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
@@ -124,10 +134,18 @@ export default function AIPage() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
-            <Button variant="outline" className="flex-shrink-0">
-                <Filter className="mr-2 h-4 w-4" />
-                Filter
-            </Button>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {categories.map(category => (
+                <Button 
+                  key={category} 
+                  variant={selectedCategory === category ? 'default' : 'outline'}
+                  onClick={() => setSelectedCategory(category)}
+                  className="capitalize"
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
         </div>
 
         {/* Grid */}
@@ -136,7 +154,7 @@ export default function AIPage() {
              Array.from({ length: 3 }).map((_, index) => <FeatureSkeleton key={index} />)
           ) : filteredFeatures.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground col-span-full">
-              No AI features found matching your search.
+              No AI features found matching your criteria.
             </div>
           ) : (
             filteredFeatures.map((feature) => (

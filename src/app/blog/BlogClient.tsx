@@ -1,11 +1,11 @@
 
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import BlogFilter from "@/components/blog/BlogFilter";
 import BlogPostCard from "@/components/blog/BlogPostCard";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import type { BlogPost } from "@/types";
+import type { BlogPost, categories } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { apiClient } from "@/lib/api";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,35 +22,54 @@ const BlogSkeleton = () => (
 
 export default function BlogClient() {
   const searchParams = useSearchParams();
-  const initialcategories = searchParams.get("categories") || "all";
+  const initialCategory = searchParams.get("categories") || "all";
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [allCategories, setAllCategories] = useState<categories[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedcategories, setSelectedcategories] =
-    useState<string>(initialcategories);
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>(initialCategory);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
     setLoading(true);
-    apiClient.get("/blogs").then((res) => {
-      const blogs = res.data.map((blog: any) => ({
+    // Fetch both categories and posts
+    Promise.all([
+      apiClient.get("/categories"),
+      apiClient.get("/blogs")
+    ]).then(([categoriesRes, blogsRes]) => {
+      setAllCategories(categoriesRes.data);
+      const blogs = blogsRes.data.map((blog: any) => ({
         ...blog,
-        imageUrl: blog.coverImage,
-        date: blog.createdAt,
-        excerpt: blog.summary,
+        // The API returns categories as an array of strings, so we ensure it's always an array.
+        categories: Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : []),
       }));
       setPosts(blogs);
+    }).catch(err => {
+      console.error("Failed to fetch blog data:", err);
+      // Handle error state if needed
+    }).finally(() => {
       setLoading(false);
     });
   }, []);
 
-  useEffect(() => {
+  const filteredPosts = useMemo(() => {
     let newFilteredPosts = posts;
-    if (selectedcategories !== "all") {
-      newFilteredPosts = newFilteredPosts.filter((post) =>
-        post.categories?.some((cat) => cat.id === selectedcategories)
-      );
+
+    // Filter by category
+    if (selectedCategory !== "all") {
+      const categoryObject = allCategories.find(c => c.id === selectedCategory);
+      if (categoryObject) {
+         newFilteredPosts = newFilteredPosts.filter((post) => {
+            // The post.categories from the API is an array of strings (category names/slugs)
+            // We check if this array includes the name of the selected category.
+            return post.categories?.some(catName => 
+                typeof catName === 'string' && catName.toLowerCase() === categoryObject.name.toLowerCase()
+            );
+         });
+      }
     }
+
+    // Filter by search term
     if (searchTerm) {
       newFilteredPosts = newFilteredPosts.filter(
         (post) =>
@@ -58,8 +77,8 @@ export default function BlogClient() {
           post.summary.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    setFilteredPosts(newFilteredPosts);
-  }, [selectedcategories, searchTerm, posts]);
+    return newFilteredPosts;
+  }, [selectedCategory, searchTerm, posts, allCategories]);
 
   return (
     <div className="space-y-12">
@@ -84,8 +103,9 @@ export default function BlogClient() {
           </div>
         </div>
         <BlogFilter
-          selectedcategories={selectedcategories}
-          onSelectcategories={setSelectedcategories}
+          categories={allCategories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
         />
       </section>
       <section>
@@ -104,7 +124,7 @@ export default function BlogClient() {
         ) : (
           <p className="text-center text-muted-foreground text-lg py-12">
             No blog posts found matching your criteria. Try a different search
-            or categories!
+            or category!
           </p>
         )}
       </section>
