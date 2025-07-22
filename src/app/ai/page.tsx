@@ -1,11 +1,17 @@
+
 "use client";
 import AIProductDiscoveryClient from "@/components/ai/AIProductDiscoveryClient";
-import { BrainCircuit, Cpu, Bot } from "lucide-react";
+import { BrainCircuit, Cpu, Bot, Search, Filter } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import InteractiveAIDemo from "@/components/ai/InteractiveAIDemo";
-import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Link from 'next/link';
+import { Skeleton } from "@/components/ui/skeleton";
+
 
 interface AiFeature {
   id: number;
@@ -18,17 +24,34 @@ interface AiFeature {
   featured?: boolean; // Added for featured badge
 }
 
-const fallbackImage = "/fallback.png";
+const fallbackImage = "https://placehold.co/600x400.png";
 
 const getSafeImageUrl = (url?: string) =>
   url && url !== "" ? url : fallbackImage;
 
+const FeatureSkeleton = () => (
+    <div className="p-6 bg-card rounded-lg shadow flex flex-col border border-border/10">
+      <Skeleton className="w-full h-40 rounded mb-4 bg-muted" />
+      <Skeleton className="h-6 w-3/4 mb-2 bg-muted" />
+      <Skeleton className="h-4 w-1/2 mb-4 bg-muted" />
+      <Skeleton className="h-10 w-full mb-4 bg-muted" />
+      <div className="flex gap-2 mb-4">
+        <Skeleton className="h-5 w-16 rounded-full bg-muted" />
+        <Skeleton className="h-5 w-20 rounded-full bg-muted" />
+      </div>
+      <Skeleton className="h-10 w-28 mt-auto bg-muted" />
+    </div>
+);
+
+
 export default function AIPage() {
   const [aiFeatures, setAiFeatures] = useState<AiFeature[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchFeatures = async () => {
+      setLoading(true);
       try {
         const res = await fetch("http://localhost:5000/api/ai");
         const data = await res.json();
@@ -41,6 +64,12 @@ export default function AIPage() {
     };
     fetchFeatures();
   }, []);
+  
+  const filteredFeatures = aiFeatures.filter(feature => 
+    feature.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    feature.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    feature.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-20">
@@ -58,7 +87,10 @@ export default function AIPage() {
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
           We are at the forefront of AI innovation, developing intelligent
-          solutions that redefine possibilities.
+          solutions that redefine possibilities. Explore our AI capabilities and
+          discover how we can help you leverage the power of artificial
+
+          intelligence.
         </p>
         {/* Optional: Add a call-to-action button */}
         {/* <Button size="lg" className="mt-4">Get Started with AI</Button> */}
@@ -68,93 +100,87 @@ export default function AIPage() {
       <section>
         <AIProductDiscoveryClient />
       </section>
-
-      {/* Divider */}
-      <div className="container mx-auto py-4">
-        <Separator />
-      </div>
-
-      {/* AI Features & Innovations */}
-      <section className="space-y-12">
-        <div className="container mx-auto py-12 space-y-12">
-          <section className="text-center">
-            <h2 className="text-4xl font-bold mb-4 text-primary">
-              AI Features & Innovations
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+      
+      {/* AI Features & Innovations Section */}
+      <section className="space-y-8">
+        <div className="text-center">
+            <h2 className="text-3xl font-bold">AI Features & Innovations</h2>
+            <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
               Explore our cutting-edge AI products and solutions, designed to
-              empower your business.
+              empower your business with the latest in artificial intelligence
+              and machine learning.
             </p>
-          </section>
+        </div>
+        
+        {/* Search and Filter */}
+        <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+            <div className="relative flex-grow">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                    type="search"
+                    placeholder="Search AI features..."
+                    className="pl-10 w-full"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+            <Button variant="outline" className="flex-shrink-0">
+                <Filter className="mr-2 h-4 w-4" />
+                Filter
+            </Button>
+        </div>
+
+        {/* Grid */}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {loading ? (
-            <div className="text-center py-12">Loading...</div>
-          ) : aiFeatures.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              No AI features found.
+             Array.from({ length: 3 }).map((_, index) => <FeatureSkeleton key={index} />)
+          ) : filteredFeatures.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground col-span-full">
+              No AI features found matching your search.
             </div>
           ) : (
-            <section>
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {aiFeatures.map((feature) => (
-                  <Card
-                    key={feature.id}
-                    className="flex flex-col transition-shadow duration-200 hover:shadow-2xl group h-full rounded-2xl border-2 border-primary/10"
-                  >
-                    <CardHeader className="p-0">
-                      <div className="relative w-full h-40 rounded-t-2xl overflow-hidden bg-muted">
-                        <img
-                          src={getSafeImageUrl(feature.image_url)}
-                          alt={feature.title}
-                          className="p-2 w-full h-full group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => (e.currentTarget.src = fallbackImage)}
-                        />
-                        {/* Optional: Featured badge */}
-                        {feature.featured && (
-                          <span className="absolute top-2 right-2 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold shadow">
-                            Featured
-                          </span>
-                        )}
-                      </div>
-                    </CardHeader>
-                    <CardContent className="flex flex-col flex-1 p-6">
-                      <h3 className="text-xl font-semibold mb-2 line-clamp-2 text-primary">
-                        {feature.title}
-                      </h3>
-                      <div className="mb-2 text-sm text-muted-foreground">
-                        <span className="font-medium">Category:</span>{" "}
-                        {feature.category}
-                      </div>
-                      <p className="mb-2 text-sm text-foreground line-clamp-3">
-                        {feature.description}
-                      </p>
-                      {feature.tags && (
-                        <div className="mb-2 flex flex-wrap gap-1">
-                          {(Array.isArray(feature.tags)
-                            ? feature.tags
-                            : [feature.tags]
-                          ).map((tag, idx) => (
-                            <span
-                              key={idx}
-                              className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      <div className="mt-auto flex flex-col gap-2 w-full">
-                        <a
-                          href={`/ai/${feature.id}`}
-                          className="w-full mt-2 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-green-600 text-center font-semibold transition block"
-                        >
-                          Read More
-                        </a>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+            filteredFeatures.map((feature) => (
+              <div
+                key={feature.id}
+                className="p-6 bg-card rounded-lg shadow flex flex-col border border-border/10 transition-shadow hover:shadow-lg"
+              >
+                <img
+                  src={getSafeImageUrl(feature.image_url)}
+                  alt={feature.title}
+                  className="w-full h-40 object-cover rounded-md mb-4 bg-muted"
+                  onError={(e) => (e.currentTarget.src = fallbackImage)}
+                />
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <Badge variant="outline" className="mb-4 w-fit">{feature.category}</Badge>
+                
+                <p className="mb-4 text-sm text-muted-foreground flex-grow">{feature.description}</p>
+                
+                {feature.tags && (
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {(Array.isArray(feature.tags)
+                      ? feature.tags
+                      : [feature.tags]
+                    ).map((tag, idx) => (
+                      <Badge
+                        key={idx}
+                        variant="secondary"
+                        className="text-xs"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                
+                {feature.link && (
+                  <Button asChild className="mt-auto">
+                    <Link href={feature.link} target="_blank" rel="noopener noreferrer">
+                      Learn More
+                    </Link>
+                  </Button>
+                )}
               </div>
-            </section>
+            ))
           )}
         </div>
       </section>
