@@ -1,3 +1,4 @@
+
 import type {
   NavItem,
   ServiceMenuItem,
@@ -93,6 +94,7 @@ import {
   Film,
   Search,
   Rocket,
+  UploadCloud,
 } from "lucide-react";
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -350,6 +352,13 @@ export const RESOURCES_SUB_LINKS: NavItem[] = [
     icon: MailPlus,
     description:
       "A place to collect and view our monthly newsletters on company updates and tech trends.",
+  },
+   {
+    href: "/import",
+    label: "Bulk Import",
+    icon: UploadCloud,
+    description:
+      "Upload data in bulk from a CSV file for various content types.",
   },
   
 ];
