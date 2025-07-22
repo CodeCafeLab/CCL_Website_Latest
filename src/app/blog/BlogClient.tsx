@@ -38,6 +38,8 @@ export default function BlogClient() {
         imageUrl: blog.coverImage,
         date: blog.createdAt,
         excerpt: blog.summary,
+        // Ensure categories is always an array
+        categories: Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : []),
       }));
       setPosts(blogs);
       setLoading(false);
