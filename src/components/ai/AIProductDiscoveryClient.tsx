@@ -137,61 +137,25 @@ export default function AIProductDiscoveryClient() {
           </div>
         </CardHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="space-y-6">
-              <FormField
-                control={form.control}
-                name="query"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      What AI solution are you looking for? <span className="text-muted-foreground">(Interest or Trend)</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="e.g., 'AI for healthcare automation', 'Latest in generative AI', 'Chatbot for customer support'..."
-                        {...field}
-                        rows={3}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Describe your interest or the AI trend you're curious about.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+          <div className="w-full flex justify-center pb-8">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex gap-2 items-center w-full px-10"
+            >
+              <Input
+                placeholder="e.g., 'AI for healthcare automation', 'Latest in generative AI', 'Chatbot for customer support'..."
+                {...form.register("query")}
+                className="flex-1"
               />
-            </CardContent>
-            <CardFooter>
               <Button
                 type="submit"
                 disabled={isPending}
-                size="lg"
-                className="w-full md:w-auto"
+                className="ml-2 px-4 bg-primary text-white rounded"
               >
-                {isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Discovering...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="mr-2 h-5 w-5" /> Discover Products
-                  </>
-                )}
+                Discover Solutions
               </Button>
-              {/* Optionally, you can add a separate button for handleDiscover if needed */}
-              {/* <Button
-                type="button"
-                onClick={handleDiscover}
-                disabled={isPending}
-                size="lg"
-                className="w-full md:w-auto ml-4"
-              >
-                Generate AI Suggestions
-              </Button> */}
-            </CardFooter>
-          </form>
+            </form>
+          </div>
         </Form>
       </Card>
 
@@ -234,13 +198,12 @@ export default function AIProductDiscoveryClient() {
               </p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-4">Suggested Products:</h3>
+              <h3 className="text-xl font-semibold mb-4">
+                Suggested Products:
+              </h3>
               <div className="grid md:grid-cols-2 gap-6">
                 {result.selectedProducts?.map((product, index) => (
-                  <Card
-                    key={index}
-                    className="shadow-xl transition"
-                  >
+                  <Card key={index} className="shadow-xl transition">
                     <CardHeader>
                       <CardTitle className="text-xl text-accent">
                         {product.name}

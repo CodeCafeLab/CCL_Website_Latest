@@ -76,7 +76,7 @@ export default function AIFeatureDetailPage() {
                   rel="noopener noreferrer"
                   className="w-full mt-2 px-4 py-2 bg-accent text-accent-foreground rounded hover:bg-green-600 text-center font-semibold transition block"
                 >
-                  Visit Website
+                  View Demo
                 </a>
               )}
               {/* Add more fields or sections here as needed */}
