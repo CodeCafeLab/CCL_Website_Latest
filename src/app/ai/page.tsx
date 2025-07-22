@@ -1,7 +1,7 @@
 
 "use client";
 import AIProductDiscoveryClient from "@/components/ai/AIProductDiscoveryClient";
-import { BrainCircuit, Cpu, Bot, Search, Filter } from "lucide-react";
+import { BrainCircuit, Cpu, Bot, Search, Filter, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
@@ -140,46 +140,46 @@ export default function AIPage() {
             </div>
           ) : (
             filteredFeatures.map((feature) => (
-              <div
-                key={feature.id}
-                className="p-6 bg-card rounded-lg shadow flex flex-col border border-border/10 transition-shadow hover:shadow-lg"
-              >
-                <img
-                  src={getSafeImageUrl(feature.image_url)}
-                  alt={feature.title}
-                  className="w-full h-40 object-cover rounded-md mb-4 bg-muted"
-                  onError={(e) => (e.currentTarget.src = fallbackImage)}
-                />
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <Badge variant="outline" className="mb-4 w-fit">{feature.category}</Badge>
-                
-                <p className="mb-4 text-sm text-muted-foreground flex-grow">{feature.description}</p>
-                
-                {feature.tags && (
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {(Array.isArray(feature.tags)
-                      ? feature.tags
-                      : [feature.tags]
-                    ).map((tag, idx) => (
-                      <Badge
-                        key={idx}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-                
-                {feature.link && (
-                  <Button asChild className="mt-auto">
-                    <Link href={feature.link} target="_blank" rel="noopener noreferrer">
-                      Learn More
-                    </Link>
+              <Link key={feature.id} href={`/ai/${feature.id}`} className="block h-full group">
+                <div
+                  className="p-6 bg-card rounded-lg shadow flex flex-col border border-border/10 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 h-full"
+                >
+                  <img
+                    src={getSafeImageUrl(feature.image_url)}
+                    alt={feature.title}
+                    className="w-full h-40 object-cover rounded-md mb-4 bg-muted"
+                    onError={(e) => (e.currentTarget.src = fallbackImage)}
+                  />
+                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                  <Badge variant="outline" className="mb-4 w-fit">{feature.category}</Badge>
+                  
+                  <p className="mb-4 text-sm text-muted-foreground flex-grow line-clamp-3">{feature.description}</p>
+                  
+                  {feature.tags && (
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {(Array.isArray(feature.tags)
+                        ? feature.tags
+                        : [feature.tags]
+                      ).map((tag, idx) => (
+                        <Badge
+                          key={idx}
+                          variant="secondary"
+                          className="text-xs"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  
+                  <Button asChild className="mt-auto w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    {/* The parent Link component makes this redundant, but we keep it for visual cue */}
+                    <span className="flex items-center justify-center">
+                      View Details <ArrowRight className="ml-2 h-4 w-4" />
+                    </span>
                   </Button>
-                )}
-              </div>
+                </div>
+              </Link>
             ))
           )}
         </div>
