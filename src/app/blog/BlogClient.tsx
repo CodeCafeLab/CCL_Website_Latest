@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import BlogFilter from "@/components/blog/BlogFilter";
@@ -11,14 +10,14 @@ import { apiClient } from "@/lib/api";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const BlogSkeleton = () => (
-    <div className="flex flex-col space-y-3">
-        <Skeleton className="h-[225px] w-full rounded-xl" />
-        <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-        </div>
+  <div className="flex flex-col space-y-3">
+    <Skeleton className="h-[225px] w-full rounded-xl" />
+    <div className="space-y-2">
+      <Skeleton className="h-4 w-[250px]" />
+      <Skeleton className="h-4 w-[200px]" />
     </div>
-)
+  </div>
+);
 
 export default function BlogClient() {
   const searchParams = useSearchParams();
@@ -33,23 +32,27 @@ export default function BlogClient() {
   useEffect(() => {
     setLoading(true);
     // Fetch both categories and posts
-    Promise.all([
-      apiClient.get("/categories"),
-      apiClient.get("/blogs")
-    ]).then(([categoriesRes, blogsRes]) => {
-      setAllCategories(categoriesRes.data);
-      const blogs = blogsRes.data.map((blog: any) => ({
-        ...blog,
-        // The API returns categories as an array of strings, so we ensure it's always an array.
-        categories: Array.isArray(blog.categories) ? blog.categories : (blog.category ? [blog.category] : []),
-      }));
-      setPosts(blogs);
-    }).catch(err => {
-      console.error("Failed to fetch blog data:", err);
-      // Handle error state if needed
-    }).finally(() => {
-      setLoading(false);
-    });
+    Promise.all([apiClient.get("/categories"), apiClient.get("/blogs")])
+      .then(([categoriesRes, blogsRes]) => {
+        setAllCategories(categoriesRes.data);
+        const blogs = blogsRes.data.map((blog: any) => ({
+          ...blog,
+          // The API returns categories as an array of strings, so we ensure it's always an array.
+          categories: Array.isArray(blog.categories)
+            ? blog.categories
+            : blog.category
+            ? [blog.category]
+            : [],
+        }));
+        setPosts(blogs);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch blog data:", err);
+        // Handle error state if needed
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const filteredPosts = useMemo(() => {
@@ -57,15 +60,19 @@ export default function BlogClient() {
 
     // Filter by category
     if (selectedCategory !== "all") {
-      const categoryObject = allCategories.find(c => c.id === selectedCategory);
+      const categoryObject = allCategories.find(
+        (c) => c.id === selectedCategory
+      );
       if (categoryObject) {
-         newFilteredPosts = newFilteredPosts.filter((post) => {
-            // The post.categories from the API is an array of strings (category names/slugs)
-            // We check if this array includes the name of the selected category.
-            return post.categories?.some(catName => 
-                typeof catName === 'string' && catName.toLowerCase() === categoryObject.name.toLowerCase()
-            );
-         });
+        newFilteredPosts = newFilteredPosts.filter((post) => {
+          // The post.categories from the API is an array of strings (category names/slugs)
+          // We check if this array includes the name of the selected category.
+          return post.categories?.some(
+            (catName) =>
+              typeof catName === "string" &&
+              catName.toLowerCase() === categoryObject.name.toLowerCase()
+          );
+        });
       }
     }
 
@@ -110,11 +117,11 @@ export default function BlogClient() {
       </section>
       <section>
         {loading ? (
-             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                 <BlogSkeleton />
-                 <BlogSkeleton />
-                 <BlogSkeleton />
-            </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <BlogSkeleton />
+            <BlogSkeleton />
+            <BlogSkeleton />
+          </div>
         ) : filteredPosts.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
