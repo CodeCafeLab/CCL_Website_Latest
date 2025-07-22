@@ -420,7 +420,7 @@ export default function Header() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                      className="w-96 p-2 bg-background shadow-xl rounded-lg border-border"
+                      className="w-96 p-2 bg-background shadow-xl rounded-lg border-border max-h-[75vh] overflow-y-auto"
                       onMouseEnter={() =>
                         handleMenuInteraction("company", "enter")
                       }
@@ -874,7 +874,7 @@ export default function Header() {
                               {link.label}
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent className="pt-1 pb-0 pl-4 space-y-1">
+                          <AccordionContent className="pt-1 pb-0 pl-4 space-y-1 max-h-[50vh] overflow-y-auto">
                             {COMPANY_SUB_LINKS.map((subLink) => (
                               <Link
                                 key={subLink.label}
