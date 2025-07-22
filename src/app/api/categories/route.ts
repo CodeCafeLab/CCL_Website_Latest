@@ -1,23 +1,15 @@
 import { NextResponse } from "next/server";
-
-const API_BASE_URL = "http://localhost:5000/api";
-
-if (!API_BASE_URL) {
-  throw new Error("BACKEND_API_URL environment variable is not set.");
-}
+import { apiClient } from "@/lib/api";
 
 export async function GET() {
   try {
-    const res = await fetch(`http://localhost:5000/api/categories`, {
-      next: { revalidate: 60 }, // Revalidate every 60 seconds
-    });
+    const res = await apiClient.get(`/categories`);
 
-    if (!res.ok) {
+    if (res.status !== 200) {
       throw new Error(`Failed to fetch categories: ${res.statusText}`);
     }
-
-    const data = await res.json();
-    return NextResponse.json(data);
+    
+    return NextResponse.json(res.data);
   } catch (error: any) {
     console.error("API Error fetching categories:", error);
     return NextResponse.json(

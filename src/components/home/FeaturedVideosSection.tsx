@@ -7,6 +7,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Film, PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { apiClient } from "@/lib/api";
 
 export default function FeaturedVideosSection() {
   const [selectedVideoSrc, setSelectedVideoSrc] = useState<string | null>(null);
@@ -52,15 +53,12 @@ export default function FeaturedVideosSection() {
 
     const fetchVideos = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/quick-bites");
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
+        const response = await apiClient.get("/quick-bites");
+        const data = response.data;
         const mapped = data.map((item: any) => ({
           id: String(item.id),
           title: item.title,
           videoSrc: item.video_url,
-          // dataAiHint: item.description || "video thumbnail",
-          // duration: item.duration,
         }));
         setFeaturedVideos(mapped);
       } catch (err) {

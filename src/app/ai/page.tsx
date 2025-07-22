@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from 'next/link';
 import { Skeleton } from "@/components/ui/skeleton";
+import { apiClient } from "@/lib/api";
 
 
 interface AiFeature {
@@ -53,9 +54,8 @@ export default function AIPage() {
     const fetchFeatures = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:5000/api/ai");
-        const data = await res.json();
-        setAiFeatures(data);
+        const res = await apiClient.get("/ai");
+        setAiFeatures(res.data);
       } catch (e) {
         setAiFeatures([]);
       } finally {

@@ -1,15 +1,23 @@
 import axios from "axios";
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+
+if (!apiBaseUrl) {
+  throw new Error("NEXT_PUBLIC_BACKEND_API_URL is not set in the environment variables.");
+}
+
 export const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: apiBaseUrl,
   headers: { "Content-Type": "application/json" },
 });
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -19,11 +27,9 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Optionally: clear token and force logout
+    if (typeof window !== "undefined" && error.response && error.response.status === 401) {
       localStorage.removeItem("authToken");
-      // Optionally: redirect to login or show a message
-      window.location.href = "/login"; // or use router.push in Next.js
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

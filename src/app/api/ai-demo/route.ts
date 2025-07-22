@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ai } from "@/ai/genkit";
+import { apiClient } from "@/lib/api";
 
 export async function POST(req: NextRequest) {
   try {

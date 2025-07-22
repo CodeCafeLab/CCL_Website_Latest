@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, Bot, User, Copy } from "lucide-react";
+import { apiClient } from "@/lib/api";
 
 export default function InteractiveAIDemo() {
   const [prompt, setPrompt] = useState("");
@@ -27,9 +28,8 @@ export default function InteractiveAIDemo() {
   } | null>(null);
 
   useEffect(() => {
-    fetch("/api/ai-demo")
-      .then((res) => res.json())
-      .then(setDemoInfo)
+    apiClient.get("/ai-demo")
+      .then(res => setDemoInfo(res.data))
       .catch(() => setDemoInfo(null));
   }, []);
 
@@ -44,13 +44,9 @@ export default function InteractiveAIDemo() {
 
     while (retries < MAX_RETRIES && !success) {
       try {
-        const res = await fetch("http://localhost:5000/api/ai-demo", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt }),
-        });
+        const res = await apiClient.post("/ai-demo", { prompt });
 
-        const data = await res.json();
+        const data = res.data;
 
         if (res.status === 503 && data.error?.includes("overloaded")) {
           retries++;
@@ -63,7 +59,7 @@ export default function InteractiveAIDemo() {
           }
         }
 
-        if (!res.ok) {
+        if (res.status !== 200) {
           // Check for quota/billing error
           if (
             data.error?.toLowerCase().includes("quota") ||
@@ -82,7 +78,7 @@ export default function InteractiveAIDemo() {
         setResponse(data.answer || data.response);
         success = true;
       } catch (err: any) {
-        setError("Network error. Please check your connection.");
+        setError(err.response?.data?.error || "Network error. Please check your connection.");
         break;
       }
     }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
+import { apiClient } from "@/lib/api";
 
 export default function AIFeatureDetailPage() {
   const { id } = useParams();
@@ -12,9 +13,8 @@ export default function AIFeatureDetailPage() {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`http://localhost:5000/api/ai/${id}`)
-      .then((res) => res.json())
-      .then((data) => setFeature(data))
+    apiClient.get(`/ai/${id}`)
+      .then((res) => setFeature(res.data))
       .catch(() => setFeature(null));
   }, [id]);
 

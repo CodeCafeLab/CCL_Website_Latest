@@ -6,6 +6,7 @@ import type { BlogPost } from "@/types";
 import { Tag as TagIcon, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { apiClient } from "@/lib/api";
 
 export default function BlogDetailPage() {
   const { id } = useParams();
@@ -16,17 +17,14 @@ export default function BlogDetailPage() {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`http://localhost:5000/api/blogs/${id}`)
+    apiClient.get(`/blogs/${id}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch blog");
-        return res.json();
-      })
-      .then((data) => {
-        setBlog(data);
-        setLoading(false);
+        setBlog(res.data);
       })
       .catch((err) => {
-        setError(err.message);
+        setError(err.message || "Failed to fetch blog");
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [id]);
