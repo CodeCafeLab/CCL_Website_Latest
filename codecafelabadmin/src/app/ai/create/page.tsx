@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaSave, FaTimes, FaArrowLeft } from "react-icons/fa";
 import Image from "next/image";
+import apiclint from "@/lib/axios"; // <-- Add this import
 
 export default function CreateAiPage() {
   const router = useRouter();
@@ -53,15 +54,18 @@ export default function CreateAiPage() {
             .filter(Boolean)
         : [],
     };
-    const res = await fetch("http://localhost:5000/api/ai", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    setLoading(false);
-    if (res.ok) {
-      router.push("/ai");
-    } else {
+    try {
+      // Use apiclint instead of fetch
+      const res = await apiclint.post("/ai", payload);
+      setLoading(false);
+      if (res.status === 200 || res.status === 201) {
+        router.push("/ai");
+      } else {
+        alert("Failed to create AI feature");
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
       alert("Failed to create AI feature");
     }
   };

@@ -9,6 +9,7 @@ import {
   FaExternalLinkAlt,
 } from "react-icons/fa";
 import Image from "next/image";
+import api from "@/lib/axios"; // <-- Add this import
 interface AiFeature {
   id: number;
   title: string;
@@ -43,13 +44,8 @@ export default function AiToolsGridPage() {
   // Fetch features
   const fetchFeatures = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/ai");
-      if (!res.ok) {
-        setFeatures([]);
-        return;
-      }
-      const data = await res.json();
-      setFeatures(Array.isArray(data) ? data : []);
+      const res = await api.get("/api/ai"); // <-- Use api client
+      setFeatures(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.log(err);
       setFeatures([]);
@@ -64,12 +60,14 @@ export default function AiToolsGridPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this feature?")) return;
     setLoading(true);
-    const res = await fetch(`http://localhost:5000/api/ai/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      await api.delete(`/api/ai/${id}`); // <-- Use api client
+      fetchFeatures();
+    } catch (err) {
+      console.log(err);
+      alert("Error deleting feature");
+    }
     setLoading(false);
-    if (res.ok) fetchFeatures();
-    else alert("Error deleting feature");
   };
 
   return (

@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ClientReview } from "@/lib/constent";
+import apiclint from "@/lib/axios"; // <-- Import your axios instance
 
 export default function ClientReviews() {
   const [reviews, setReviews] = useState<ClientReview[]>([]);
   useEffect(() => {
-    fetch("http://localhost:5000/api/client-reviews")
-      .then((res) => res.json())
-      .then(setReviews);
+    apiclint
+      .get("/client-reviews") // The baseURL should be set in your axios instance
+      .then((res) => setReviews(res.data))
+      .catch(() => setReviews([]));
   }, []);
   return (
     <section>

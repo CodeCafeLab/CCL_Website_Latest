@@ -1,10 +1,12 @@
 "use client";
 import { ContactMessage } from "@/lib/contactUS";
 import React, { useEffect, useState } from "react";
+import apiclient from "@/lib/axios";
+
 export default function ContactMessages() {
   const [messages, setMessages] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/api/contact").then(res => res.json()).then(setMessages);
+    apiclient.get("/contact").then(res => setMessages(res.data));
   }, []);
   return (
     <div>

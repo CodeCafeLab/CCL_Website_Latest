@@ -6,7 +6,6 @@ export async function GET() {
   try {
     const res = await fetch(API_URL);
     const text = await res.text();
-    // Try to parse JSON, fallback to empty array if fails
     let data;
     try {
       data = JSON.parse(text);

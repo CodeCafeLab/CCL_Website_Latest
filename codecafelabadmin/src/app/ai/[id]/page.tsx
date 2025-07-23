@@ -11,6 +11,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import apiClient from "@/lib/axios"; // <-- Add this import
 
 interface AiFeature {
   id: number;
@@ -40,8 +41,9 @@ export default function AiDetailPage() {
   useEffect(() => {
     async function fetchFeature() {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/ai/${id}`);
-      const data = await res.json();
+      // Replace fetch with apiClient
+      const res = await apiClient.get(`/api/ai/${id}`);
+      const data = res.data;
       setFeature(data);
       setForm({
         title: data.title,
@@ -76,14 +78,11 @@ export default function AiDetailPage() {
             .filter(Boolean)
         : [],
     };
-    const res = await fetch(`http://localhost:5000/api/ai/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (res.ok) {
+    // Replace fetch with apiClient
+    const res = await apiClient.put(`/api/ai/${id}`, payload);
+    if (res.status === 200) {
       setEditMode(false);
-      const updated = await res.json();
+      const updated = res.data;
       setFeature(updated);
     } else {
       alert("Failed to update feature");
