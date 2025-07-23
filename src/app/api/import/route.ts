@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
           }
         } else {
           errorCount++;
-          errors.push({ row: index + 2, error: validation.error.flatten().fieldErrors.toString() });
+          errors.push({ row: index + 2, error: JSON.stringify(validation.error.flatten().fieldErrors) });
         }
       }
     } else {
