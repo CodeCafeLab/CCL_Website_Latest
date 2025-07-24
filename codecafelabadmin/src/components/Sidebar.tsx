@@ -42,23 +42,16 @@ const Sidebar: React.FC<SidebarProps> = ({ adminName = "Admin" }) => {
   const navRef = useRef<HTMLElement>(null);
 
   const navItems = [
-    // Main Navigation
     { href: "/ai", icon: <FaRobot />, label: "AI" },
     { href: "/dashboard", icon: <FaTachometerAlt />, label: "Dashboard" },
-
-    // Content Management
     { href: "/blog", icon: <FaBlog />, label: "Blog Management" },
     { href: "/quick-bites", icon: <FaVideo />, label: "Quick Bites" },
     { href: "/category", icon: <FaTags />, label: "Categories" },
-
-    // Business Management
     { href: "/careers", icon: <FaBriefcase />, label: "Careers" },
     { href: "/teams", icon: <FaUsers />, label: "Team Management" },
     { href: "/product", icon: <FaBox />, label: "Products" },
     { href: "/client-reviews", icon: <FaUser />, label: "Client Reviews" },
     { href: "/contactUs", icon: <FaUser />, label: "Contact Us" },
-
-    // Dynamic Sections
     { href: "/why-choose-us", icon: <FaStar />, label: "Why Choose Us" },
     { href: "/case-studies", icon: <FaFileAlt />, label: "Case Studies" },
     { href: "/whitepapers", icon: <FaBook />, label: "Whitepapers" },
@@ -69,65 +62,50 @@ const Sidebar: React.FC<SidebarProps> = ({ adminName = "Admin" }) => {
     { href: "/help", icon: <FaQuestionCircle />, label: "Help & Support" },
     { href: "/tutorials", icon: <FaPlay />, label: "Tutorials" },
     { href: "/newsletters", icon: <FaEnvelope />, label: "Newsletters" },
-
-    // Settings
     { href: "/settings", icon: <FaCog />, label: "Settings" },
   ];
 
   const isActive = (href: string) => {
-    // Handle exact matches and nested routes
     if (href === "/dashboard") {
       return pathname === "/dashboard";
     }
     return pathname.startsWith(href);
   };
 
-  // Scroll to active item when pathname changes
   useEffect(() => {
     const scrollToActiveItem = () => {
       if (activeItemRef.current && navRef.current) {
         const activeItem = activeItemRef.current;
         const navContainer = navRef.current;
-        
-        // Get the container's scroll position and dimensions
         const containerRect = navContainer.getBoundingClientRect();
         const itemRect = activeItem.getBoundingClientRect();
-        
-        // Calculate the item's position relative to the container
         const itemTop = itemRect.top - containerRect.top;
         const itemBottom = itemRect.bottom - containerRect.top;
         const containerHeight = containerRect.height;
-        
-        // Check if the item is outside the visible area
         if (itemTop < 0 || itemBottom > containerHeight) {
-          // Calculate the scroll position to center the item
-          const scrollTop = navContainer.scrollTop + itemTop - (containerHeight / 2) + (itemRect.height / 2);
-          
-          // Smooth scroll to the calculated position
+          const scrollTop =
+            navContainer.scrollTop +
+            itemTop -
+            containerHeight / 2 +
+            itemRect.height / 2;
           navContainer.scrollTo({
             top: Math.max(0, scrollTop),
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }
       }
     };
-
-    // Add a small delay to ensure DOM is updated
     const timeoutId = setTimeout(scrollToActiveItem, 100);
-    
     return () => clearTimeout(timeoutId);
   }, [pathname]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      apiClient
-        .get("/auth/profile")
-        .then((res) => setAdminNameState(res.data.name))
-        .catch((err) => {
-          console.error("Sidebar profile fetch error:", err);
-        });
-    }
+    apiClient
+      .get("/auth/profile")
+      .then((res) => setAdminNameState(res.data.name))
+      .catch((err) => {
+        console.error("Sidebar profile fetch error:", err);
+      });
   }, []);
 
   return (

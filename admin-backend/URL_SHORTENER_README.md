@@ -1,5 +1,5 @@
 // === .env ===
-const BASE_URL = process.env.NEXT_APP_API_BASE_URL;
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL || "https://adminb.codecafelab.in";
 
 // === src/utils/urlShortener.js ===
 const crypto = require('crypto');

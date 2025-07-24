@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const urlMappingModel = require("../models/urlMappingModel");
 
 // Read base URL only from env
-const BASE_URL = process.env.NEXT_APP_API_BASE_URL;
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL || "https://adminb.codecafelab.in";
 
 const generateShortUrl = (originalUrl, blogId) => {
   if (!originalUrl) return null;

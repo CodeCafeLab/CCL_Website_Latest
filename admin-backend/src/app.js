@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -32,8 +33,27 @@ const aiDemoRoutes = require("./routes/aiDemoRoutes"); // Required here to apply
 
 const app = express();
 
+// Allow both local and production frontends
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://adminb.codecafelab.in", // <-- Corrected!
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 // Middleware
-app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(morgan("dev"));
@@ -78,4 +98,6 @@ app.use("/ai-demo", aiDemoLimiter, aiDemoRoutes);
 
 // Server setup
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
