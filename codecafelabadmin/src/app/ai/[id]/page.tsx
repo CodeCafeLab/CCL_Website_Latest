@@ -42,7 +42,7 @@ export default function AiDetailPage() {
     async function fetchFeature() {
       setLoading(true);
       // Replace fetch with apiClient
-      const res = await apiClient.get(`/api/ai/${id}`);
+      const res = await apiClient.get(`/ai/${id}`);
       const data = res.data;
       setFeature(data);
       setForm({
@@ -79,7 +79,7 @@ export default function AiDetailPage() {
         : [],
     };
     // Replace fetch with apiClient
-    const res = await apiClient.put(`/api/ai/${id}`, payload);
+    const res = await apiClient.put(`/ai/${id}`, payload);
     if (res.status === 200) {
       setEditMode(false);
       const updated = res.data;

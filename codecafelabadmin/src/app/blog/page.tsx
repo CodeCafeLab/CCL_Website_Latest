@@ -20,7 +20,7 @@ const BlogManagementPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("/api/blogs")
+      .get("/blogs")
       .then((res) => setBlogs(res.data))
       .catch(() => setBlogs([]));
   }, []);
@@ -28,7 +28,7 @@ const BlogManagementPage: React.FC = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const res = await axios.get("/api/categories");
+        const res = await axios.get("/categories");
         setCategories(res.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -39,7 +39,7 @@ const BlogManagementPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    let url = "/api/blogs";
+    let url = "/blogs";
     if (selectedCategory !== "all") {
       url += `?category=${selectedCategory}`;
     }

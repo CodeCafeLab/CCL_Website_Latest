@@ -1,12 +1,11 @@
 const nextConfig = {
   images: {
     domains: [
-      'res.cloudinary.com',
-      'example.com',
-      'images.unsplash.com',
-      'via.placeholder.com',
-      'picsum.photos',
-      'your-other-domains.com'
+      "res.cloudinary.com",
+      "codecafelab.in",
+      "www.codecafelab.in",
+      "admin.codecafelab.in",
+      "adminb.codecafelab.in",
     ],
   },
 };

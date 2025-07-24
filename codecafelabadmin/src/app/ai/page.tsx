@@ -44,7 +44,7 @@ export default function AiToolsGridPage() {
   // Fetch features
   const fetchFeatures = async () => {
     try {
-      const res = await api.get("/api/ai"); // <-- Use api client
+      const res = await api.get("/ai"); // <-- Use api client
       setFeatures(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.log(err);
@@ -61,7 +61,7 @@ export default function AiToolsGridPage() {
     if (!confirm("Delete this feature?")) return;
     setLoading(true);
     try {
-      await api.delete(`/api/ai/${id}`); // <-- Use api client
+      await api.delete(`/ai/${id}`); // <-- Use api client
       fetchFeatures();
     } catch (err) {
       console.log(err);

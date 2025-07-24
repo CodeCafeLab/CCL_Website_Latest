@@ -8,10 +8,21 @@ export default function ClientReviews() {
   const [reviews, setReviews] = useState<ClientReview[]>([]);
   useEffect(() => {
     apiclint
-      .get("/client-reviews") // The baseURL should be set in your axios instance
-      .then((res) => setReviews(res.data))
-      .catch(() => setReviews([]));
+      .get("/client-reviews")
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setReviews(res.data);
+        } else {
+          console.error("Expected array but got:", res.data);
+          setReviews([]); // fallback to empty array
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching client reviews:", err);
+        setReviews([]);
+      });
   }, []);
+
   return (
     <section>
       <h2 className="text-3xl font-bold mb-6">What Our Clients Say</h2>

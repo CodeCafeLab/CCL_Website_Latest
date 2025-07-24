@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = "http://localhost:5000/api/products";
+const BACKEND_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/products`;
 
 export async function GET() {
   const backendRes = await fetch(BACKEND_URL);
