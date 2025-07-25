@@ -36,6 +36,7 @@ const app = express();
 // Allow both local and production frontends
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:9002",
   "https://adminb.codecafelab.in", // <-- Corrected!
 ];
 
@@ -44,12 +45,12 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
-      
+
       // Allow all localhost origins for development
-      if (origin.startsWith('http://localhost:')) {
+      if (origin.startsWith("http://localhost:")) {
         return callback(null, true);
       }
-      
+
       // Check against allowed origins
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
@@ -59,8 +60,8 @@ app.use(
       }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
