@@ -23,7 +23,7 @@ const testBlogData = {
   createdDate: "2024-01-15",
 };
 
-const BASE_URL = process.env.NEXT_APP_API_BASE_URL || "https://adminb.codecafelab.in";
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL || "https://adminb.codecafelab.in/api";
 
 // First, let's test getting all blogs
 async function testGetAllBlogs() {
