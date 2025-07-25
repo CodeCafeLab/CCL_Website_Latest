@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "out",
+  "name": "codecafelabadmin",
   "version": "0.1.0",
   "private": true,
   "scripts": {
