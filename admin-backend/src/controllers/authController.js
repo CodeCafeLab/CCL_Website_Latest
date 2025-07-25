@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 
 exports.register = async (req, res) => {
@@ -27,7 +28,16 @@ exports.login = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+    
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET || 'fallback_secret_key',
+      { expiresIn: '24h' }
+    );
+    
     res.json({
+      token,
       user: { id: user.id, email: user.email, name: user.name },
     });
   } catch (err) {
@@ -37,7 +47,17 @@ exports.login = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
   try {
-    res.json({ id: 1, name: "Demo User", email: "demo@example.com" });
+    // Get user data from JWT token (set by authMiddleware)
+    const user = await userModel.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.json({ 
+      id: user.id, 
+      name: user.name, 
+      email: user.email 
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
