@@ -38,6 +38,23 @@ const blogPostSchema = z.object({
   featured: z.preprocess(val => String(val).toLowerCase() === 'true' || val === '1', z.boolean()),
 });
 
+const productSchema = z.object({
+    name: z.string().min(1, "Product name is required"),
+    price: z.preprocess((val) => parseFloat(String(val)), z.number().min(0, "Price must be a positive number")),
+    description: z.string().optional(),
+    sku: z.string().min(1, "SKU is required"),
+    stock: z.preprocess((val) => parseInt(String(val), 10), z.number().int().min(0, "Stock must be a non-negative integer")),
+    category: z.string().optional(),
+});
+
+const userSchema = z.object({
+    email: z.string().email("Invalid email format"),
+    fullName: z.string().min(2, "Full name is required"),
+    role: z.enum(['admin', 'editor', 'customer']).default('customer'),
+    status: z.enum(['active', 'inactive']).default('active'),
+});
+
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -68,8 +85,42 @@ export async function POST(req: NextRequest) {
             // Here you would call your backend API to create the blog post
             // For this example, we'll assume a `POST /blogs` endpoint exists.
             // await apiClient.post('/blogs', validation.data);
-            console.log("Simulating API call for:", validation.data);
+            console.log("Simulating API call for blog:", validation.data);
             await new Promise(res => setTimeout(res, 50)); // Simulate network delay
+            successCount++;
+          } catch (apiError: any) {
+            errorCount++;
+            errors.push({ row: index + 2, error: apiError.message || "API error" });
+          }
+        } else {
+          errorCount++;
+          errors.push({ row: index + 2, error: JSON.stringify(validation.error.flatten().fieldErrors) });
+        }
+      }
+    } else if (importType === "products") {
+       for (const [index, row] of data.entries()) {
+        const validation = productSchema.safeParse(row);
+        if (validation.success) {
+          try {
+            console.log("Simulating API call for product:", validation.data);
+            await new Promise(res => setTimeout(res, 50));
+            successCount++;
+          } catch (apiError: any) {
+            errorCount++;
+            errors.push({ row: index + 2, error: apiError.message || "API error" });
+          }
+        } else {
+          errorCount++;
+          errors.push({ row: index + 2, error: JSON.stringify(validation.error.flatten().fieldErrors) });
+        }
+      }
+    } else if (importType === "users") {
+        for (const [index, row] of data.entries()) {
+        const validation = userSchema.safeParse(row);
+        if (validation.success) {
+          try {
+            console.log("Simulating API call for user:", validation.data);
+            await new Promise(res => setTimeout(res, 50));
             successCount++;
           } catch (apiError: any) {
             errorCount++;
