@@ -90,6 +90,11 @@ export default function FeaturedVideosSection() {
   }
 
   const youtubeEmbedUrl = "https://www.youtube.com/embed/6J_DGUZ-6Lo";
+  
+  const getSafeImageUrl = (url: string | null | undefined) => {
+    if (url && url.trim() !== '') return url;
+    return 'https://placehold.co/224x398.png'; // Fallback image
+  };
 
   return (
     <>
@@ -123,7 +128,7 @@ export default function FeaturedVideosSection() {
                         {/* Changed aspect ratio to 16/9 for a shorter video card */}
                         <div className="aspect-[9/16] w-full relative">
                            <Image
-                              src={video.thumbnailUrl}
+                              src={getSafeImageUrl(video.thumbnailUrl)}
                               alt={video.title}
                               fill
                               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px" // w-56 is 224px
