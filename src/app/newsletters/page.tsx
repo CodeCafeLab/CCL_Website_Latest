@@ -1,8 +1,25 @@
+
 "use client";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api";
 import Link from "next/link";
 import { User, Tag, Star, Calendar, Mail } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const NewsletterSkeleton = () => (
+    <div className="p-6 bg-card rounded-lg shadow flex flex-col">
+        <Skeleton className="w-full h-48 rounded mb-4 bg-muted" />
+        <Skeleton className="h-6 w-3/4 mb-2 bg-muted" />
+        <div className="flex flex-wrap gap-2 mb-2">
+            <Skeleton className="h-4 w-20 bg-muted" />
+            <Skeleton className="h-4 w-20 bg-muted" />
+        </div>
+        <Skeleton className="h-4 w-full mt-2 bg-muted" />
+        <Skeleton className="h-4 w-full mt-2 bg-muted" />
+        <Skeleton className="h-4 w-2/3 mt-2 mb-4 bg-muted" />
+        <Skeleton className="h-10 w-full mt-auto bg-muted" />
+    </div>
+);
 
 export default function NewslettersPage() {
   const [items, setItems] = useState<any[]>([]);
@@ -14,8 +31,16 @@ export default function NewslettersPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (!items.length) return <div>No newsletters found.</div>;
+  if (loading) return (
+    <div className="container mx-auto py-12">
+        <h1 className="text-3xl font-bold mb-8">Newsletter Archive</h1>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => <NewsletterSkeleton key={index} />)}
+        </div>
+    </div>
+  );
+
+  if (!items.length) return <div className="text-center py-12">No newsletters found.</div>;
 
   return (
     <div className="container mx-auto py-12">
