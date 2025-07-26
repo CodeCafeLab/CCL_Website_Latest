@@ -100,4 +100,5 @@ export interface TeamMember {
   featured: boolean;
   sort_order?: number;
   created_at?: string;
-  updated_at
+  updated_at?: string;
+}
