@@ -15,7 +15,6 @@ const productRoutes = require("./routes/productRoutes");
 const careerRoutes = require("./routes/careerRoutes");
 const jobApplicationRoutes = require("./routes/jobApplicationRoutes");
 const teamRoutes = require("./routes/teamRoutes");
-
 const whyChooseUsRoutes = require("./routes/whyChooseUsRoutes");
 const caseStudyRoutes = require("./routes/caseStudyRoutes");
 const whitepaperRoutes = require("./routes/whitepaperRoutes");
@@ -29,36 +28,42 @@ const newsletterRoutes = require("./routes/newsletterRoutes");
 const quoteRoutes = require("./routes/quoteRoutes");
 const aiFeatureRoutes = require("./routes/aiFeatureRoutes");
 const aiGenRoutes = require("./routes/aiGenRoutes");
-const aiDemoRoutes = require("./routes/aiDemoRoutes"); // Required here to apply limiter
+const aiDemoRoutes = require("./routes/aiDemoRoutes");
 
 const app = express();
 
-// Allow both local and production frontends
+// Allowed origins
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:9002",
-  "https://adminb.codecafelab.in", 
-  "https://admin.codecafelab.in",  
-  "https://codecafelab.in", 
+  "https://6000-firebase-studio-1747976034162.cluster-44kx2eiocbhe2tyk3zoyo3ryuo.cloudworkstations.dev",
+  "https://adminb.codecafelab.in",
+  "https://admin.codecafelab.in",
+  "https://codecafelab.in",
 ];
 
+// CORS origin checker
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true; // allow curl/postman
+  const normalizedOrigin = origin.replace(/\/$/, "").toLowerCase();
+  return (
+    normalizedOrigin.startsWith("http://localhost:") ||
+    allowedOrigins.some((allowed) => {
+      return normalizedOrigin === allowed.replace(/\/$/, "").toLowerCase();
+    })
+  );
+};
+
+// Apply CORS middleware
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-
-      // Allow all localhost origins for development
-      if (origin.startsWith("http://localhost:")) {
-        return callback(null, true);
-      }
-
-      // Check against allowed origins
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
+      console.log("Incoming origin:", origin); // for debugging
+      if (isAllowedOrigin(origin)) {
+        callback(null, true);
       } else {
         console.log(`CORS blocked origin: ${origin}`);
-        return callback(new Error("Not allowed by CORS"));
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
@@ -72,7 +77,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(morgan("dev"));
 
-// All routes
+// Routes
 app.use("/auth", authRoutes);
 app.use("/blogs", blogRoutes);
 app.use("/images", imageRoutes);
@@ -84,8 +89,6 @@ app.use("/products", productRoutes);
 app.use("/careers", careerRoutes);
 app.use("/job-applications", jobApplicationRoutes);
 app.use("/teams", teamRoutes);
-
-// Dynamic section routes
 app.use("/why-choose-us", whyChooseUsRoutes);
 app.use("/case-studies", caseStudyRoutes);
 app.use("/whitepapers", whitepaperRoutes);
@@ -102,15 +105,14 @@ app.use("/ai-gen", aiGenRoutes);
 
 // Rate limiter for /ai-demo
 const aiDemoLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 20, // max 20 requests per IP per minute
+  windowMs: 60 * 1000,
+  max: 20,
   message: { error: "Too many requests, please try again later." },
 });
 
-// Apply limiter specifically to ai-demo route
 app.use("/ai-demo", aiDemoLimiter, aiDemoRoutes);
 
-// Server setup
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
