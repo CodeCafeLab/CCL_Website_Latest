@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import type { FeaturedVideo } from "@/types";
+import type { FeaturedVideo, YouTubeShort } from "@/types";
 import Image from "next/image";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Film, PlayCircle } from "lucide-react";
+import { Film, PlayCircle, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { apiClient } from "@/lib/api";
 
@@ -18,7 +18,7 @@ export default function FeaturedVideosSection() {
   const videoPreviewRefs = useRef<Map<string, HTMLVideoElement | null>>(
     new Map()
   );
-  const [featuredVideos, setFeaturedVideos] = useState<FeaturedVideo[]>([]);
+  const [featuredVideos, setFeaturedVideos] = useState<YouTubeShort[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,16 +53,15 @@ export default function FeaturedVideosSection() {
 
     const fetchVideos = async () => {
       try {
-        const response = await apiClient.get("/quick-bites");
+        const response = await apiClient.get("/youtube-shorts");
         const data = response.data;
-        const mapped = data.map((item: any) => ({
-          id: String(item.id),
-          title: item.title,
-          videoSrc: item.video_url,
-        }));
-        setFeaturedVideos(mapped);
-      } catch (err) {
-        setError("Failed to load videos");
+        if (data.shorts) {
+          setFeaturedVideos(data.shorts);
+        } else {
+          setFeaturedVideos([]);
+        }
+      } catch (err: any) {
+        setError(err.message || "Failed to load videos");
       } finally {
         setLoading(false);
       }
@@ -74,7 +73,7 @@ export default function FeaturedVideosSection() {
   if (loading) {
     return (
       <section className="space-y-8 py-12 text-center">
-        <Film className="h-12 w-12 text-muted-foreground mx-auto" />
+        <Loader2 className="h-12 w-12 text-primary animate-spin mx-auto" />
         <p className="text-muted-foreground">Loading featured videos...</p>
       </section>
     );
@@ -83,10 +82,11 @@ export default function FeaturedVideosSection() {
   if (error || !featuredVideos || featuredVideos.length === 0) {
     return (
       <section className="space-y-8 py-12 text-center">
-        <Film className="h-12 w-12 text-muted-foreground mx-auto" />
-        <p className="text-muted-foreground">
-          {error || "No featured videos at the moment."}
+        <AlertTriangle className="h-12 w-12 text-destructive mx-auto" />
+        <p className="text-destructive-foreground font-semibold">
+          {error ? "Could not load videos" : "No videos available"}
         </p>
+        {error && <p className="text-xs text-muted-foreground">{error}</p>}
       </section>
     );
   }
@@ -118,24 +118,23 @@ export default function FeaturedVideosSection() {
                   <div
                     key={video.id}
                     className="block flex-shrink-0 w-56 group cursor-pointer"
-                    onClick={() => handleVideoClick(video.videoSrc)}
+                    onClick={() => handleVideoClick(video.youtubeUrl)}
                   >
                     <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                       <CardHeader className="p-0 relative">
                         {/* Changed aspect ratio to 16/9 for a shorter video card */}
-                        <div className="aspect-[16/9] w-full relative">
-                          <video
-                            ref={el => {
-                              videoPreviewRefs.current.set(video.id, el);
-                            }}
-                            src={video.videoSrc}
-                            autoPlay
-                            muted
-                            loop
-                            controls
-                            playsInline
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="aspect-[9/16] w-full relative">
+                           <Image
+                              src={video.thumbnailUrl}
+                              alt={video.title}
+                              fill
+                              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px" // w-56 is 224px
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                              data-ai-hint={video.dataAiHint || 'youtube short thumbnail'}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center">
+                                <PlayCircle className="w-12 h-12 text-white/80 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
                         </div>
                       </CardHeader>
                     </Card>
@@ -169,24 +168,19 @@ export default function FeaturedVideosSection() {
       <Dialog open={isModalOpen} onOpenChange={handleModalOpenChange}>
         <DialogContent
           className={cn(
-            "bg-background sm:max-w-[375px] p-0 overflow-hidden aspect-[9/16] border-0 shadow-lg rounded-lg"
+            "bg-black sm:max-w-md w-full p-0 overflow-hidden aspect-video border-0 shadow-lg rounded-lg"
           )}
         >
           {selectedVideoSrc && (
-            <video
-              ref={videoModalRef}
-              src={selectedVideoSrc}
-              poster={
-                featuredVideos.find((v) => v.videoSrc === selectedVideoSrc)
-                  ?.thumbnailUrl
-              }
-              controls
-              autoPlay
-              playsInline
-              className="w-full h-full object-contain bg-black"
-            >
-              Your browser does not support the video tag.
-            </video>
+             <iframe
+                ref={videoModalRef}
+                src={selectedVideoSrc.replace('/shorts/', '/embed/')}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              ></iframe>
           )}
         </DialogContent>
       </Dialog>

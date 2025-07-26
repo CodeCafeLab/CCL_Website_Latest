@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Force localhost for development to avoid CORS issues
 const isDevelopment = process.env.NODE_ENV === 'development' || typeof window !== 'undefined' && window.location.hostname === 'localhost';
-const apiBaseUrl = isDevelopment ? "http://localhost:5000" : (process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:5000");
+const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:5000/api";
 
 // Log the API base URL for debugging
 console.log('🔧 Development Mode:', isDevelopment);
@@ -38,20 +38,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     // Log error details for debugging
-    console.error('API Error:', {
-      message: error.message,
-      code: error.code,
-      config: {
-        url: error.config?.url,
-        method: error.config?.method,
-        baseURL: error.config?.baseURL
-      },
-      response: error.response ? {
-        status: error.response.status,
-        statusText: error.response.statusText,
-        data: error.response.data
-      } : 'No response received'
-    });
+    console.error('API Error:', error);
 
     // // Handle specific error cases
     // if (error.code === 'ERR_NETWORK') {
