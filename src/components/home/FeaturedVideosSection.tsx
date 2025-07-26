@@ -9,6 +9,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Film, PlayCircle, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { apiClient } from "@/lib/api";
+import FirebaseVideoPlayer from "../common/FirebaseVideoPlayer"; // Import the new component
 
 interface QuickBiteVideo {
   id: number;
@@ -63,7 +64,6 @@ export default function FeaturedVideosSection() {
       try {
         const response = await apiClient.get("/quick-bites");
         const data = response.data;
-        // The /quick-bites endpoint returns the array directly
         setFeaturedVideos(data || []);
       } catch (err: any) {
         setError(err.message || "Failed to load videos");
@@ -79,6 +79,7 @@ export default function FeaturedVideosSection() {
     if (url && url.trim() !== '') return url;
     return 'https://placehold.co/224x398.png'; // Fallback image
   };
+  const fallbackPoster = 'https://placehold.co/224x398/F8F4ED/392013?text=CodeCafe+Vid';
 
   if (loading) {
     return (
@@ -130,23 +131,16 @@ export default function FeaturedVideosSection() {
                     className="block flex-shrink-0 w-56 group cursor-pointer"
                     onClick={() => handleVideoClick(video.video_url)}
                   >
-                    <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
-                      <CardHeader className="p-0 relative">
-                        <div className="aspect-[9/16] w-full relative">
-                           <Image
-                              src={getSafeImageUrl(undefined)} // No thumbnail from API, use fallback
-                              alt={video.title}
-                              fill
-                              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px" // w-56 is 224px
-                              className="object-cover transition-transform duration-500 group-hover:scale-105"
-                              data-ai-hint={'tech video ' + video.category.toLowerCase()}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center">
-                                <PlayCircle className="w-12 h-12 text-white/80 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
-                        </div>
-                      </CardHeader>
-                    </Card>
+                    <FirebaseVideoPlayer
+                        videoSrc={video.video_url}
+                        posterSrc={fallbackPoster}
+                        title={video.title}
+                        aspectRatio="9/16"
+                        autoPlay
+                        loop
+                        muted
+                        className="transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1"
+                    />
                   </div>
                 ))}
               </div>
@@ -158,7 +152,7 @@ export default function FeaturedVideosSection() {
           {/* Right Column: Main YouTube Embed */}
           <div className="space-y-6">
             
-            <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mt-12">
+            <div className="w-full h-auto aspect-video rounded-lg overflow-hidden shadow-lg mt-12 lg:mt-0">
               <iframe
                 width="100%"
                 height="100%"

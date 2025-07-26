@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useRef, type SyntheticEvent } from 'react';
@@ -13,6 +12,10 @@ interface FirebaseVideoPlayerProps {
   title?: string;
   className?: string;
   aspectRatio?: '16/9' | '9/16' | '4/3' | '1/1' | 'auto';
+  autoPlay?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  controls?: boolean;
 }
 
 export default function FirebaseVideoPlayer({
@@ -21,25 +24,32 @@ export default function FirebaseVideoPlayer({
   title = 'Video player',
   className,
   aspectRatio = '16/9',
+  autoPlay = false,
+  muted = true,
+  loop = true,
+  controls = false,
 }: FirebaseVideoPlayerProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(autoPlay);
+  const [isLoading, setIsLoading] = useState(autoPlay);
   const [hasError, setHasError] = useState(false);
   const [posterLoadError, setPosterLoadError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handlePlayClick = () => {
-    setIsPlaying(true);
-    setIsLoading(true);
-    setHasError(false);
+    if (videoRef.current) {
+        setIsPlaying(true);
+        setIsLoading(true);
+        videoRef.current.play().catch(error => {
+            console.warn("Manual play was prevented:", error);
+            setIsPlaying(false);
+            setIsLoading(false);
+            setHasError(true);
+        });
+    }
   };
 
   const handleVideoLoadedData = () => {
     setIsLoading(false);
-    videoRef.current?.play().catch(error => {
-      console.warn("Autoplay was prevented:", error);
-      setIsLoading(false);
-    });
   };
 
   const handleVideoError = (e: SyntheticEvent<HTMLVideoElement, Event>) => {
@@ -61,7 +71,23 @@ export default function FirebaseVideoPlayer({
 
   return (
     <div className={cn("relative w-full rounded-lg shadow-lg overflow-hidden bg-card", getAspectRatioClass(), className)}>
-      {!isPlaying && !hasError && (
+      <video
+          ref={videoRef}
+          src={videoSrc}
+          poster={posterLoadError ? undefined : posterSrc}
+          loop={loop}
+          muted={muted}
+          autoPlay={autoPlay}
+          playsInline
+          controls={controls}
+          onLoadedData={handleVideoLoadedData}
+          onError={handleVideoError}
+          onCanPlay={() => setIsLoading(false)}
+          className={cn("w-full h-full object-cover transition-opacity duration-300", isLoading ? 'opacity-0' : 'opacity-100')}
+          aria-label={title}
+        />
+
+      {!isPlaying && !hasError && !autoPlay && (
         <>
           {posterLoadError ? (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted text-muted-foreground p-4">
@@ -74,10 +100,9 @@ export default function FirebaseVideoPlayer({
               alt={title || 'Video poster'}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-opacity duration-300 group-hover:opacity-80"
+              className="object-cover"
               priority={false}
               onError={() => {
-                console.warn("Poster image failed to load for: ", posterSrc);
                 setPosterLoadError(true);
               }}
             />
@@ -96,23 +121,7 @@ export default function FirebaseVideoPlayer({
         </>
       )}
 
-      {isPlaying && (
-        <video
-          ref={videoRef}
-          src={videoSrc}
-          poster={posterSrc} // Poster is important here too for when autoplay is blocked
-          controls
-          autoPlay
-          playsInline
-          onLoadedData={handleVideoLoadedData}
-          onError={handleVideoError}
-          onCanPlay={() => setIsLoading(false)}
-          className="w-full h-full object-contain bg-black" // bg-black ensures no white flash if video is transparent
-          aria-label={title}
-        />
-      )}
-
-      {isLoading && isPlaying && (
+      {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
         </div>
@@ -121,7 +130,7 @@ export default function FirebaseVideoPlayer({
       {hasError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-card p-4 text-center">
           <AlertTriangle className="h-12 w-12 text-destructive mb-2" />
-          <p className="text-destructive-foreground">
+          <p className="font-semibold text-destructive-foreground">
             Video could not be loaded.
           </p>
           <p className="text-xs text-muted-foreground mt-1">Please check the video URL or try again later.</p>
