@@ -77,9 +77,9 @@ export default function FeaturedVideosSection() {
 
   const getSafeImageUrl = (url?: string | null) => {
     if (url && url.trim() !== '') return url;
-    return 'https://placehold.co/224x398.png'; // Fallback image
+    return 'https://placehold.co/600x338.png'; // Fallback image with 16:9 ratio
   };
-  const fallbackPoster = 'https://placehold.co/224x398/F8F4ED/392013?text=CodeCafe+Vid';
+  const fallbackPoster = 'https://placehold.co/600x338/F8F4ED/392013?text=CodeCafe+Vid';
 
   if (loading) {
     return (
@@ -128,14 +128,14 @@ export default function FeaturedVideosSection() {
                 {featuredVideos.map((video) => (
                   <div
                     key={video.id}
-                    className="block flex-shrink-0 w-56 group cursor-pointer"
+                    className="block flex-shrink-0 w-80 group cursor-pointer"
                     onClick={() => handleVideoClick(video.video_url)}
                   >
                     <FirebaseVideoPlayer
                         videoSrc={video.video_url}
                         posterSrc={fallbackPoster}
                         title={video.title}
-                        aspectRatio="9/16"
+                        aspectRatio="16/9"
                         autoPlay
                         loop
                         muted
@@ -171,7 +171,7 @@ export default function FeaturedVideosSection() {
       <Dialog open={isModalOpen} onOpenChange={handleModalOpenChange}>
         <DialogContent
           className={cn(
-            "bg-black sm:max-w-md w-full p-0 overflow-hidden aspect-video border-0 shadow-lg rounded-lg"
+            "bg-black sm:max-w-4xl w-full p-0 overflow-hidden aspect-video border-0 shadow-lg rounded-lg"
           )}
         >
           {selectedVideoSrc && (
