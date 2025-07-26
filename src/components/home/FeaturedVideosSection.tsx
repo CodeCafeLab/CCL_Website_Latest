@@ -5,11 +5,12 @@ import { useState, useEffect, useRef } from "react";
 import type { FeaturedVideo, YouTubeShort } from "@/types";
 import Image from "next/image";
 import { Card, CardHeader } from "@/components/ui/card";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Film, PlayCircle, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { apiClient } from "@/lib/api";
 import FirebaseVideoPlayer from "../common/FirebaseVideoPlayer"; // Import the new component
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface QuickBiteVideo {
   id: number;
@@ -24,6 +25,7 @@ interface QuickBiteVideo {
 
 export default function FeaturedVideosSection() {
   const [selectedVideoSrc, setSelectedVideoSrc] = useState<string | null>(null);
+  const [selectedVideoTitle, setSelectedVideoTitle] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const videoModalRef = useRef<HTMLVideoElement>(null);
 
@@ -31,8 +33,9 @@ export default function FeaturedVideosSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleVideoClick = (videoSrc: string) => {
+  const handleVideoClick = (videoSrc: string, title: string) => {
     setSelectedVideoSrc(videoSrc);
+    setSelectedVideoTitle(title);
     setIsModalOpen(true);
   };
 
@@ -40,6 +43,7 @@ export default function FeaturedVideosSection() {
     setIsModalOpen(open);
     if (!open) {
       setSelectedVideoSrc(null);
+      setSelectedVideoTitle(null);
       if (videoModalRef.current) {
         videoModalRef.current.pause();
       }
@@ -129,7 +133,7 @@ export default function FeaturedVideosSection() {
                   <div
                     key={video.id}
                     className="block flex-shrink-0 w-48 group cursor-pointer"
-                    onClick={() => handleVideoClick(video.video_url)}
+                    onClick={() => handleVideoClick(video.video_url, video.title)}
                   >
                     <FirebaseVideoPlayer
                         videoSrc={video.video_url}
@@ -174,6 +178,9 @@ export default function FeaturedVideosSection() {
             "bg-black sm:max-w-4xl w-full p-0 overflow-hidden aspect-video border-0 shadow-lg rounded-lg"
           )}
         >
+          <VisuallyHidden>
+            <DialogTitle>{selectedVideoTitle || 'Video Player'}</DialogTitle>
+          </VisuallyHidden>
           {selectedVideoSrc && (
              <video
                 ref={videoModalRef}
