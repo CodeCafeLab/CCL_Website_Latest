@@ -95,6 +95,7 @@ import {
   Search,
   Rocket,
   UploadCloud,
+  Share2,
 } from "lucide-react";
 
 export const SITE_NAME = "CodeCafe Lab";
@@ -360,7 +361,13 @@ export const RESOURCES_SUB_LINKS: NavItem[] = [
     description:
       "Upload data in bulk from a CSV file for various content types.",
   },
-  
+  {
+    href: "/social-automation",
+    label: "Social Automation",
+    icon: Share2,
+    description:
+      "Use AI to generate tailored posts for different social media platforms.",
+  },
 ];
 
 export const SERVICES_DATA: ServiceMenuItem[] = [
