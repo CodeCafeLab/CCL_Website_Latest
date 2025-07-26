@@ -1,8 +1,9 @@
+
 "use client";
 
 import { useState, useRef, type SyntheticEvent } from 'react';
 import Image from 'next/image';
-import { PlayCircle, Loader2, AlertTriangle, ImageIcon } from 'lucide-react';
+import { PlayCircle, Loader2, AlertTriangle, ImageIcon, VolumeX, Volume2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -25,15 +26,19 @@ export default function FirebaseVideoPlayer({
   className,
   aspectRatio = '16/9',
   autoPlay = false,
-  muted = true,
+  muted: initialMuted = true,
   loop = true,
-  controls = false,
+  controls: initialControls = false,
 }: FirebaseVideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [isLoading, setIsLoading] = useState(autoPlay);
   const [hasError, setHasError] = useState(false);
   const [posterLoadError, setPosterLoadError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMuted, setIsMuted] = useState(initialMuted);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const showControls = isHovered || initialControls;
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -68,18 +73,30 @@ export default function FirebaseVideoPlayer({
       default: return ''; 
     }
   }
+  
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const newMutedState = !isMuted;
+      videoRef.current.muted = newMutedState;
+      setIsMuted(newMutedState);
+    }
+  };
 
   return (
-    <div className={cn("relative w-full rounded-lg shadow-lg overflow-hidden bg-card", getAspectRatioClass(), className)}>
+    <div 
+        className={cn("relative w-full rounded-lg shadow-lg overflow-hidden bg-card group", getAspectRatioClass(), className)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+    >
       <video
           ref={videoRef}
           src={videoSrc}
           poster={posterLoadError ? undefined : posterSrc}
           loop={loop}
-          muted={muted}
+          muted={isMuted}
           autoPlay={autoPlay}
           playsInline
-          controls={controls}
+          controls={showControls}
           onLoadedData={handleVideoLoadedData}
           onError={handleVideoError}
           onCanPlay={() => setIsLoading(false)}
@@ -107,7 +124,7 @@ export default function FirebaseVideoPlayer({
               }}
             />
           )}
-          <div className="absolute inset-0 flex items-center justify-center bg-black/30 group">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
             <Button
               variant="ghost"
               size="icon"
