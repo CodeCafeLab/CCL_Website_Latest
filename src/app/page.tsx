@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -31,6 +32,7 @@ import QuoteFormSheet from "@/components/pricing/QuoteFormSheet";
 import { categories, BlogPost, Product } from "@/types";
 import { apiClient, getProducts } from "@/lib/api";
 import * as LucideIcons from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ClientReview = {
   id: number;
@@ -41,6 +43,18 @@ type ClientReview = {
   created_at: string;
   published: number;
 };
+
+const ProductSkeleton = () => (
+    <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-background/80 backdrop-blur-sm rounded-lg border border-border/10">
+      <Skeleton className="w-full h-[100px] md:w-[150px] md:h-[100px] rounded-md bg-muted" />
+      <div className="flex-1 w-full space-y-3">
+        <Skeleton className="h-6 w-3/4 bg-muted" />
+        <Skeleton className="h-4 w-full bg-muted" />
+        <Skeleton className="h-4 w-5/6 bg-muted" />
+        <Skeleton className="h-9 w-28 bg-muted" />
+      </div>
+    </div>
+  );
 
 export default function HomePage() {
   const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false);
@@ -312,16 +326,14 @@ export default function HomePage() {
                 Explore our cutting-edge AI-powered products.
               </p>
             </div>
-            {productsLoading ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">
-                  Loading featured projects...
-                </p>
-              </div>
-            ) : featuredProducts.length > 0 ? (
-              <div className="grid md:grid-cols-2 gap-8">
-                {featuredProducts.map((product) => (
+            <div className="grid md:grid-cols-2 gap-8">
+              {productsLoading ? (
+                <>
+                  <ProductSkeleton />
+                  <ProductSkeleton />
+                </>
+              ) : featuredProducts.length > 0 ? (
+                featuredProducts.map((product) => (
                   <Card
                     key={product.id}
                     className="flex flex-col md:flex-row items-center gap-6 p-6 hover:shadow-xl transition-shadow duration-300 bg-background/80 backdrop-blur-sm"
@@ -357,15 +369,15 @@ export default function HomePage() {
                       </Button>
                     </div>
                   </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">
-                  No featured projects available at the moment.
-                </p>
-              </div>
-            )}
+                ))
+              ) : (
+                <div className="text-center py-8 col-span-full">
+                  <p className="text-muted-foreground">
+                    No featured projects available at the moment.
+                  </p>
+                </div>
+              )}
+            </div>
             <div className="text-center mt-12">
               <Button
                 asChild
