@@ -10,16 +10,23 @@ import { Film, PlayCircle, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { apiClient } from "@/lib/api";
 
+interface QuickBiteVideo {
+  id: number;
+  title: string;
+  video_url: string;
+  duration: string;
+  category: string;
+  tags: string[];
+  author: string;
+  featured: number;
+}
+
 export default function FeaturedVideosSection() {
   const [selectedVideoSrc, setSelectedVideoSrc] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const videoModalRef = useRef<HTMLVideoElement>(null);
 
-  const [hoveredVideoId, setHoveredVideoId] = useState<string | null>(null);
-  const videoPreviewRefs = useRef<Map<string, HTMLVideoElement | null>>(
-    new Map()
-  );
-  const [featuredVideos, setFeaturedVideos] = useState<YouTubeShort[]>([]);
+  const [featuredVideos, setFeaturedVideos] = useState<QuickBiteVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,6 +75,11 @@ export default function FeaturedVideosSection() {
     fetchVideos();
   }, []);
 
+  const getSafeImageUrl = (url?: string | null) => {
+    if (url && url.trim() !== '') return url;
+    return 'https://placehold.co/224x398.png'; // Fallback image
+  };
+
   if (loading) {
     return (
       <section className="space-y-8 py-12 text-center">
@@ -91,11 +103,6 @@ export default function FeaturedVideosSection() {
 
   const youtubeEmbedUrl = "https://www.youtube.com/embed/6J_DGUZ-6Lo";
   
-  const getSafeImageUrl = (url: string | null | undefined) => {
-    if (url && url.trim() !== '') return url;
-    return 'https://placehold.co/224x398.png'; // Fallback image
-  };
-
   return (
     <>
       <section className="space-y-12">
@@ -121,19 +128,18 @@ export default function FeaturedVideosSection() {
                   <div
                     key={video.id}
                     className="block flex-shrink-0 w-56 group cursor-pointer"
-                    onClick={() => handleVideoClick(video.youtubeUrl)}
+                    onClick={() => handleVideoClick(video.video_url)}
                   >
                     <Card className="overflow-hidden h-full transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
                       <CardHeader className="p-0 relative">
-                        {/* Changed aspect ratio to 16/9 for a shorter video card */}
                         <div className="aspect-[9/16] w-full relative">
                            <Image
-                              src={getSafeImageUrl(video.thumbnailUrl)}
+                              src={getSafeImageUrl(undefined)} // No thumbnail from API, use fallback
                               alt={video.title}
                               fill
                               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 224px" // w-56 is 224px
                               className="object-cover transition-transform duration-500 group-hover:scale-105"
-                              data-ai-hint={video.dataAiHint || 'youtube short thumbnail'}
+                              data-ai-hint={'tech video ' + video.category.toLowerCase()}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center">
                                 <PlayCircle className="w-12 h-12 text-white/80 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -175,15 +181,14 @@ export default function FeaturedVideosSection() {
           )}
         >
           {selectedVideoSrc && (
-             <iframe
+             <video
                 ref={videoModalRef}
-                src={selectedVideoSrc.replace('/shorts/', '/embed/')}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              ></iframe>
+                src={selectedVideoSrc}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-contain bg-black"
+              ></video>
           )}
         </DialogContent>
       </Dialog>
