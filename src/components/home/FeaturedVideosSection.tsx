@@ -124,11 +124,11 @@ export default function FeaturedVideosSection() {
               Featured Quick Bites
             </h3>
             {featuredVideos.length > 0 ? (
-              <div className="flex space-x-4 overflow-x-auto pb-4 -mb-4 pr-4">
+              <div className="flex space-x-4 overflow-x-auto ">
                 {featuredVideos.map((video) => (
                   <div
                     key={video.id}
-                    className="block flex-shrink-0 w-80 group cursor-pointer"
+                    className="block flex-shrink-0 w-48 group cursor-pointer"
                     onClick={() => handleVideoClick(video.video_url)}
                   >
                     <FirebaseVideoPlayer
@@ -152,7 +152,7 @@ export default function FeaturedVideosSection() {
           {/* Right Column: Main YouTube Embed */}
           <div className="space-y-6">
             
-            <div className="w-full h-auto aspect-video rounded-lg overflow-hidden shadow-lg mt-12 lg:mt-0">
+            <div className="w-full h-auto aspect-video rounded-lg overflow-hidden shadow-lg mt-12">
               <iframe
                 width="100%"
                 height="100%"
