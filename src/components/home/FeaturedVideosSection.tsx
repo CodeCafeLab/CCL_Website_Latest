@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -53,13 +54,10 @@ export default function FeaturedVideosSection() {
 
     const fetchVideos = async () => {
       try {
-        const response = await apiClient.get("/youtube-shorts");
+        const response = await apiClient.get("/quick-bites");
         const data = response.data;
-        if (data.shorts) {
-          setFeaturedVideos(data.shorts);
-        } else {
-          setFeaturedVideos([]);
-        }
+        // The /quick-bites endpoint returns the array directly
+        setFeaturedVideos(data || []);
       } catch (err: any) {
         setError(err.message || "Failed to load videos");
       } finally {

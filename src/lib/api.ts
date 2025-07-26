@@ -1,10 +1,18 @@
 import axios from "axios";
 
-// Since we are using Next.js rewrites as a proxy, 
-// all API calls can be made to the relative path '/api'.
-const apiBaseUrl = "/api";
+// Force localhost for development to avoid CORS issues
+const isDevelopment = process.env.NODE_ENV === 'development' || typeof window !== 'undefined' && window.location.hostname === 'localhost';
+const apiBaseUrl = isDevelopment ? "http://localhost:5000" : (process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:5000");
 
-console.log('🔗 Using Next.js proxy for API calls. Base URL:', apiBaseUrl);
+// Log the API base URL for debugging
+console.log('🔧 Development Mode:', isDevelopment);
+console.log('🔗 API Base URL:', apiBaseUrl);
+console.log('🌍 Environment variable NEXT_PUBLIC_BACKEND_API_URL:', process.env.NEXT_PUBLIC_BACKEND_API_URL);
+console.log('🏠 Window hostname:', typeof window !== 'undefined' ? window.location.hostname : 'server-side');
+
+if (!apiBaseUrl) {
+  throw new Error("NEXT_PUBLIC_BACKEND_API_URL is not set in the environment variables.");
+}
 
 export const apiClient = axios.create({
   baseURL: apiBaseUrl,
@@ -13,10 +21,48 @@ export const apiClient = axios.create({
   timeout: 10000, // 10 second timeout
 });
 
+// apiClient.interceptors.request.use(
+//   (config) => {
+//     if (typeof window !== "undefined") {
+//       const token = localStorage.getItem("authToken");
+//       if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//       }
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
+
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error);
+    // Log error details for debugging
+    console.error('API Error:', {
+      message: error.message,
+      code: error.code,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+        baseURL: error.config?.baseURL
+      },
+      response: error.response ? {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        data: error.response.data
+      } : 'No response received'
+    });
+
+    // // Handle specific error cases
+    // if (error.code === 'ERR_NETWORK') {
+    //   console.error('Network Error: Check if backend server is running on', apiBaseUrl);
+    // }
+    
+    // if (typeof window !== "undefined" && error.response && error.response.status === 401) {
+    //   localStorage.removeItem("authToken");
+    //   window.location.href = "/login";
+    // }
+    
     return Promise.reject(error);
   }
 );
