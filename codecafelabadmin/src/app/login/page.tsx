@@ -133,23 +133,10 @@ const AdminLoginPage: React.FC = () => {
           </form>
         </div>
 
-        {/* Register Link */}
-        <div className="text-center mt-4">
-          <span className="text-sm text-gray-600">
-            Don&apos;t have an account?{' '}
-            <a
-              href="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              Register
-            </a>
-          </span>
-        </div>
-
         {/* Footer */}
         <div className="text-center">
           <p className="text-xs text-gray-500">
-            © 2024 CodeCafe Lab. All rights reserved.
+            2024 CodeCafe Lab. All rights reserved.
           </p>
         </div>
       </div>

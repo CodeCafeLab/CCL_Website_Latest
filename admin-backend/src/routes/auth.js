@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+// Removed authMiddleware import - no longer needed
 const authController = require("../controllers/authController");
 
-router.get("/profile", authMiddleware, authController.getProfile);
+// Profile route without authentication middleware
+router.get("/profile", authController.getProfile);
 
 module.exports = router;

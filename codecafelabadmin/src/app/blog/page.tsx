@@ -5,9 +5,9 @@ import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
 import BlogCard from "@/components/BlogCard";
 import { FaPlus, FaSearch, FaFilter } from "react-icons/fa";
-import axios from "axios";
 import { BlogPost } from "@/lib/constent";
 import { Category } from "./../../lib/constent";
+import apiClient from "@/lib/axios";
 
 const BlogManagementPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +19,7 @@ const BlogManagementPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    axios
+    apiClient
       .get("/blogs")
       .then((res) => setBlogs(res.data))
       .catch(() => setBlogs([]));
@@ -28,7 +28,7 @@ const BlogManagementPage: React.FC = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const res = await axios.get("/categories");
+        const res = await apiClient.get("/categories");
         setCategories(res.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -43,7 +43,7 @@ const BlogManagementPage: React.FC = () => {
     if (selectedCategory !== "all") {
       url += `?category=${selectedCategory}`;
     }
-    axios
+    apiClient
       .get(url)
       .then((res) => setBlogs(res.data))
       .catch(() => setBlogs([]));
@@ -127,7 +127,11 @@ const BlogManagementPage: React.FC = () => {
               {/* Add this for status filter */}
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as "all" | "published" | "draft")}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "published" | "draft"
+                  )
+                }
                 className="px-4 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="all">All Statuses</option>

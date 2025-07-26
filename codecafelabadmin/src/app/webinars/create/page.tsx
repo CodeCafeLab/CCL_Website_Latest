@@ -314,6 +314,8 @@ export default function CreateWebinarPage() {
                     <Image
                       src={form.thumbnail_url}
                       alt="Preview"
+                      width={96}
+                      height={96}
                       className="mt-2 h-24 rounded border"
                     />
                   )}

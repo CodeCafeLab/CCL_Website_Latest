@@ -1,16 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const blogController = require("../controllers/blogController");
-const authMiddleware = require("../middleware/authMiddleware");
 
-// Public routes
+// All routes are now public (no authentication required)
 router.get("/", blogController.getAllBlogs);
 router.get("/:id", blogController.getBlogById);
 router.get("/slug/:slug", blogController.getBlogBySlug);
-
-// Protected routes (require authentication)
-router.post("/", authMiddleware, blogController.createBlog);
-router.put("/:id", authMiddleware, blogController.updateBlog);
-router.delete("/:id", authMiddleware, blogController.deleteBlog);
+router.post("/", blogController.createBlog);
+router.put("/:id", blogController.updateBlog);
+router.delete("/:id", blogController.deleteBlog);
 
 module.exports = router;

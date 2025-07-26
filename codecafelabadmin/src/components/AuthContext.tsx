@@ -7,7 +7,6 @@ type AuthContextType = {
   isAuthenticated: boolean;
   login: (email: string, password: string) => void;
   logout: () => void;
-  register: (name: string, email: string, password: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -49,22 +48,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     router.push("/login");
   };
 
-  const register = async (name: string, email: string, password: string) => {
-    try {
-      await apiClient.post("/auth/register", {
-        name,
-        email,
-        password,
-      });
-      await login(email, password);
-    } catch (err) {
-      alert("Registration failed");
-      console.error(err);
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, register }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

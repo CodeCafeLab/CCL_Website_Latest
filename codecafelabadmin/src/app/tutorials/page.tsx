@@ -190,6 +190,8 @@ const TutorialsPage: React.FC = () => {
                     <Image
                       src={tutorial.thumbnail_url}
                       alt={tutorial.title}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                   </div>

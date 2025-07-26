@@ -154,6 +154,8 @@ const ReportsPage: React.FC = () => {
                     <Image
                       src={report.cover_image}
                       alt={report.title}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                   </div>

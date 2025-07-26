@@ -37,7 +37,9 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:9002",
-  "https://adminb.codecafelab.in", // <-- Corrected!
+  "https://adminb.codecafelab.in", 
+  "https://admin.codecafelab.in",  
+  "https://codecafelab.in", 
 ];
 
 app.use(

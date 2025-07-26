@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const newsController = require('../controllers/newsController');
-const authMiddleware = require('../middleware/authMiddleware');
 
 // Public routes
-router.get('/published', newsController.getPublished);
 router.get('/featured', newsController.getFeatured);
-router.get('/slug/:slug', newsController.getBySlug);
+router.get('/category/:category', newsController.getByCategory);
+router.get('/search', newsController.search);
 
-// Protected routes (require authentication)
-router.get('/', authMiddleware, newsController.getAll);
-router.get('/:id', authMiddleware, newsController.getById);
-router.post('/', authMiddleware, newsController.create);
-router.put('/:id', authMiddleware, newsController.update);
-router.delete('/:id', authMiddleware, newsController.delete);
+// Routes without authentication middleware
+router.get('/', newsController.getAll);
+router.get('/:id', newsController.getById);
+router.post('/', newsController.create);
+router.put('/:id', newsController.update);
+router.delete('/:id', newsController.delete);
 
-module.exports = router; 
+module.exports = router;

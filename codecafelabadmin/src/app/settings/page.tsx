@@ -8,9 +8,9 @@ import Image from "next/image";
 
 const SettingsPage: React.FC = () => {
   const [profileData, setProfileData] = useState({
-    name: "",
-    email: "",
-    bio: "",
+    name: "Admin",
+    email: "antima142005@gmail.com",
+    bio: "System Administrator",
     avatar: "",
   });
 
@@ -23,13 +23,20 @@ const SettingsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log("Frontend token:", token);
+    // Fetch admin profile data
     apiClient
       .get("/auth/profile")
-      .then((res) => setProfileData(res.data))
+      .then((res) => {
+        setProfileData({
+          name: res.data.user?.name || "Admin",
+          email: res.data.user?.email || "antima142005@gmail.com",
+          bio: "System Administrator",
+          avatar: "",
+        });
+      })
       .catch((err) => {
         console.error("Profile fetch error:", err);
+        // Keep default admin data if fetch fails
       });
   }, []);
 
@@ -61,10 +68,10 @@ const SettingsPage: React.FC = () => {
 
   const handleSaveProfile = async () => {
     setIsLoading(true);
-    // Simulate API call
+    // Note: Profile updates are disabled for fixed admin system
     setTimeout(() => {
       setIsLoading(false);
-      alert("Profile updated successfully!");
+      alert("Profile information is read-only for the admin account.");
     }, 1000);
   };
 
@@ -75,7 +82,7 @@ const SettingsPage: React.FC = () => {
     }
 
     setIsLoading(true);
-    // Simulate API call
+    // Note: Password changes are disabled for fixed admin system
     setTimeout(() => {
       setIsLoading(false);
       setPasswordData({
@@ -83,19 +90,19 @@ const SettingsPage: React.FC = () => {
         newPassword: "",
         confirmPassword: "",
       });
-      alert("Password changed successfully!");
+      alert("Password changes are disabled for the fixed admin account.");
     }, 1000);
   };
 
   return (
-    <AdminLayout adminName="John Doe">
+    <AdminLayout adminName={profileData.name}>
       <div className="p-6 md:p-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
             <p className="text-gray-600">
-              Manage your account settings and preferences
+              View your account settings and preferences
             </p>
           </div>
 

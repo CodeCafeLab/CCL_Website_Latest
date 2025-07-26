@@ -37,7 +37,10 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ adminName = "Admin" }) => {
   const pathname = usePathname();
   const { logout } = useAuth();
-  const [adminNameState, setAdminNameState] = useState(adminName);
+  const [adminData, setAdminData] = useState({
+    name: adminName,
+    email: "antima142005@gmail.com"
+  });
   const activeItemRef = useRef<HTMLLIElement>(null);
   const navRef = useRef<HTMLElement>(null);
 
@@ -100,11 +103,18 @@ const Sidebar: React.FC<SidebarProps> = ({ adminName = "Admin" }) => {
   }, [pathname]);
 
   useEffect(() => {
+    // Fetch admin profile data
     apiClient
       .get("/auth/profile")
-      .then((res) => setAdminNameState(res.data.name))
+      .then((res) => {
+        setAdminData({
+          name: res.data.user?.name || "Admin",
+          email: res.data.user?.email || "antima142005@gmail.com"
+        });
+      })
       .catch((err) => {
         console.error("Sidebar profile fetch error:", err);
+        // Keep default admin data if fetch fails
       });
   }, []);
 
@@ -168,9 +178,10 @@ const Sidebar: React.FC<SidebarProps> = ({ adminName = "Admin" }) => {
             <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-lg flex items-center justify-center">
               <FaUser className="text-slate-300 text-sm" />
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-slate-400">Welcome back,</p>
-              <p className="font-medium text-white text-sm">{adminNameState}</p>
+              <p className="font-medium text-white text-sm truncate">{adminData.name}</p>
+              <p className="text-xs text-slate-400 truncate">{adminData.email}</p>
             </div>
           </div>
         </div>

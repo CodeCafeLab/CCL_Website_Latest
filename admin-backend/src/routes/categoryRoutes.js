@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../controllers/categoryController');
-const authMiddleware = require('../middleware/authMiddleware');
+// Removed authMiddleware import - no longer needed
 
+// Routes without authentication middleware
 router.get('/', categoryController.getAllCategories);
-router.post('/', authMiddleware, categoryController.createCategory);
+router.post('/', categoryController.createCategory);
 router.get('/:id', categoryController.getCategoryById);
-router.put('/:id', authMiddleware, categoryController.updateCategory);
-router.delete('/:id', authMiddleware, categoryController.deleteCategory);
+router.put('/:id', categoryController.updateCategory);
+router.delete('/:id', categoryController.deleteCategory);
 
 module.exports = router;

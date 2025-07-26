@@ -73,6 +73,33 @@ exports.getBySlug = async (req, res) => {
   }
 };
 
+// Get news by category
+exports.getByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const news = await newsModel.getByCategory(category);
+    res.json(news);
+  } catch (error) {
+    console.error('Error fetching news by category:', error);
+    res.status(500).json({ error: 'Failed to fetch news by category' });
+  }
+};
+
+// Search news
+exports.search = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) {
+      return res.status(400).json({ error: 'Search query is required' });
+    }
+    const news = await newsModel.search(q);
+    res.json(news);
+  } catch (error) {
+    console.error('Error searching news:', error);
+    res.status(500).json({ error: 'Failed to search news' });
+  }
+};
+
 // Create new news
 exports.create = async (req, res) => {
   try {

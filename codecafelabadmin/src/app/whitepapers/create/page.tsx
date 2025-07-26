@@ -159,7 +159,13 @@ export default function CreateWhitepaperPage() {
                     }
                   }} className="mt-2" />
                   {form.cover_image && (
-                    <Image src={form.cover_image} alt="Preview" className="mt-2 h-24 rounded border" />
+                    <Image 
+                      src={form.cover_image} 
+                      alt="Preview" 
+                      width={96}
+                      height={96}
+                      className="mt-2 h-24 rounded border" 
+                    />
                   )}
                 </div>
               </div>

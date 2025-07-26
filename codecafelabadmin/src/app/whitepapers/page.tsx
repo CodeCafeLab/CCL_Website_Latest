@@ -134,6 +134,8 @@ const WhitepapersPage: React.FC = () => {
                     <Image
                       src={whitepaper.cover_image}
                       alt={whitepaper.title}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                   </div>

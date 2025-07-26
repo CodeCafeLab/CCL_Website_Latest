@@ -134,6 +134,8 @@ const NewsPage: React.FC = () => {
                     <Image
                       src={item.image_url}
                       alt={item.title}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                   </div>

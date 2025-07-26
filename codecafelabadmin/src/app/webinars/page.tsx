@@ -166,6 +166,8 @@ const WebinarsPage: React.FC = () => {
                     <Image
                       src={webinar.thumbnail_url}
                       alt={webinar.title}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                   </div>
