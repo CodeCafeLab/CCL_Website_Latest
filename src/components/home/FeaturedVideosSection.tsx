@@ -135,7 +135,7 @@ export default function FeaturedVideosSection() {
                         videoSrc={video.video_url}
                         posterSrc={fallbackPoster}
                         title={video.title}
-                        aspectRatio="16/9"
+                        aspectRatio="9/16"
                         autoPlay
                         loop
                         muted
