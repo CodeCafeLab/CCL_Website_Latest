@@ -25,19 +25,16 @@ export default function BlogClient() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [allCategories, setAllCategories] = useState<categories[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>(initialCategory);
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     setLoading(true);
-    // Fetch both categories and posts
     Promise.all([apiClient.get("/categories"), apiClient.get("/blogs")])
       .then(([categoriesRes, blogsRes]) => {
         setAllCategories(categoriesRes.data);
         const blogs = blogsRes.data.map((blog: any) => ({
           ...blog,
-          // The API returns categories as an array of strings, so we ensure it's always an array.
           categories: Array.isArray(blog.categories)
             ? blog.categories
             : blog.category
@@ -48,7 +45,6 @@ export default function BlogClient() {
       })
       .catch((err) => {
         console.error("Failed to fetch blog data:", err);
-        // Handle error state if needed
       })
       .finally(() => {
         setLoading(false);
@@ -58,25 +54,19 @@ export default function BlogClient() {
   const filteredPosts = useMemo(() => {
     let newFilteredPosts = posts;
 
-    // Filter by category
     if (selectedCategory !== "all") {
-      const categoryObject = allCategories.find(
-        (c) => c.id === selectedCategory
-      );
+      const categoryObject = allCategories.find((c) => c.id === selectedCategory);
       if (categoryObject) {
-        newFilteredPosts = newFilteredPosts.filter((post) => {
-          // The post.categories from the API is an array of strings (category names/slugs)
-          // We check if this array includes the name of the selected category.
-          return post.categories?.some(
+        newFilteredPosts = newFilteredPosts.filter((post) =>
+          post.categories?.some(
             (catName) =>
               typeof catName === "string" &&
               catName.toLowerCase() === categoryObject.name.toLowerCase()
-          );
-        });
+          )
+        );
       }
     }
 
-    // Filter by search term
     if (searchTerm) {
       newFilteredPosts = newFilteredPosts.filter(
         (post) =>
@@ -84,6 +74,7 @@ export default function BlogClient() {
           post.summary.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+
     return newFilteredPosts;
   }, [selectedCategory, searchTerm, posts, allCategories]);
 
@@ -96,6 +87,7 @@ export default function BlogClient() {
           software development, UI/UX, and more from our team of experts.
         </p>
       </section>
+
       <section>
         <div className="mb-8 max-w-md mx-auto">
           <div className="relative">
@@ -115,6 +107,7 @@ export default function BlogClient() {
           onSelectCategory={setSelectedCategory}
         />
       </section>
+
       <section>
         {loading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -130,8 +123,7 @@ export default function BlogClient() {
           </div>
         ) : (
           <p className="text-center text-muted-foreground text-lg py-12">
-            No blog posts found matching your criteria. Try a different search
-            or category!
+            No blog posts found matching your criteria. Try a different search or category!
           </p>
         )}
       </section>

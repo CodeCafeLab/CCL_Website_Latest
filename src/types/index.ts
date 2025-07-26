@@ -87,7 +87,7 @@ export interface BlogPost {
   title: string;
   author: string;
   status: "published" | "draft";
-  categories: categories[];
+  categories: string[];
   tags: string[];
   read_time: string;
   createdAt: string;
