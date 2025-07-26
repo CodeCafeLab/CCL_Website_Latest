@@ -21,18 +21,18 @@ export const apiClient = axios.create({
   timeout: 10000, // 10 second timeout
 });
 
-apiClient.interceptors.request.use(
-  (config) => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// apiClient.interceptors.request.use(
+//   (config) => {
+//     if (typeof window !== "undefined") {
+//       const token = localStorage.getItem("authToken");
+//       if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//       }
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 apiClient.interceptors.response.use(
   (response) => response,
@@ -53,15 +53,15 @@ apiClient.interceptors.response.use(
       } : 'No response received'
     });
 
-    // Handle specific error cases
-    if (error.code === 'ERR_NETWORK') {
-      console.error('Network Error: Check if backend server is running on', apiBaseUrl);
-    }
+    // // Handle specific error cases
+    // if (error.code === 'ERR_NETWORK') {
+    //   console.error('Network Error: Check if backend server is running on', apiBaseUrl);
+    // }
     
-    if (typeof window !== "undefined" && error.response && error.response.status === 401) {
-      localStorage.removeItem("authToken");
-      window.location.href = "/login";
-    }
+    // if (typeof window !== "undefined" && error.response && error.response.status === 401) {
+    //   localStorage.removeItem("authToken");
+    //   window.location.href = "/login";
+    // }
     
     return Promise.reject(error);
   }

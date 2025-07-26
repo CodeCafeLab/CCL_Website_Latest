@@ -89,13 +89,9 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import type { ServiceMenuItem } from "@/types";
 import React from "react";
-import axios from "axios";
-import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
-  // All hooks at the top!
-  const { user, login, logout, loading } = useAuth();
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -696,44 +692,6 @@ export default function Header() {
           </Button>
         </div>
 
-        <div className="flex items-center gap-4 ml-4">
-          {loading ? null : user ? (
-            // Avatar with dropdown for user
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div
-                  className="w-10 h-10 rounded-2xl border border-primary bg-primary text-primary-foreground flex items-center justify-center font-bold cursor-pointer select-none transition-colors hover:bg-primary/90"
-                  style={{ minWidth: 40, minHeight: 40 }} // Ensures square
-                  title={user.name || user.email}
-                >
-                  {(user.name?.[0] || user.email?.[0] || "U").toUpperCase()}
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 p-2">
-                <div className="px-3 py-2 border-b border-border mb-2">
-                  <div className="font-semibold text-base">
-                    {user.name || "No Name"}
-                  </div>
-                  <div className="text-xs text-muted-foreground break-all">
-                    {user.email}
-                  </div>
-                </div>
-                <DropdownMenuItem
-                  onClick={() => {
-                    logout();
-                    router.push("/login"); // Redirect to login after logout
-                  }}
-                  className="text-red-600 font-semibold cursor-pointer"
-                >
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button onClick={() => setIsSheetOpen(true)}>Login</Button>
-          )}
-        </div>
-
         <div className="flex items-center gap-4 md:hidden">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
@@ -819,10 +777,7 @@ export default function Header() {
                                     </AccordionTrigger>
                                     <AccordionContent className="pt-1 pb-0 pl-3 space-y-0.5">
                                       {services.map((service) => (
-                                        <div
-                                          key={service.id}
-                                          className="py-1"
-                                        >
+                                        <div key={service.id} className="py-1">
                                           <Link
                                             href={`/services/${service.id}`}
                                             onClick={closeSheet}

@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -31,7 +30,6 @@ import BlogPostCard from "@/components/blog/BlogPostCard";
 import QuoteFormSheet from "@/components/pricing/QuoteFormSheet";
 import { categories, BlogPost, Product } from "@/types";
 import { apiClient, getProducts } from "@/lib/api";
-import ProtectedRoute from "@/components/ProtectedRoute/page";
 import * as LucideIcons from "lucide-react";
 
 type ClientReview = {
@@ -56,7 +54,8 @@ export default function HomePage() {
   const [productsLoading, setProductsLoading] = useState(true);
 
   useEffect(() => {
-    apiClient.get("/categories")
+    apiClient
+      .get("/categories")
       .then((res) => {
         setCategories(res.data);
       })
@@ -114,7 +113,8 @@ export default function HomePage() {
 
   useEffect(() => {
     setReviewsLoading(true);
-    apiClient.get("/client-reviews")
+    apiClient
+      .get("/client-reviews")
       .then((res) => {
         // Filter only published reviews if needed
         setClientReviews(res.data.filter((r: any) => r.published));
@@ -123,7 +123,7 @@ export default function HomePage() {
         // Handle error
       })
       .finally(() => {
-        setReviewsLoading(false)
+        setReviewsLoading(false);
       });
   }, []);
 
@@ -167,7 +167,7 @@ export default function HomePage() {
   ];
 
   return (
-    <ProtectedRoute>
+    <>
       <div className="space-y-16 md:space-y-24">
         {/* Hero Section */}
         <section className="relative text-center py-16 md:py-24 rounded-xl overflow-hidden shadow-lg">
@@ -221,10 +221,13 @@ export default function HomePage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredServices.map((service) => {
-              const MaybeIcon = LucideIcons[service.icon as keyof typeof LucideIcons];
+              const MaybeIcon =
+                LucideIcons[service.icon as keyof typeof LucideIcons];
               const Icon =
                 typeof MaybeIcon === "function" ||
-                (typeof MaybeIcon === "object" && MaybeIcon !== null && "$$typeof" in MaybeIcon)
+                (typeof MaybeIcon === "object" &&
+                  MaybeIcon !== null &&
+                  "$$typeof" in MaybeIcon)
                   ? (MaybeIcon as React.ElementType)
                   : LucideIcons["Globe"];
               return (
@@ -235,7 +238,9 @@ export default function HomePage() {
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
                       {Icon && <Icon className="h-10 w-10 text-primary" />}
-                      <CardTitle className="text-2xl">{service.title}</CardTitle>
+                      <CardTitle className="text-2xl">
+                        {service.title}
+                      </CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent className="flex-grow">
@@ -610,6 +615,6 @@ export default function HomePage() {
         isOpen={isQuoteSheetOpen}
         onOpenChange={setIsQuoteSheetOpen}
       />
-    </ProtectedRoute>
+    </>
   );
 }

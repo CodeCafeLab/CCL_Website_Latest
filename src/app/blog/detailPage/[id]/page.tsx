@@ -89,6 +89,8 @@ export default function BlogDetailPage() {
               className="p-20 transition-transform duration-500 group-hover:scale-105"
               priority
               style={{ backgroundColor: "hsl(var(--primary))" }}
+              width={400}
+              height={192}
             />
           </div>
         )}
