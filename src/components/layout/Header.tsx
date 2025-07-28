@@ -461,7 +461,7 @@ export default function Header() {
                   </DropdownMenu>
                 );
               }
-              if (link.label === "Products") {
+              if (link.label === "Projects") {
                 const isProductsActive =
                   pathname.startsWith(link.href) ||
                   pathname === "/products" ||
@@ -741,10 +741,10 @@ export default function Header() {
                         >
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                              "flex items-center justify-between w-full px-3 py-2.5 rounded-md text-base font-medium transition-colors no-underline hover:no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                               isServicesActive
                                 ? "text-primary font-semibold"
-                                : "text-foreground hover:text-white"
+                                : "text-foreground hover:text-primary"
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -753,51 +753,36 @@ export default function Header() {
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="pt-1 pb-0 pl-2 space-y-1">
-                            <Accordion type="multiple" className="w-full">
-                              {Object.entries(servicesBycategories).map(
-                                ([categories, services]) => (
-                                  <AccordionItem
-                                    value={categories}
-                                    key={categories}
-                                    className="border-b-0"
-                                  >
-                                    <AccordionTrigger
-                                      className={cn(
-                                        "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors no-underline [&[data-state=open]]:text-primary focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                                        "text-foreground/80 hover:text-white"
+                            {Object.entries(servicesBycategories).map(
+                              ([categories, services]) => (
+                                <div key={categories}>
+                                  <h4 className="px-3 py-2 text-sm font-semibold text-muted-foreground flex items-center gap-2">
+                                     {React.createElement(
+                                        categoriesIcons[categories] || Layers,
+                                        { className: "h-4 w-4" }
                                       )}
-                                    >
-                                      <div className="flex items-center gap-2">
-                                        {React.createElement(
-                                          categoriesIcons[categories] || Layers,
-                                          { className: "h-4 w-4" }
+                                      {categories}
+                                  </h4>
+                                  <div className="pl-4 border-l ml-4 border-border/70">
+                                  {services.map((service) => (
+                                      <Link
+                                        href={`/services/${service.id}`}
+                                        key={service.id}
+                                        onClick={closeSheet}
+                                        className={cn(
+                                          "block w-full text-left text-sm rounded-md px-3 py-2 transition-colors",
+                                          pathname === `/services/${service.id}`
+                                            ? "text-primary font-semibold"
+                                            : "text-foreground/80 hover:text-primary"
                                         )}
-                                        {categories}
-                                      </div>
-                                    </AccordionTrigger>
-                                    <AccordionContent className="pt-1 pb-0 pl-3 space-y-0.5">
-                                      {services.map((service) => (
-                                        <div key={service.id} className="py-1">
-                                          <Link
-                                            href={`/services/${service.id}`}
-                                            onClick={closeSheet}
-                                            className={cn(
-                                              "block w-full text-left text-sm rounded-md transition-colors group focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                                              pathname ===
-                                                `/services/${service.id}`
-                                                ? "text-primary font-semibold"
-                                                : "text-foreground/80 hover:text-white"
-                                            )}
-                                          >
-                                            {service.title}
-                                          </Link>
-                                        </div>
-                                      ))}
-                                    </AccordionContent>
-                                  </AccordionItem>
-                                )
-                              )}
-                            </Accordion>
+                                      >
+                                        {service.title}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              )
+                            )}
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>
@@ -818,10 +803,10 @@ export default function Header() {
                         >
                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                              "flex items-center justify-between w-full px-3 py-2.5 rounded-md text-base font-medium transition-colors no-underline hover:no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                               companyActive
                                 ? "text-primary font-semibold"
-                                : "text-foreground hover:text-white"
+                                : "text-foreground hover:text-primary"
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -836,26 +821,14 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3",
+                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
                                   (pathname === subLink.href ||
-                                    pathname.startsWith(subLink.href + "/")) &&
-                                    "font-semibold",
-                                  "hover:bg-muted/30 focus:bg-muted/30"
+                                    pathname.startsWith(subLink.href + "/"))
+                                    ? "text-primary font-semibold"
+                                    : "text-foreground/80 hover:text-primary"
                                 )}
                               >
-                                {subLink.icon && (
-                                  <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
-                                )}
-                                <div>
-                                  <span className="font-medium text-primary">
-                                    {subLink.label}
-                                  </span>
-                                  {subLink.description && (
-                                    <p className="text-xs text-muted-foreground/80 mt-0.5 whitespace-normal">
-                                      {subLink.description}
-                                    </p>
-                                  )}
-                                </div>
+                                {subLink.label}
                               </Link>
                             ))}
                           </AccordionContent>
@@ -863,10 +836,10 @@ export default function Header() {
                       </Accordion>
                     );
                   }
-                  if (link.label === "Products") {
+                  if (link.label === "Projects") {
                     const isProductsActive =
                       pathname.startsWith(link.href) ||
-                      pathname === "/products";
+                      pathname === "/projects";
                     return (
                       <Accordion
                         type="single"
@@ -878,12 +851,12 @@ export default function Header() {
                           value="products-main"
                           className="border-b-0"
                         >
-                          <AccordionTrigger
+                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                              "flex items-center justify-between w-full px-3 py-2.5 rounded-md text-base font-medium transition-colors no-underline hover:no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                               isProductsActive
                                 ? "text-primary font-semibold"
-                                : "text-foreground hover:text-white"
+                                : "text-foreground hover:text-primary"
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -893,64 +866,20 @@ export default function Header() {
                           </AccordionTrigger>
                           <AccordionContent className="pt-1 pb-0 pl-4 space-y-1 max-h-[50vh] overflow-y-auto">
                             {PRODUCT_SUB_LINKS.map((subLink) => (
-                              <Link
+                               <Link
                                 key={subLink.label}
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3",
-                                  pathname === subLink.href && "font-semibold",
-                                  "hover:bg-muted/30 focus:bg-muted/30"
+                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+                                  pathname === subLink.href
+                                    ? "text-primary font-semibold"
+                                    : "text-foreground/80 hover:text-primary"
                                 )}
                               >
-                                {subLink.icon && (
-                                  <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
-                                )}
-                                <div className="flex-1">
-                                  <span className="font-medium text-primary">
-                                    {subLink.label}
-                                  </span>
-                                  {subLink.subtitle && (
-                                    <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
-                                      {subLink.subtitle}
-                                    </p>
-                                  )}
-                                  {subLink.description && (
-                                    <p className="text-xs text-muted-foreground/80 mt-0.5 whitespace-normal">
-                                      {subLink.description}
-                                    </p>
-                                  )}
-                                </div>
+                                {subLink.label}
                               </Link>
                             ))}
-                            <div className="mt-4 space-y-3">
-                              <Link
-                                href="/contact?demo=true"
-                                onClick={closeSheet}
-                                className="block p-3 rounded-lg shadow-md bg-gradient-to-br from-primary to-accent text-white hover:shadow-lg transition-shadow duration-300 group"
-                              >
-                                <h4 className="text-sm font-semibold mb-0.5 flex items-center">
-                                  <CalendarPlus className="mr-2 h-4 w-4" /> Book
-                                  a Demo
-                                </h4>
-                                <p className="text-xs opacity-90">
-                                  See our products in action.
-                                </p>
-                              </Link>
-                              <Link
-                                href="/contact?partner=true"
-                                onClick={closeSheet}
-                                className="block p-3 rounded-lg shadow-md bg-gradient-to-br from-accent to-primary text-white hover:shadow-lg transition-shadow duration-300 group"
-                              >
-                                <h4 className="text-sm font-semibold mb-0.5 flex items-center">
-                                  <Handshake className="mr-2 h-4 w-4" /> Partner
-                                  With Us
-                                </h4>
-                                <p className="text-xs opacity-90">
-                                  Explore collaboration opportunities.
-                                </p>
-                              </Link>
-                            </div>
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>
@@ -969,12 +898,12 @@ export default function Header() {
                           value="resources-main"
                           className="border-b-0"
                         >
-                          <AccordionTrigger
+                           <AccordionTrigger
                             className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                              "flex items-center justify-between w-full px-3 py-2.5 rounded-md text-base font-medium transition-colors no-underline hover:no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                               resourcesActive
                                 ? "text-primary font-semibold"
-                                : "text-foreground hover:text-white"
+                                : "text-foreground hover:text-primary"
                             )}
                           >
                             <div className="flex items-center gap-3">
@@ -989,92 +918,19 @@ export default function Header() {
                                 href={subLink.href}
                                 onClick={closeSheet}
                                 className={cn(
-                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3",
+                                  "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
                                   (pathname === subLink.href ||
                                     (subLink.href !== "#" &&
                                       pathname.startsWith(
                                         subLink.href + "/"
-                                      ))) &&
-                                    "font-semibold",
-                                  "hover:bg-muted/30 focus:bg-muted/30"
+                                      )))
+                                    ? "text-primary font-semibold"
+                                    : "text-foreground/80 hover:text-primary"
                                 )}
                               >
-                                {subLink.icon && (
-                                  <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
-                                )}
-                                <div>
-                                  <span className="font-medium text-primary">
-                                    {subLink.label}
-                                  </span>
-                                  {subLink.description && (
-                                    <p className="text-xs text-muted-foreground/80 mt-1 whitespace-normal">
-                                      {subLink.description}
-                                    </p>
-                                  )}
-                                </div>
+                                {subLink.label}
                               </Link>
                             ))}
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    );
-                  }
-                  if (link.label === "Projects") {
-                    const isProjectsActive =
-                      pathname.startsWith(link.href) ||
-                      pathname === "/projects";
-                    return (
-                      <Accordion
-                        type="single"
-                        collapsible
-                        key={link.href}
-                        className="w-full"
-                      >
-                        <AccordionItem value="projects" className="border-none">
-                          <AccordionTrigger
-                            className={cn(
-                              "py-2 text-sm font-medium transition-colors hover:text-primary focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                              isProjectsActive
-                                ? "text-primary font-semibold"
-                                : "text-foreground/60"
-                            )}
-                          >
-                            {link.label}
-                          </AccordionTrigger>
-                          <AccordionContent className="pt-2 pb-0">
-                            <div className="grid grid-cols-1 gap-2">
-                              {PRODUCT_SUB_LINKS.map((subLink) => (
-                                <Link
-                                  key={subLink.label}
-                                  href={subLink.href}
-                                  onClick={closeSheet}
-                                  className={cn(
-                                    "flex items-start gap-3 px-3 py-2 text-sm transition-colors rounded-md hover:bg-muted/30",
-                                    pathname === subLink.href &&
-                                      "font-semibold bg-muted/30"
-                                  )}
-                                >
-                                  {subLink.icon && (
-                                    <subLink.icon className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
-                                  )}
-                                  <div className="flex-1">
-                                    <span className="font-medium text-primary">
-                                      {subLink.label}
-                                    </span>
-                                    {subLink.subtitle && (
-                                      <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
-                                        {subLink.subtitle}
-                                      </p>
-                                    )}
-                                    {subLink.description && (
-                                      <p className="text-xs text-muted-foreground/80">
-                                        {subLink.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Link>
-                              ))}
-                            </div>
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>
@@ -1086,10 +942,10 @@ export default function Header() {
                       href={link.href}
                       onClick={closeSheet}
                       className={cn(
-                        "block px-3 py-2 rounded-md text-base font-medium transition-colors focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                        "block px-3 py-2.5 rounded-md text-base font-medium transition-colors focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
                         isActive
                           ? "text-primary font-semibold"
-                          : "text-foreground hover:text-white"
+                          : "text-foreground hover:text-primary"
                       )}
                     >
                       <div className="flex items-center gap-3">
