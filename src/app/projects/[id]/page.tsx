@@ -33,7 +33,7 @@ import {
 } from "lucide-react";
 import { getProduct } from "@/lib/api";
 import type { Product } from "@/types";
-import QuoteFormSheet from "@/components/pricing/QuoteFormSheet"; // 1. Import the sheet
+import QuoteFormSheet from "@/components/pricing/QuoteFormSheet";
 
 export default function ProjectDetailPage() {
   const { id } = useParams();
@@ -41,7 +41,7 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false); // 2. Add state
+  const [isQuoteSheetOpen, setIsQuoteSheetOpen] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -61,15 +61,13 @@ export default function ProjectDetailPage() {
     fetchProject();
   }, [id]);
 
-  // Helper function to get a safe image URL
   const getSafeImageUrl = (imageUrl: string | undefined) => {
     if (!imageUrl || imageUrl.trim() === "" || imageUrl.includes("example.com")) {
-      return "/fallback.png"; // or your placeholder
+      return "/fallback.png";
     }
     return imageUrl;
   };
 
-  // Helper function to format price
   const formatPrice = (price: string) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -78,7 +76,6 @@ export default function ProjectDetailPage() {
     }).format(parseFloat(price));
   };
 
-  // Helper function to format date
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -117,7 +114,6 @@ export default function ProjectDetailPage() {
 
   return (
     <div className="space-y-8">
-      {/* Back Button */}
       <div>
         <Button asChild variant="outline" className="mb-6">
           <Link href="/projects">
@@ -127,71 +123,9 @@ export default function ProjectDetailPage() {
         </Button>
       </div>
 
-      {/* Project Header */}
       <section className="space-y-6">
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          <div className="space-y-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                {project.is_featured && (
-                  <Badge variant="default" className="bg-yellow-500 text-yellow-900">
-                    <Star className="h-3 w-3 mr-1" />
-                    Featured
-                  </Badge>
-                )}
-                <Badge variant={project.status === 'active' ? 'default' : 'secondary'}>
-                  {project.status}
-                </Badge>
-              </div>
-              <h1 className="text-4xl font-bold mb-4">{project.name}</h1>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                {project.short_description}
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-            
-            {/* Tags */}
-            {project.tags && project.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag, index) => (
-                  <Badge key={index} variant="outline" className="text-sm">
-                    <Tag className="h-3 w-3 mr-1" />
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            )}
-
-            {/* Price Information */}
-            <div className="flex items-center gap-4 pt-4">
-              <div className="text-2xl font-bold text-primary">
-                {formatPrice(project.price)}
-              </div>
-              {project.discount_price && parseFloat(project.discount_price) > 0 && (
-                <div className="text-lg text-muted-foreground line-through">
-                  {formatPrice(project.discount_price)}
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-wrap gap-4 pt-4">
-              {/* 3. Replace Link with a button to open the sheet */}
-              <Button onClick={() => setIsQuoteSheetOpen(true)}>
-                <ShoppingCart className="mr-2 h-4 w-4" />
-                Get Quote
-              </Button>
-              <Button asChild variant="outline">
-                <Link href="/contact">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Request Demo
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg md:order-last">
             <Image
               src={getSafeImageUrl(project.image_url)}
               alt={project.name}
@@ -204,16 +138,67 @@ export default function ProjectDetailPage() {
               }}
             />
           </div>
+          <div className="space-y-4 md:order-first">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                {project.is_featured && (
+                  <Badge variant="default" className="bg-yellow-500 text-yellow-900">
+                    <Star className="h-3 w-3 mr-1" />
+                    Featured
+                  </Badge>
+                )}
+                <Badge variant={project.status === 'active' ? 'default' : 'secondary'}>
+                  {project.status}
+                </Badge>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">{project.name}</h1>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                {project.short_description}
+              </p>
+            </div>
+            
+            {project.tags && project.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag, index) => (
+                  <Badge key={index} variant="outline" className="text-sm">
+                    <Tag className="h-3 w-3 mr-1" />
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
+
+            <div className="flex items-center gap-4 pt-4">
+              <div className="text-2xl font-bold text-primary">
+                {formatPrice(project.price)}
+              </div>
+              {project.discount_price && parseFloat(project.discount_price) > 0 && (
+                <div className="text-lg text-muted-foreground line-through">
+                  {formatPrice(project.discount_price)}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Button onClick={() => setIsQuoteSheetOpen(true)} className="w-full sm:w-auto">
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Get Quote
+              </Button>
+              <Button asChild variant="outline" className="w-full sm:w-auto">
+                <Link href="/contact">
+                  <Eye className="mr-2 h-4 w-4" />
+                  Request Demo
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
       <Separator />
 
-      {/* Project Details */}
       <section className="grid lg:grid-cols-3 gap-8">
-        {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Project Overview */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -228,7 +213,6 @@ export default function ProjectDetailPage() {
             </CardContent>
           </Card>
 
-          {/* Gallery */}
           {project.gallery && project.gallery.length > 0 && (
             <Card>
               <CardHeader>
@@ -254,7 +238,6 @@ export default function ProjectDetailPage() {
             </Card>
           )}
 
-          {/* Meta Information */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -305,9 +288,7 @@ export default function ProjectDetailPage() {
           </Card>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-6">
-          {/* Project Info */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Project Information</CardTitle>
@@ -342,7 +323,6 @@ export default function ProjectDetailPage() {
             </CardContent>
           </Card>
 
-          {/* Pricing Information */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
@@ -366,7 +346,6 @@ export default function ProjectDetailPage() {
             </CardContent>
           </Card>
 
-          {/* Quick Actions */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Quick Actions</CardTitle>
@@ -392,8 +371,6 @@ export default function ProjectDetailPage() {
           </Card>
         </div>
       </section>
-
-      {/* 4. Render the QuoteFormSheet */}
       <QuoteFormSheet
         isOpen={isQuoteSheetOpen}
         onOpenChange={setIsQuoteSheetOpen}
