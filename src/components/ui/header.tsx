@@ -462,128 +462,6 @@ export default function Header() {
                   </DropdownMenu>
                 );
               }
-              if (link.label === "Products") {
-                const isProductsActive =
-                  pathname.startsWith(link.href) ||
-                  pathname === "/products" ||
-                  productsMenuOpen;
-                return (
-                  <DropdownMenu
-                    key={link.href}
-                    open={productsMenuOpen}
-                    onOpenChange={onProductsOpenChange}
-                  >
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className={cn(
-                          "flex items-center gap-1 transition-colors px-3 py-2 text-sm font-medium focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                          isProductsActive
-                            ? "text-primary font-semibold"
-                            : "text-foreground/60 hover:text-white"
-                        )}
-                        onMouseEnter={() =>
-                          handleMenuInteraction("products", "enter")
-                        }
-                        onMouseLeave={() =>
-                          handleMenuInteraction("products", "leave")
-                        }
-                        aria-expanded={productsMenuOpen}
-                      >
-                        {link.label}
-                        <ChevronDown className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      className="w-screen max-w-none p-0"
-                      onMouseEnter={() =>
-                        handleMenuInteraction("products", "enter")
-                      }
-                      onMouseLeave={() =>
-                        handleMenuInteraction("products", "leave")
-                      }
-                      sideOffset={15}
-                    >
-                      <div className="bg-background shadow-xl rounded-lg border-border">
-                        <div className="container mx-auto py-6 px-6 grid lg:grid-cols-4 gap-x-8 gap-y-6 max-h-[80vh] overflow-y-auto">
-                          <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
-                            {PRODUCT_SUB_LINKS.map((subLink) => (
-                              <div
-                                key={subLink.label}
-                                className="p-0 rounded-md hover:bg-muted/30 focus-within:bg-muted/30"
-                              >
-                                <Link
-                                  href={subLink.href}
-                                  onClick={() => setProductsMenuOpen(false)}
-                                  className={cn(
-                                    "block w-full h-full text-left px-3 py-2.5 text-sm transition-colors flex items-start gap-3 rounded-md",
-                                    pathname === subLink.href && "font-semibold"
-                                  )}
-                                >
-                                  {subLink.icon && (
-                                    <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
-                                  )}
-                                  <div className="flex-1">
-                                    <span className="font-medium text-primary">
-                                      {subLink.label}
-                                    </span>
-                                    {subLink.subtitle && (
-                                      <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
-                                        {subLink.subtitle}
-                                      </p>
-                                    )}
-                                    {subLink.description && (
-                                      <p className="text-xs text-muted-foreground/80 whitespace-normal">
-                                        {subLink.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Link>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="hidden lg:flex lg:col-span-1 flex-col gap-6 pt-1">
-                            <Link
-                              href="/contact?demo=true"
-                              className="block p-6 rounded-xl shadow-lg bg-gradient-to-br from-primary to-accent text-white hover:shadow-xl transition-shadow duration-300 group"
-                            >
-                              <h3 className="text-lg font-semibold mb-1 flex items-center">
-                                <CalendarPlus className="mr-2 h-5 w-5" /> Book a
-                                Demo
-                              </h3>
-                              <p className="text-sm opacity-90 mb-3">
-                                See our projects in action. Schedule a
-                                personalized demonstration.
-                              </p>
-                              <span className="inline-flex items-center text-sm font-medium group-hover:underline">
-                                Request Now{" "}
-                                <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                              </span>
-                            </Link>
-                            <Link
-                              href="/contact?partner=true"
-                              className="block p-6 rounded-xl shadow-lg bg-gradient-to-br from-accent to-primary text-white hover:shadow-xl transition-shadow duration-300 group"
-                            >
-                              <h3 className="text-lg font-semibold mb-1 flex items-center">
-                                <Handshake className="mr-2 h-5 w-5" /> Partner
-                                With Us
-                              </h3>
-                              <p className="text-sm opacity-90 mb-3">
-                                Explore opportunities to collaborate and grow
-                                together.
-                              </p>
-                              <span className="inline-flex items-center text-sm font-medium group-hover:underline">
-                                Learn More{" "}
-                                <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                              </span>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                );
-              }
               if (link.label === "Resources") {
                 const resourcesActive =
                   isResourcesLinkActive(pathname) || resourcesMenuOpen;
@@ -830,7 +708,7 @@ export default function Header() {
                               {link.label}
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent className="pt-1 pb-0 pl-4 space-y-1 max-h-[50vh] overflow-y-auto">
+                          <AccordionContent className="pt-1 pb-0 pl-4 space-y-1">
                             {COMPANY_SUB_LINKS.map((subLink) => (
                               <Link
                                 key={subLink.label}
@@ -864,99 +742,6 @@ export default function Header() {
                       </Accordion>
                     );
                   }
-                  if (link.label === "Products") {
-                    const isProductsActive =
-                      pathname.startsWith(link.href) ||
-                      pathname === "/products";
-                    return (
-                      <Accordion
-                        type="single"
-                        collapsible
-                        key={link.href}
-                        className="w-full"
-                      >
-                        <AccordionItem
-                          value="products-main"
-                          className="border-b-0"
-                        >
-                          <AccordionTrigger
-                            className={cn(
-                              "flex items-center justify-between w-full px-3 py-2 rounded-md text-base font-medium transition-colors no-underline focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                              isProductsActive
-                                ? "text-primary font-semibold"
-                                : "text-foreground hover:text-primary"
-                            )}
-                          >
-                            <div className="flex items-center gap-3">
-                              {link.icon && <link.icon className="h-5 w-5" />}
-                              {link.label}
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="pt-1 pb-0 pl-4 space-y-1 max-h-[50vh] overflow-y-auto">
-                            {PRODUCT_SUB_LINKS.map((subLink) => (
-                              <Link
-                                key={subLink.label}
-                                href={subLink.href}
-                                onClick={closeSheet}
-                                className={cn(
-                                  "block w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors flex items-start gap-3",
-                                  pathname === subLink.href && "font-semibold",
-                                  "hover:bg-muted/30 focus:bg-muted/30"
-                                )}
-                              >
-                                {subLink.icon && (
-                                  <subLink.icon className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
-                                )}
-                                <div className="flex-1">
-                                  <span className="font-medium text-primary">
-                                    {subLink.label}
-                                  </span>
-                                  {subLink.subtitle && (
-                                    <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
-                                      {subLink.subtitle}
-                                    </p>
-                                  )}
-                                  {subLink.description && (
-                                    <p className="text-xs text-muted-foreground/80 mt-0.5 whitespace-normal">
-                                      {subLink.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </Link>
-                            ))}
-                            <div className="mt-4 space-y-3">
-                              <Link
-                                href="/contact?demo=true"
-                                onClick={closeSheet}
-                                className="block p-3 rounded-lg shadow-md bg-gradient-to-br from-primary to-accent text-white hover:shadow-lg transition-shadow duration-300 group"
-                              >
-                                <h4 className="text-sm font-semibold mb-0.5 flex items-center">
-                                  <CalendarPlus className="mr-2 h-4 w-4" /> Book
-                                  a Demo
-                                </h4>
-                                <p className="text-xs opacity-90">
-                                  See our products in action.
-                                </p>
-                              </Link>
-                              <Link
-                                href="/contact?partner=true"
-                                onClick={closeSheet}
-                                className="block p-3 rounded-lg shadow-md bg-gradient-to-br from-accent to-primary text-white hover:shadow-lg transition-shadow duration-300 group"
-                              >
-                                <h4 className="text-sm font-semibold mb-0.5 flex items-center">
-                                  <Handshake className="mr-2 h-4 w-4" /> Partner
-                                  With Us
-                                </h4>
-                                <p className="text-xs opacity-90">
-                                  Explore collaboration opportunities.
-                                </p>
-                              </Link>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    );
-                  }
                   if (link.label === "Resources") {
                     const resourcesActive = isResourcesLinkActive(pathname);
                     return (
@@ -983,7 +768,7 @@ export default function Header() {
                               {link.label}
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent className="pt-1 pb-0 pl-4 space-y-1 max-h-[50vh] overflow-y-auto">
+                          <AccordionContent className="pt-1 pb-0 pl-4 space-y-1">
                             {RESOURCES_SUB_LINKS.map((subLink) => (
                               <Link
                                 key={subLink.label}
@@ -1020,67 +805,6 @@ export default function Header() {
                       </Accordion>
                     );
                   }
-                  if (link.label === "Projects") {
-                    const isProjectsActive =
-                      pathname.startsWith(link.href) ||
-                      pathname === "/projects";
-                    return (
-                      <Accordion
-                        type="single"
-                        collapsible
-                        key={link.href}
-                        className="w-full"
-                      >
-                        <AccordionItem value="projects" className="border-none">
-                          <AccordionTrigger
-                            className={cn(
-                              "py-2 text-sm font-medium transition-colors hover:text-primary focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                              isProjectsActive
-                                ? "text-primary font-semibold"
-                                : "text-foreground/60"
-                            )}
-                          >
-                            {link.label}
-                          </AccordionTrigger>
-                          <AccordionContent className="pt-2 pb-0">
-                            <div className="grid grid-cols-1 gap-2">
-                              {PRODUCT_SUB_LINKS.map((subLink) => (
-                                <Link
-                                  key={subLink.label}
-                                  href={subLink.href}
-                                  onClick={closeSheet}
-                                  className={cn(
-                                    "flex items-start gap-3 px-3 py-2 text-sm transition-colors rounded-md hover:bg-muted/30",
-                                    pathname === subLink.href &&
-                                      "font-semibold bg-muted/30"
-                                  )}
-                                >
-                                  {subLink.icon && (
-                                    <subLink.icon className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
-                                  )}
-                                  <div className="flex-1">
-                                    <span className="font-medium text-primary">
-                                      {subLink.label}
-                                    </span>
-                                    {subLink.subtitle && (
-                                      <p className="text-xs text-muted-foreground/70 -mt-0.5 mb-0.5">
-                                        {subLink.subtitle}
-                                      </p>
-                                    )}
-                                    {subLink.description && (
-                                      <p className="text-xs text-muted-foreground/80">
-                                        {subLink.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Link>
-                              ))}
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    );
-                  }
                   return (
                     <Link
                       key={link.href}
@@ -1108,4 +832,5 @@ export default function Header() {
     </header>
   );
 }
+
 
