@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -27,6 +28,27 @@ import {
 } from "lucide-react";
 import { getProducts } from "@/lib/api";
 import type { Product } from "@/types";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const ProjectCardSkeleton = () => (
+    <div className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out border rounded-lg shadow-sm">
+        <div className="relative aspect-video overflow-hidden">
+            <Skeleton className="w-full h-full bg-muted" />
+        </div>
+        <CardHeader>
+            <Skeleton className="h-6 w-3/4 mb-2 bg-muted" />
+        </CardHeader>
+        <CardContent className="flex-grow">
+            <Skeleton className="h-4 w-full bg-muted" />
+            <Skeleton className="h-4 w-full mt-2 bg-muted" />
+            <Skeleton className="h-4 w-2/3 mt-2 bg-muted" />
+        </CardContent>
+        <CardFooter>
+            <Skeleton className="h-10 w-full bg-muted" />
+        </CardFooter>
+    </div>
+);
+
 
 export default function ProjectsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -65,7 +87,7 @@ export default function ProjectsPage() {
   // Helper function to get a safe image URL
   const getSafeImageUrl = (imageUrl: string | undefined) => {
     if (!imageUrl || imageUrl.trim() === "" || imageUrl.includes("example.com")) {
-      return "/fallback.png"; // or your placeholder
+      return "https://placehold.co/600x400.png"; // or your placeholder
     }
     return imageUrl;
   };
@@ -78,25 +100,6 @@ export default function ProjectsPage() {
       minimumFractionDigits: 0
     }).format(parseFloat(price));
   };
-
-  if (loading) {
-    return (
-      <div className="space-y-12">
-        <section className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Our Projects</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore our portfolio of innovative projects and solutions.
-          </p>
-        </section>
-        <div className="flex justify-center items-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading projects...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-12">
@@ -124,7 +127,11 @@ export default function ProjectsPage() {
 
       {/* Projects Grid */}
       <section>
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Array.from({ length: 6 }).map((_, index) => <ProjectCardSkeleton key={index} />)}
+            </div>
+        ) : filteredProducts.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
               <Card
@@ -146,7 +153,7 @@ export default function ProjectsPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div className="absolute top-4 left-4 flex gap-2">
-                      {product.is_featured && (
+                      {product.is_featured === 1 && (
                         <Badge variant="default" className="bg-yellow-500 text-yellow-900">
                           <Star className="h-3 w-3 mr-1" />
                           Featured
