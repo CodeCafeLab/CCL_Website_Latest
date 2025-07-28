@@ -84,18 +84,18 @@ export default function AIPage() {
   return (
     <div className="space-y-20">
       {/* Hero Section */}
-      <section className="relative text-center py-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl shadow-lg mb-12 overflow-hidden">
+      <section className="relative text-center py-16 md:py-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl shadow-lg mb-12 overflow-hidden">
         <div
           className="absolute inset-0 opacity-10 pointer-events-none"
           style={{
             background: "url('/undraw_design_ewba.svg') center/cover no-repeat",
           }}
         />
-        <h1 className="text-5xl font-extrabold mb-4 flex items-center justify-center gap-3 text-primary drop-shadow">
-          <BrainCircuit className="h-12 w-12 text-accent" />
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 flex items-center justify-center gap-3 text-primary drop-shadow">
+          <BrainCircuit className="h-10 w-10 md:h-12 md:w-12 text-accent" />
           AI at CodeCafe Lab
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 px-4">
           We are at the forefront of AI innovation, developing intelligent
           solutions that redefine possibilities. Explore our AI capabilities and
           discover how we can help you leverage the power of artificial

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from "react";
@@ -123,10 +124,10 @@ export default function AIProductDiscoveryClient() {
     <div className="space-y-8">
       <Card className="shadow-xl border-2 border-primary/20">
         <CardHeader>
-          <div className="flex items-center gap-4">
-            <Wand2 className="h-10 w-10 text-primary" />
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <Wand2 className="h-10 w-10 text-primary flex-shrink-0" />
             <div>
-              <CardTitle className="text-3xl">
+              <CardTitle className="text-2xl md:text-3xl">
                 Discover Our AI Solutions
               </CardTitle>
               <CardDescription>
@@ -137,21 +138,22 @@ export default function AIProductDiscoveryClient() {
           </div>
         </CardHeader>
         <Form {...form}>
-          <div className="w-full flex justify-center pb-8">
+          <div className="w-full flex justify-center pb-8 px-6 md:px-10">
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex gap-2 items-center w-full px-10"
+              className="flex flex-col sm:flex-row gap-2 items-stretch w-full"
             >
               <Input
-                placeholder="e.g., 'AI for healthcare automation', 'Latest in generative AI', 'Chatbot for customer support'..."
+                placeholder="e.g., 'AI for healthcare', 'generative AI'..."
                 {...form.register("query")}
                 className="flex-1"
               />
               <Button
                 type="submit"
                 disabled={isPending}
-                className="ml-2 px-4 bg-primary text-white rounded"
+                className="w-full sm:w-auto mt-2 sm:mt-0 sm:ml-2 px-4 bg-primary text-white rounded"
               >
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Discover Solutions
               </Button>
             </form>
