@@ -46,7 +46,7 @@ export default function AIFeatureDetailPage() {
               />
             </div>
             {/* Details section */}
-            <div className="flex-1 p-6 flex flex-col">
+            <div className="flex-1 p-6 sm:p-8 flex flex-col">
               <h1 className="text-2xl md:text-3xl font-bold mb-4">{feature.title}</h1>
               <div className="flex flex-wrap gap-3 items-center mb-4">
                 <Badge variant="secondary" className="text-base">
@@ -75,7 +75,7 @@ export default function AIFeatureDetailPage() {
                   href={feature.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full mt-auto px-4 py-2 bg-accent text-accent-foreground rounded hover:bg-green-600 text-center font-semibold transition block"
+                  className="w-full mt-auto px-4 py-2 bg-accent text-accent-foreground rounded hover:bg-accent/90 text-center font-semibold transition block"
                 >
                   View Demo
                 </a>
