@@ -28,9 +28,9 @@ export default function Footer() {
     { href: "https://twitter.com/CodecafeL8514", label: "X (Twitter)", icon: Twitter },
     { href: "https://www.facebook.com/p/CodeCafe-Lab-100084294096806/", label: "Meta (Facebook)", icon: Facebook },
     { href: "https://www.instagram.com/codecafelab4u/", label: "Instagram", icon: Instagram },
-    { href: "#", label: "WhatsApp", icon: MessageSquare },
-    { href: "#", label: "Telegram", icon: Send },
-    { href: "https://github.com/settings/profile", label: "GitHub", icon: Github },
+    { href: "https://wa.me/917852010838", label: "WhatsApp", icon: MessageSquare },
+    { href: "https://t.me/your-telegram-username", label: "Telegram", icon: Send },
+    { href: "https://github.com/CodeCafeLab", label: "GitHub", icon: Github },
   ]
 
   return (
