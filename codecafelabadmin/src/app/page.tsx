@@ -15,9 +15,6 @@ import {
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ClientReviews from "@/components/ClientReviews";
 
-
-
-
 const DashboardPage: React.FC = () => {
   const stats = [
     {
