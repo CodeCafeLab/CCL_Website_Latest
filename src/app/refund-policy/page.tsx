@@ -1,9 +1,10 @@
-export default function ReturnPolicyPage() {
+
+export default function RefundPolicyPage() {
   return (
     <div className="container mx-auto py-12 max-w-3xl px-4">
-      <h1 className="text-4xl font-bold mb-6">Return & Refund Policy</h1>
+      <h1 className="text-4xl font-bold mb-6">Refund Policy</h1>
       <p className="text-muted-foreground mb-4">
-        Learn about our return and refund policy for products and services purchased from CodeCafe Lab.
+        Learn about our refund policy for products and services purchased from CodeCafe Lab.
       </p>
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">1. Returns</h2>
@@ -28,7 +29,7 @@ export default function ReturnPolicyPage() {
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">4. Contact Us</h2>
         <p>
-          If you have any questions about our return and refund policy, please contact us at <a href="mailto:hello@codecafelab.in" className="text-primary underline">hello@codecafelab.in</a>.
+          If you have any questions about our refund policy, please contact us at <a href="mailto:hello@codecafelab.in" className="text-primary underline">hello@codecafelab.in</a>.
         </p>
       </section>
       <p className="text-xs text-muted-foreground mt-8">
