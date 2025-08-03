@@ -48,6 +48,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Image from "next/image";
+import { apiClient, createPartnerRequest } from "@/lib/api";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_MIME_TYPES = [
@@ -69,10 +70,6 @@ const partnershipFormSchema = z.object({
     .refine(
       (files) => files?.[0]?.size <= MAX_FILE_SIZE,
       `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_MIME_TYPES.includes(files?.[0]?.type),
-      ".pdf and .doc/docx files are accepted."
     )
     .optional(),
 });
@@ -154,15 +151,7 @@ export default function PartnersPage() {
     }
 
     try {
-      const response = await fetch("/api/partner-request", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to submit request.");
-      }
+      const response = await createPartnerRequest(formData);
 
       toast({
         title: "Partnership Request Submitted!",
@@ -174,7 +163,7 @@ export default function PartnersPage() {
       toast({
         variant: "destructive",
         title: "Submission Failed",
-        description: error.message || "Something went wrong. Please try again.",
+        description: error.response?.data?.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsSubmitting(false);

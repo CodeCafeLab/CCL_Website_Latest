@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 // Force localhost for development to avoid CORS issues
@@ -69,6 +70,12 @@ apiClient.interceptors.response.use(
 
 export const getProducts = () => apiClient.get("/products");
 export const getProduct = (id: string) => apiClient.get(`/products/${id}`);
+export const createPartnerRequest = (formData: FormData) => apiClient.post("/partners", formData, {
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+});
+
 
 export interface ContactMessage {
   id?: string;

@@ -2,7 +2,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 import nodemailer from 'nodemailer';
-import { Writable } from 'stream';
 
 const partnerRequestSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -126,6 +125,9 @@ export async function POST(req: NextRequest) {
         await transporter.verify();
         await transporter.sendMail(mailOptions);
         
+        // In a real app, you would save this data to your database here.
+        // e.g., await db.partnerRequests.create({ data: emailData });
+
         return NextResponse.json({ message: "Partnership request submitted successfully!" }, { status: 200 });
 
     } catch (error: any) {
