@@ -70,7 +70,7 @@ apiClient.interceptors.response.use(
 
 export const getProducts = () => apiClient.get("/products");
 export const getProduct = (id: string) => apiClient.get(`/products/${id}`);
-export const createPartnerRequest = (formData: FormData) => apiClient.post("/partners", formData);
+export const createPartnerRequest = (formData: FormData) => apiClient.post("/api/partner-request", formData);
 
 
 
