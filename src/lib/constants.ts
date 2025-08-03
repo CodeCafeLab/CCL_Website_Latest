@@ -161,7 +161,7 @@ export const COMPANY_SUB_LINKS: NavItem[] = [
       "Key differentiators, client success stories, testimonials, and USPs.",
   },
   {
-    href: "#",
+    href: "/partners",
     label: "Partners & Affiliations",
     icon: Handshake,
     description: "Tech alliances, certifications, and strategic partners.",
@@ -766,6 +766,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     rating: 4,
   },
 ];
+
 
 
 
