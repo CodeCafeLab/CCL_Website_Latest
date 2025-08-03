@@ -53,24 +53,67 @@ async function setupDatabase() {
     await connection.execute(createTableSQL);
     console.log('Blogs table created successfully!');
     
-    // Check if table exists and show structure
-    const [tables] = await connection.execute('SHOW TABLES LIKE "blogs"');
-    if (tables.length > 0) {
+    // Create partners table
+    const createPartnersTableSQL = `
+      CREATE TABLE IF NOT EXISTS partners (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        full_name VARCHAR(255) NOT NULL,
+        company VARCHAR(255),
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        city_country VARCHAR(255),
+        website VARCHAR(255),
+        area_of_interest JSON,
+        products_of_interest JSON,
+        collaboration_plan TEXT,
+        portfolio VARCHAR(500),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_email (email),
+        INDEX idx_created_at (created_at)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `;
+    
+    console.log('Creating partners table...');
+    await connection.execute(createPartnersTableSQL);
+    console.log('Partners table created successfully!');
+    
+    // Check if tables exist and show structure
+    const [blogTables] = await connection.execute('SHOW TABLES LIKE "blogs"');
+    if (blogTables.length > 0) {
       console.log('Blogs table exists!');
       
       // Show table structure
-      const [columns] = await connection.execute('DESCRIBE blogs');
-      console.log('Table structure:');
-      columns.forEach(col => {
+      const [blogColumns] = await connection.execute('DESCRIBE blogs');
+      console.log('Blogs table structure:');
+      blogColumns.forEach(col => {
         console.log(`  ${col.Field} - ${col.Type} - ${col.Null === 'YES' ? 'NULL' : 'NOT NULL'}`);
       });
       
       // Check if there are any existing records
-      const [rows] = await connection.execute('SELECT COUNT(*) as count FROM blogs');
-      console.log(`Number of existing blog records: ${rows[0].count}`);
+      const [blogRows] = await connection.execute('SELECT COUNT(*) as count FROM blogs');
+      console.log(`Number of existing blog records: ${blogRows[0].count}`);
       
     } else {
       console.log('Blogs table was not created!');
+    }
+    
+    const [partnerTables] = await connection.execute('SHOW TABLES LIKE "partners"');
+    if (partnerTables.length > 0) {
+      console.log('Partners table exists!');
+      
+      // Show table structure
+      const [partnerColumns] = await connection.execute('DESCRIBE partners');
+      console.log('Partners table structure:');
+      partnerColumns.forEach(col => {
+        console.log(`  ${col.Field} - ${col.Type} - ${col.Null === 'YES' ? 'NULL' : 'NOT NULL'}`);
+      });
+      
+      // Check if there are any existing records
+      const [partnerRows] = await connection.execute('SELECT COUNT(*) as count FROM partners');
+      console.log(`Number of existing partner records: ${partnerRows[0].count}`);
+      
+    } else {
+      console.log('Partners table was not created!');
     }
     
   } catch (error) {

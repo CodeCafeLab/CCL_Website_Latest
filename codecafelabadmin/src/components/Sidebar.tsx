@@ -55,6 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ adminName = "Admin" }) => {
     { href: "/product", icon: <FaBox />, label: "Products" },
     { href: "/client-reviews", icon: <FaUser />, label: "Client Reviews" },
     { href: "/contactUs", icon: <FaUser />, label: "Contact Us" },
+    { href: "/partners", icon: <FaUsers />, label: "Partners Program" },
     { href: "/why-choose-us", icon: <FaStar />, label: "Why Choose Us" },
     { href: "/case-studies", icon: <FaFileAlt />, label: "Case Studies" },
     { href: "/whitepapers", icon: <FaBook />, label: "Whitepapers" },

@@ -29,6 +29,7 @@ const quoteRoutes = require("./routes/quoteRoutes");
 const aiFeatureRoutes = require("./routes/aiFeatureRoutes");
 const aiGenRoutes = require("./routes/aiGenRoutes");
 const aiDemoRoutes = require("./routes/aiDemoRoutes");
+const partnerRoutes = require("./routes/partnerRoutes");
 
 const app = express();
 
@@ -102,6 +103,7 @@ app.use("/newsletters", newsletterRoutes);
 app.use("/quotes", quoteRoutes);
 app.use("/ai", aiFeatureRoutes);
 app.use("/ai-gen", aiGenRoutes);
+app.use("/partners", partnerRoutes);
 
 // Rate limiter for /ai-demo
 const aiDemoLimiter = rateLimit({
