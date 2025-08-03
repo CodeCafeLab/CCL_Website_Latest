@@ -105,13 +105,13 @@ export default function AIPage() {
       {/* AI Features & Innovations Section */}
       <section className="space-y-12">
         {/* Search and Filter */}
-        <div className="flex flex-col gap-6 max-w-4xl mx-auto p-6 bg-card rounded-2xl shadow-lg border border-border/10">
-          <div className="relative">
+        <div className="flex flex-col items-center gap-6 max-w-4xl mx-auto">
+          <div className="relative w-full max-w-2xl">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search AI features by title or description..."
-              className="pl-14 w-full h-14 text-lg"
+              placeholder="Search AI features..."
+              className="pl-12 w-full h-14 text-lg rounded-full shadow-md"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -122,7 +122,7 @@ export default function AIPage() {
                 key={category}
                 variant={selectedCategory === category ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory(category)}
-                className="capitalize px-4 py-2 text-base"
+                className="capitalize px-4 py-2 text-base rounded-full"
                 size="lg"
               >
                 {category}
