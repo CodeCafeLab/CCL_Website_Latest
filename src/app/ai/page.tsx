@@ -104,15 +104,6 @@ export default function AIPage() {
 
       {/* AI Features & Innovations Section */}
       <section className="space-y-12">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold">AI Features & Innovations</h2>
-          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-            Explore our cutting-edge AI products and solutions, designed to
-            empower your business with the latest in artificial intelligence
-            and machine learning.
-          </p>
-        </div>
-
         {/* Search and Filter */}
         <div className="flex flex-col gap-6 max-w-4xl mx-auto p-6 bg-card rounded-2xl shadow-lg border border-border/10">
           <div className="relative">

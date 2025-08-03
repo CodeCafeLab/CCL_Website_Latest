@@ -347,27 +347,6 @@ export const RESOURCES_SUB_LINKS: NavItem[] = [
     description:
       "Technical tutorials, integrations, and walkthroughs for developers and clients.",
   },
-  {
-    href: "/newsletters",
-    label: "Newsletter Archive",
-    icon: MailPlus,
-    description:
-      "A place to collect and view our monthly newsletters on company updates and tech trends.",
-  },
-   {
-    href: "/import",
-    label: "Bulk Import",
-    icon: UploadCloud,
-    description:
-      "Upload data in bulk from a CSV file for various content types.",
-  },
-  {
-    href: "/social-automation",
-    label: "Social Automation",
-    icon: Share2,
-    description:
-      "Use AI to generate tailored posts for different social media platforms.",
-  },
 ];
 
 export const SERVICES_DATA: ServiceMenuItem[] = [
@@ -787,6 +766,7 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     rating: 4,
   },
 ];
+
 
 
 
