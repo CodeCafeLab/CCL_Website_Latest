@@ -1,5 +1,5 @@
 
-import { Coffee, Github, Linkedin, Twitter, Facebook, Briefcase, MessageSquare, Send, Instagram, Download } from "lucide-react";
+import { Coffee, Github, Linkedin, Twitter, Facebook, Briefcase, MessageSquare, Send, Instagram, Download, Handshake } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE_NAME } from "@/lib/constants";
@@ -20,6 +20,7 @@ export default function Footer() {
     { href: "/blog", label: "Blog" },
     { href: "/career", label: "Career" },
     { href: "/consultancy", label: "Consultancy" },
+    { href: "/partners", label: "Partners", icon: Handshake },
     { href: "#", label: "Download Brochure", icon: Download },
   ];
 
