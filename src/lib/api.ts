@@ -70,9 +70,10 @@ apiClient.interceptors.response.use(
 
 export const getProducts = () => apiClient.get("/products");
 export const getProduct = (id: string) => apiClient.get(`/products/${id}`);
-export const createPartnerRequest = (formData: FormData) => apiClient.post("/partners", formData, {
+export const createPartnerRequest = (formData: FormData) => apiClient.post("/partner-request", formData, {
   headers: {
-    'Content-Type': 'multipart/form-data',
+    // Let the browser set the Content-Type for multipart/form-data
+    'Content-Type': undefined, 
   },
 });
 
