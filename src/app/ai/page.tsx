@@ -1,6 +1,5 @@
 
 "use client";
-import AIProductDiscoveryClient from "@/components/ai/AIProductDiscoveryClient";
 import { BrainCircuit, Cpu, Bot, Search, Filter, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,7 +81,7 @@ export default function AIPage() {
   }, [aiFeatures, searchTerm, selectedCategory]);
 
   return (
-    <div className="space-y-20">
+    <div className="space-y-16">
       {/* Hero Section */}
       <section className="relative text-center py-16 md:py-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl shadow-lg mb-12 overflow-hidden">
         <div
@@ -91,27 +90,20 @@ export default function AIPage() {
             background: "url('/undraw_design_ewba.svg') center/cover no-repeat",
           }}
         />
-        <h1 className="text-2xl md:text-5xl font-extrabold mb-4 flex items-center justify-center gap-3 text-primary drop-shadow">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 flex items-center justify-center gap-3 text-primary drop-shadow">
           <BrainCircuit className="h-10 w-10 md:h-12 md:w-12 text-accent" />
           AI at CodeCafe Lab
         </h1>
-        <p className="text-sm md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 px-4">
+        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 px-4">
           We are at the forefront of AI innovation, developing intelligent
           solutions that redefine possibilities. Explore our AI capabilities and
           discover how we can help you leverage the power of artificial
           intelligence.
         </p>
-        {/* Optional: Add a call-to-action button */}
-        {/* <Button size="lg" className="mt-4">Get Started with AI</Button> */}
-      </section>
-
-      {/* Product Discovery Section */}
-      <section>
-        <AIProductDiscoveryClient />
       </section>
 
       {/* AI Features & Innovations Section */}
-      <section className="space-y-8">
+      <section className="space-y-12">
         <div className="text-center">
           <h2 className="text-3xl font-bold">AI Features & Innovations</h2>
           <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
@@ -122,24 +114,25 @@ export default function AIPage() {
         </div>
 
         {/* Search and Filter */}
-        <div className="flex flex-col gap-4 max-w-2xl mx-auto">
-          <div className="relative flex-grow">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <div className="flex flex-col gap-6 max-w-4xl mx-auto p-6 bg-card rounded-2xl shadow-lg border border-border/10">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search AI features..."
-              className="pl-10 w-full"
+              placeholder="Search AI features by title or description..."
+              className="pl-14 w-full h-14 text-lg"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             {categories.map(category => (
               <Button
                 key={category}
                 variant={selectedCategory === category ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory(category)}
-                className="capitalize"
+                className="capitalize px-4 py-2 text-base"
+                size="lg"
               >
                 {category}
               </Button>
@@ -150,7 +143,7 @@ export default function AIPage() {
         {/* Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {loading ? (
-            Array.from({ length: 3 }).map((_, index) => <FeatureSkeleton key={index} />)
+            Array.from({ length: 6 }).map((_, index) => <FeatureSkeleton key={index} />)
           ) : filteredFeatures.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground col-span-full">
               No AI features found matching your criteria.
@@ -190,7 +183,6 @@ export default function AIPage() {
                   )}
 
                   <Button asChild className="mt-auto w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    {/* The parent Link component makes this redundant, but we keep it for visual cue */}
                     <span className="flex items-center justify-center">
                       View Details <ArrowRight className="ml-2 h-4 w-4" />
                     </span>
