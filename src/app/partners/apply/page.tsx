@@ -8,26 +8,11 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Handshake,
-  Loader2
-} from "lucide-react";
+import { Handshake, Loader2, UploadCloud, FileText, User, Building, Mail, Phone, Globe, Link as LinkIcon, Edit, Package, Check, ClipboardList } from "lucide-react";
 import { createPartnerRequest } from "@/lib/api";
 import Link from 'next/link';
 
@@ -38,24 +23,18 @@ const partnershipFormSchema = z.object({
   phone: z.string().min(10, "Please enter a valid phone number."),
   cityCountry: z.string().min(2, "Please enter your location."),
   website: z.string().url("Please enter a valid website URL."),
-  areaOfInterest: z.string().min(1, "Select at least one area of interest."),
-  productsOfInterest: z.string().min(1, "Select at least one product."),
-  collaborationPlan: z.string().min(10, "Please describe your collaboration plan."),
+  areaOfInterest: z.string().min(1, "Please select an area of interest."),
+  productsOfInterest: z.string().min(1, "Please select at least one product."),
+  collaborationPlan: z.string().min(20, "Please describe your plan in at least 20 characters."),
   portfolio: z.any().optional(),
 });
 
 type PartnershipFormData = z.infer<typeof partnershipFormSchema>;
 
-
 const productList = [
-  "Trackzy (Time Tracker)",
-  "AutoCleanse (Car Cleaning)",
-  "QConnect (Scan & Connect)",
-  "SwiftDrop (Parcel Delivery)",
-  "ClientNest (CRM)",
-  "EduFlow (School Management)",
-  "DineOS (Restaurant POS)",
-  "WizZap (WhatsApp Automation)",
+  "Trackzy (Time Tracker)", "AutoCleanse (Car Cleaning)", "QConnect (Scan & Connect)",
+  "SwiftDrop (Parcel Delivery)", "ClientNest (CRM)", "EduFlow (School Management)",
+  "DineOS (Restaurant POS)", "WizZap (WhatsApp Automation)",
 ];
 
 const interestList = ["Sales", "Marketing", "Integration", "Support", "Investment", "Reseller"];
@@ -68,34 +47,22 @@ export default function PartnersPage() {
   const form = useForm<PartnershipFormData>({
     resolver: zodResolver(partnershipFormSchema),
     defaultValues: {
-      fullName: "",
-      company: "",
-      email: "",
-      phone: "",
-      cityCountry: "",
-      website: "",
-      areaOfInterest: "",
-      productsOfInterest: "",
-      collaborationPlan: "",
-      portfolio: undefined,
+      fullName: "", company: "", email: "", phone: "",
+      cityCountry: "", website: "", areaOfInterest: "",
+      productsOfInterest: "", collaborationPlan: "", portfolio: undefined,
     },
   });
 
   const onSubmit: SubmitHandler<PartnershipFormData> = async (data) => {
     setIsSubmitting(true);
     const formData = new FormData();
-    formData.append("fullName", data.fullName);
-    formData.append("company", data.company);
-    formData.append("email", data.email);
-    formData.append("phone", data.phone);
-    formData.append("cityCountry", data.cityCountry);
-    formData.append("website", data.website);
-    formData.append("areaOfInterest", data.areaOfInterest);
-    formData.append("productsOfInterest", data.productsOfInterest);
-    formData.append("collaborationPlan", data.collaborationPlan);
-    if (data.portfolio?.[0]) {
-      formData.append("portfolio", data.portfolio[0]);
-    }
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === 'portfolio' && value?.[0]) {
+        formData.append(key, value[0]);
+      } else if (value) {
+        formData.append(key, value as string);
+      }
+    });
 
     try {
       await createPartnerRequest(formData);
@@ -117,155 +84,108 @@ export default function PartnersPage() {
   };
 
   return (
-    <div className="space-y-16">
-        <Button asChild variant="outline">
-          <Link href="/partners">Back to Partner Requests</Link>
-        </Button>
-      <section>
-        <Card className="max-w-2xl mx-auto shadow-xl border-2 border-primary/20">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl">Become a Partner</CardTitle>
-            <CardDescription>
-              Fill out the form to start your journey with us.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField control={form.control} name="fullName" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Full Name</FormLabel>
-                    <FormControl><Input placeholder="John Doe" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+    <div className="space-y-12">
+        <div className="text-center">
+            <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
+              <Handshake className="h-10 w-10 text-primary" />
+              Become a Partner
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Join our ecosystem of innovators and collaborators. Fill out the form below to start your journey with us.
+            </p>
+        </div>
+      
+      <Card className="max-w-4xl mx-auto shadow-xl border-2 border-primary/20">
+        <CardHeader>
+          <CardTitle className="text-2xl">Partnership Application Form</CardTitle>
+          <CardDescription>
+            Provide your details and let us know how you'd like to collaborate.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-                <FormField control={form.control} name="company" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company</FormLabel>
-                    <FormControl><Input placeholder="Company Name" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+              {/* Section 1: Contact Information */}
+              <div className="space-y-4 p-6 border rounded-lg">
+                <h3 className="text-lg font-semibold flex items-center gap-2"><User className="h-5 w-5 text-primary"/>Contact Information</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <FormField control={form.control} name="fullName" render={({ field }) => (
+                    <FormItem><FormLabel>Full Name</FormLabel><FormControl><Input placeholder="John Doe" {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="company" render={({ field }) => (
+                    <FormItem><FormLabel>Company</FormLabel><FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="email" render={({ field }) => (
+                    <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="phone" render={({ field }) => (
+                    <FormItem><FormLabel>Phone</FormLabel><FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                </div>
+              </div>
 
-                <FormField control={form.control} name="email" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="phone" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone</FormLabel>
-                    <FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="cityCountry" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>City & Country</FormLabel>
-                    <FormControl><Input placeholder="e.g., Jaipur, India" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="website" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Website</FormLabel>
-                    <FormControl><Input placeholder="https://yourcompany.com" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-
-                <FormField
-                  control={form.control}
-                  name="areaOfInterest"
-                  render={({ field }) => (
+              {/* Section 2: Partnership Details */}
+              <div className="space-y-4 p-6 border rounded-lg">
+                  <h3 className="text-lg font-semibold flex items-center gap-2"><ClipboardList className="h-5 w-5 text-primary"/>Partnership Details</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                     <FormField control={form.control} name="cityCountry" render={({ field }) => (
+                      <FormItem><FormLabel>City & Country</FormLabel><FormControl><Input placeholder="e.g., Jaipur, India" {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                     <FormField control={form.control} name="website" render={({ field }) => (
+                      <FormItem><FormLabel>Website</FormLabel><FormControl><Input placeholder="https://yourcompany.com" {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={form.control} name="areaOfInterest" render={({ field }) => (
+                        <FormItem><FormLabel>Area of Interest</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl><SelectTrigger><SelectValue placeholder="Select an interest..." /></SelectTrigger></FormControl>
+                            <SelectContent>{interestList.map(item => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent>
+                          </Select>
+                        <FormMessage /></FormItem>
+                      )} />
+                    <FormField control={form.control} name="productsOfInterest" render={({ field }) => (
+                      <FormItem><FormLabel>Product of Interest</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl><SelectTrigger><SelectValue placeholder="Select a product..." /></SelectTrigger></FormControl>
+                          <SelectContent>{productList.map(item => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent>
+                        </Select>
+                      <FormMessage /></FormItem>
+                    )} />
+                  </div>
+                   <FormField control={form.control} name="collaborationPlan" render={({ field }) => (
+                    <FormItem><FormLabel>Collaboration Plan</FormLabel><FormControl><Textarea rows={4} placeholder="Describe how you'd like to collaborate, your target audience, and potential strategies..." {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                   <FormField control={form.control} name="portfolio" render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-semibold mb-1">
-                        Area of Interest
-                      </FormLabel>
+                      <FormLabel>Upload Portfolio/Proposal (Optional)</FormLabel>
                       <FormControl>
-                        <select
-                          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm transition duration-200 ease-in-out focus:border-blue-500 focus:ring-2 focus:ring-blue-400 hover:border-gray-400"
-                          onChange={(e) => field.onChange(e.target.value)}
-                        >
-                          <option value="">Select an interest</option>
-                          {interestList.map((interest) => (
-                            <option key={interest} value={interest}>
-                              {interest}
-                            </option>
-                          ))}
-                        </select>
+                        <label htmlFor="portfolio-upload" className="flex items-center gap-3 w-full border-2 border-dashed rounded-lg cursor-pointer bg-muted/50 hover:bg-muted/75 p-3">
+                          <UploadCloud className="h-8 w-8 text-muted-foreground" />
+                          <div className="text-sm">
+                            {fileName ? (
+                                <p className="font-semibold text-primary">{fileName}</p>
+                            ) : (
+                                <p className="text-muted-foreground">Click to upload or drag & drop</p>
+                            )}
+                            <p className="text-xs text-muted-foreground">PDF, DOC, DOCX (Max 5MB)</p>
+                          </div>
+                          <Input id="portfolio-upload" type="file" className="hidden" onChange={(e) => { field.onChange(e.target.files); setFileName(e.target.files?.[0]?.name || null); }} accept=".pdf,.doc,.docx" />
+                        </label>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="productsOfInterest"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-semibold mb-1">
-                        Products of Interest
-                      </FormLabel>
-                      <FormControl>
-                        <select
-                          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm transition duration-200 ease-in-out focus:border-purple-500 focus:ring-2 focus:ring-purple-400 hover:border-gray-400"
-                           onChange={(e) => field.onChange(e.target.value)}
-                        >
-                           <option value="">Select a product</option>
-                          {productList.map((product) => (
-                            <option key={product} value={product}>
-                              {product}
-                            </option>
-                          ))}
-                        </select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField control={form.control} name="collaborationPlan" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Collaboration Plan</FormLabel>
-                    <FormControl>
-                      <Textarea rows={4} placeholder="Describe how you'd like to collaborate with us..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="portfolio" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Upload Portfolio/Proposal</FormLabel>
-                    <FormControl>
-                      <Input type="file" onChange={(e) => {
-                        field.onChange(e.target.files);
-                        setFileName(e.target.files?.[0]?.name || null);
-                      }} accept=".pdf,.doc,.docx" />
-                    </FormControl>
-                    {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-                <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+                  )} />
+              </div>
+              
+              <div className="flex justify-end pt-4">
+                <Button type="submit" className="w-full md:w-auto" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Submitting...</>) : "Submit Request"}
                 </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </section>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
-
