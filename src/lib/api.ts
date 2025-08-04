@@ -70,23 +70,16 @@ apiClient.interceptors.response.use(
 
 export const getProducts = () => apiClient.get("/products");
 export const getProduct = (id: string) => apiClient.get(`/products/${id}`);
+export const getPartners = () => apiClient.get("/partners");
+export const getPartner = (id: string) => apiClient.get(`/partners/${id}`);
 
-interface PartnerRequest {
-  fullName: string;
-  company: string;
-  email: string;
-  phone: string;
-  cityCountry: string;
-  website: string;
-  areaOfInterest: string[];
-  productsOfInterest: string[];
-  collaborationPlan: string;
-  portfolio: string | File | null;
-}
-
-export const createPartner = (partnerData: FormData
-) =>
-  apiClient.post("/partners", partnerData);
+export const createPartnerRequest = (partnerData: FormData) => {
+  return apiClient.post('/api/partner-request', partnerData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
 
 
 

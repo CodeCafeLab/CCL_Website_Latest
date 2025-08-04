@@ -63,6 +63,22 @@ export interface Product {
   demoUrl?: string;
 }
 
+export interface Partner {
+  id: string;
+  fullName: string;
+  company: string;
+  email: string;
+  phone: string;
+  cityCountry: string;
+  website: string;
+  areaOfInterest: string[];
+  productsOfInterest: string[];
+  collaborationPlan: string;
+  portfolioUrl?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+}
+
 export interface ProductSubMenuItem {
   href: string;
   label: string;
