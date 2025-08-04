@@ -74,11 +74,7 @@ export const getPartners = () => apiClient.get("/partners");
 export const getPartner = (id: string) => apiClient.get(`/partners/${id}`);
 
 export const createPartnerRequest = (partnerData: FormData) => {
-  return apiClient.post('/api/partner-request', partnerData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return apiClient.post('/partners', partnerData);
 };
 
 
