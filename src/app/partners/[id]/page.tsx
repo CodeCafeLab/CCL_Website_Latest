@@ -90,8 +90,14 @@ export default function PartnerDetailPage() {
   }
   const currentStatus = statusConfig[partner.status] || { icon: AlertCircle, className: "bg-muted text-muted-foreground" };
   
-  const areaOfInterest = partner.area_of_interest || partner.areaOfInterest || [];
-  const productsOfInterest = partner.products_of_interest || partner.productsOfInterest || [];
+  const getAsArray = (value: string | string[] | undefined): string[] => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'string' && value.trim() !== '') return [value];
+    return [];
+  }
+
+  const areaOfInterest = getAsArray(partner.area_of_interest || partner.areaOfInterest);
+  const productsOfInterest = getAsArray(partner.products_of_interest || partner.productsOfInterest);
   const portfolioUrl = partner.portfolio_url || partner.portfolioUrl;
 
   return (

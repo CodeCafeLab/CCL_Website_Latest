@@ -74,10 +74,10 @@ export interface Partner {
   cityCountry: string;
   city_country?: string; // from backend
   website: string;
-  areaOfInterest: string[];
-  area_of_interest?: string[]; // from backend
-  productsOfInterest: string[];
-  products_of_interest?: string[]; // from backend
+  areaOfInterest: string[] | string;
+  area_of_interest?: string[] | string; // from backend
+  productsOfInterest: string[] | string;
+  products_of_interest?: string[] | string; // from backend
   collaborationPlan: string;
   collaboration_plan?: string; // from backend
   portfolioUrl?: string;
