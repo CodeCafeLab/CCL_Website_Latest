@@ -50,7 +50,7 @@ export default function PartnerDetailPage() {
           <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-muted-foreground" /> <a href={`mailto:${partner.email}`} className="text-primary hover:underline">{partner.email}</a></div>
           <div className="flex items-center gap-2"><Phone className="h-4 w-4 text-muted-foreground" /> {partner.phone}</div>
           <div className="flex items-center gap-2"><Globe className="h-4 w-4 text-muted-foreground" /> {partner.cityCountry}</div>
-          <div className="flex items-center gap-2"><Link className="h-4 w-4 text-muted-foreground" /> <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{partner.website}</a></div>
+          <div className="flex items-center gap-2"><Globe className="h-4 w-4 text-muted-foreground" /> <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{partner.website}</a></div>
         </div>
 
         <div className="space-y-6">
