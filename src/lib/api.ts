@@ -19,7 +19,7 @@ export const apiClient = axios.create({
   baseURL: apiBaseUrl,
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
-  timeout: 10000, // 10 second timeout
+  timeout: 30000, // 30 second timeout for file uploads
 });
 
 // apiClient.interceptors.request.use(
@@ -58,19 +58,35 @@ apiClient.interceptors.response.use(
     // if (error.code === 'ERR_NETWORK') {
     //   console.error('Network Error: Check if backend server is running on', apiBaseUrl);
     // }
-    
+
     // if (typeof window !== "undefined" && error.response && error.response.status === 401) {
     //   localStorage.removeItem("authToken");
     //   window.location.href = "/login";
     // }
-    
+
     return Promise.reject(error);
   }
 );
 
 export const getProducts = () => apiClient.get("/products");
 export const getProduct = (id: string) => apiClient.get(`/products/${id}`);
-export const createPartnerRequest = (formData: FormData) => apiClient.post("/api/partner-request", formData);
+
+interface PartnerRequest {
+  fullName: string;
+  company: string;
+  email: string;
+  phone: string;
+  cityCountry: string;
+  website: string;
+  areaOfInterest: string[];
+  productsOfInterest: string[];
+  collaborationPlan: string;
+  portfolio: string | File | null;
+}
+
+export const createPartner = (partnerData: FormData
+) =>
+  apiClient.post("/partners", partnerData);
 
 
 

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -33,70 +32,34 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import {
   Handshake,
-  Heart,
-  Lightbulb,
-  MessageSquare,
-  BarChart3,
   Loader2,
-  Users,
-  Award,
-  UploadCloud,
-  Briefcase,
-  GitMerge,
+  CheckCircle,
   BadgePercent,
   TrendingUp,
-  CheckCircle,
+  GitMerge,
 } from "lucide-react";
-import Image from "next/image";
-import { apiClient, createPartnerRequest } from "@/lib/api";
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_MIME_TYPES = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
+import { createPartner } from "@/lib/api";
 
 const partnershipFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
+  fullName: z.string().min(2, "Full name must be at least 2 characters."),
+  company: z.string().min(2, "Company name is required."),
   email: z.string().email("Please enter a valid email address."),
   phone: z.string().min(10, "Please enter a valid phone number."),
-  partnershipType: z.string().min(1, "Please select a partnership type."),
-  productInterest: z.string().optional(),
-  message: z.string().min(10, "Please provide a brief message."),
-  file: z
-    .any()
-    .refine((files) => files?.length === 1, "File is required.")
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .optional(),
+  cityCountry: z.string().min(2, "Please enter your location."),
+  website: z.string().url("Please enter a valid website URL."),
+  areaOfInterest: z.array(z.string()).min(1, "Select at least one area of interest."),
+  productsOfInterest: z.array(z.string()).min(1, "Select at least one product."),
+  collaborationPlan: z.string().min(10, "Please describe your collaboration plan."),
+  portfolio: z.any().optional(),
 });
 
 type PartnershipFormData = z.infer<typeof partnershipFormSchema>;
 
 const partnershipTypes = [
-  {
-    name: "Reseller Partner",
-    icon: BadgePercent,
-    description: "Sell our products and services to your clients and earn commissions.",
-  },
-  {
-    name: "Referral Partner",
-    icon: TrendingUp,
-    description: "Refer clients to us and earn a finder's fee for successful projects.",
-  },
-  {
-    name: "Technology Partner",
-    icon: GitMerge,
-    description: "Integrate your technology with ours to create powerful joint solutions.",
-  },
-  {
-    name: "Strategic Alliance",
-    icon: Handshake,
-    description: "Collaborate on marketing, sales, and strategic initiatives for mutual growth.",
-  },
+  { name: "Reseller Partner", icon: BadgePercent, description: "Sell our products and earn commissions." },
+  { name: "Referral Partner", icon: TrendingUp, description: "Refer clients and earn a finder's fee." },
+  { name: "Technology Partner", icon: GitMerge, description: "Integrate your tech with ours." },
+  { name: "Strategic Alliance", icon: Handshake, description: "Collaborate for mutual growth." },
 ];
 
 const partnerBenefits = [
@@ -119,6 +82,8 @@ const productList = [
   "WizZap (WhatsApp Automation)",
 ];
 
+const interestList = ["Sales", "Marketing", "Integration", "Support", "Investment", "Reseller"];
+
 export default function PartnersPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -127,35 +92,40 @@ export default function PartnersPage() {
   const form = useForm<PartnershipFormData>({
     resolver: zodResolver(partnershipFormSchema),
     defaultValues: {
-      name: "",
+      fullName: "",
+      company: "",
       email: "",
       phone: "",
-      partnershipType: "",
-      productInterest: "",
-      message: "",
-      file: undefined,
+      cityCountry: "",
+      website: "",
+      areaOfInterest: [],
+      productsOfInterest: [],
+      collaborationPlan: "",
+      portfolio: undefined,
     },
   });
 
   const onSubmit: SubmitHandler<PartnershipFormData> = async (data) => {
     setIsSubmitting(true);
     const formData = new FormData();
-    formData.append("name", data.name);
+    formData.append("fullName", data.fullName);
+    formData.append("company", data.company);
     formData.append("email", data.email);
     formData.append("phone", data.phone);
-    formData.append("partnershipType", data.partnershipType);
-    formData.append("productInterest", data.productInterest || "Not specified");
-    formData.append("message", data.message);
-    if (data.file && data.file.length > 0) {
-      formData.append("file", data.file[0]);
+    formData.append("cityCountry", data.cityCountry);
+    formData.append("website", data.website);
+    data.areaOfInterest.forEach((interest) => formData.append("areaOfInterest[]", interest));
+    data.productsOfInterest.forEach((product) => formData.append("productsOfInterest[]", product));
+    formData.append("collaborationPlan", data.collaborationPlan);
+    if (data.portfolio?.[0]) {
+      formData.append("portfolio", data.portfolio[0]);
     }
 
     try {
-      const response = await createPartnerRequest(formData);
-
+      await createPartner(formData);
       toast({
         title: "Partnership Request Submitted!",
-        description: "Thank you for your interest! Our team will review your request and get back to you shortly.",
+        description: "Our team will review your request and get back to you shortly.",
       });
       form.reset();
       setFileName(null);
@@ -163,7 +133,7 @@ export default function PartnersPage() {
       toast({
         variant: "destructive",
         title: "Submission Failed",
-        description: error.response?.data?.message || "Something went wrong. Please try again.",
+        description: error?.response?.data?.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -178,7 +148,7 @@ export default function PartnersPage() {
           Partners & Affiliations Program
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Join us in our mission to deliver innovative technology solutions. We believe in the power of collaboration to drive mutual growth and success.
+          Join us in delivering innovative tech solutions. Let's grow together through collaboration.
         </p>
       </section>
 
@@ -218,79 +188,145 @@ export default function PartnersPage() {
           <CardHeader className="text-center">
             <CardTitle className="text-3xl">Become a Partner</CardTitle>
             <CardDescription>
-              Fill out the form below to start your journey with us. Let's build the future together.
+              Fill out the form to start your journey with us.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <FormField control={form.control} name="name" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl><Input placeholder="John Doe" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                  )}/>
-                  <FormField control={form.control} name="email" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email Address</FormLabel>
-                        <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                  )}/>
-                </div>
-                 <FormField control={form.control} name="phone" render={({ field }) => (
+                <FormField control={form.control} name="fullName" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl><Input placeholder="John Doe" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="company" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company</FormLabel>
+                    <FormControl><Input placeholder="Company Name" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="email" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="phone" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone</FormLabel>
+                    <FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="cityCountry" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City & Country</FormLabel>
+                    <FormControl><Input placeholder="e.g., Jaipur, India" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="website" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Website</FormLabel>
+                    <FormControl><Input placeholder="https://yourcompany.com" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+
+                <FormField
+                  control={form.control}
+                  name="areaOfInterest"
+                  render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                )}/>
-                 <FormField control={form.control} name="partnershipType" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Type of Partnership</FormLabel>
-                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                         <FormControl><SelectTrigger><SelectValue placeholder="Select partnership type..." /></SelectTrigger></FormControl>
-                         <SelectContent>
-                           {partnershipTypes.map(ptype => (<SelectItem key={ptype.name} value={ptype.name}>{ptype.name}</SelectItem>))}
-                         </SelectContent>
-                       </Select>
-                      <FormMessage />
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="productInterest" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product of Interest (Optional)</FormLabel>
-                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                         <FormControl><SelectTrigger><SelectValue placeholder="Select a product..." /></SelectTrigger></FormControl>
-                         <SelectContent>
-                          {productList.map(product => (<SelectItem key={product} value={product}>{product}</SelectItem>))}
-                         </SelectContent>
-                       </Select>
-                      <FormMessage />
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="message" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Message</FormLabel>
-                      <FormControl><Textarea rows={4} placeholder="Tell us about your company and why you'd like to partner with us..." {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="file" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Upload Proposal/Profile (Optional)</FormLabel>
-                       <FormControl>
-                        <Input type="file" onChange={(e) => {
-                            field.onChange(e.target.files);
-                            setFileName(e.target.files?.[0]?.name || null);
-                        }} accept=".pdf,.doc,.docx" />
+                      <FormLabel className="text-sm font-semibold mb-1">
+                        Area of Interest
+                      </FormLabel>
+                      <FormControl>
+                        <select
+                          multiple
+                          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm transition duration-200 ease-in-out focus:border-blue-500 focus:ring-2 focus:ring-blue-400 hover:border-gray-400"
+                          onChange={(e) => {
+                            const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
+                            field.onChange(selected);
+                          }}
+                        >
+                          {interestList.map((interest) => (
+                            <option key={interest} value={interest}>
+                              {interest}
+                            </option>
+                          ))}
+                        </select>
                       </FormControl>
-                      {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
                       <FormMessage />
                     </FormItem>
-                )}/>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="productsOfInterest"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-semibold mb-1">
+                        Products of Interest
+                      </FormLabel>
+                      <FormControl>
+                        <select
+                          multiple
+                          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm transition duration-200 ease-in-out focus:border-purple-500 focus:ring-2 focus:ring-purple-400 hover:border-gray-400"
+                          onChange={(e) => {
+                            const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
+                            field.onChange(selected);
+                          }}
+                        >
+                          {productList.map((product) => (
+                            <option key={product} value={product}>
+                              {product}
+                            </option>
+                          ))}
+                        </select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+
+
+                <FormField control={form.control} name="collaborationPlan" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Collaboration Plan</FormLabel>
+                    <FormControl>
+                      <Textarea rows={4} placeholder="Describe how you'd like to collaborate with us..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="portfolio" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Upload Portfolio/Proposal</FormLabel>
+                    <FormControl>
+                      <Input type="file" onChange={(e) => {
+                        field.onChange(e.target.files);
+                        setFileName(e.target.files?.[0]?.name || null);
+                      }} accept=".pdf,.doc,.docx" />
+                    </FormControl>
+                    {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
                 <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Submitting...</>) : "Submit Request"}
                 </Button>
