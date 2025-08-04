@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Handshake, PlusCircle, ArrowRight, User, Building, Mail, Phone, Globe } from 'lucide-react';
+import { Handshake, PlusCircle, ArrowRight, User, Building, Mail, Phone, Globe, ArrowLeft } from 'lucide-react';
 import { apiClient } from "@/lib/api";
 import type { Partner } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
