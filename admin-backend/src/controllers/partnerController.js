@@ -54,10 +54,30 @@ exports.getPartnerRequests = async (req, res) => {
     // Parse JSON fields
     const parsedPartners = partners.map(partner => {
       try {
+        // Handle area_of_interest
+        let areaOfInterest = [];
+        if (partner.area_of_interest) {
+          if (typeof partner.area_of_interest === 'string') {
+            areaOfInterest = JSON.parse(partner.area_of_interest);
+          } else if (Array.isArray(partner.area_of_interest)) {
+            areaOfInterest = partner.area_of_interest;
+          }
+        }
+
+        // Handle products_of_interest
+        let productsOfInterest = [];
+        if (partner.products_of_interest) {
+          if (typeof partner.products_of_interest === 'string') {
+            productsOfInterest = JSON.parse(partner.products_of_interest);
+          } else if (Array.isArray(partner.products_of_interest)) {
+            productsOfInterest = partner.products_of_interest;
+          }
+        }
+
         return {
           ...partner,
-          areaOfInterest: partner.area_of_interest ? JSON.parse(partner.area_of_interest) : [],
-          productsOfInterest: partner.products_of_interest ? JSON.parse(partner.products_of_interest) : []
+          areaOfInterest,
+          productsOfInterest
         };
       } catch (parseError) {
         console.error('Error parsing JSON for partner:', partner, parseError);
@@ -89,10 +109,30 @@ exports.getPartnerById = async (req, res) => {
     
     // Parse JSON fields
     try {
+      // Handle area_of_interest
+      let areaOfInterest = [];
+      if (partner.area_of_interest) {
+        if (typeof partner.area_of_interest === 'string') {
+          areaOfInterest = JSON.parse(partner.area_of_interest);
+        } else if (Array.isArray(partner.area_of_interest)) {
+          areaOfInterest = partner.area_of_interest;
+        }
+      }
+
+      // Handle products_of_interest
+      let productsOfInterest = [];
+      if (partner.products_of_interest) {
+        if (typeof partner.products_of_interest === 'string') {
+          productsOfInterest = JSON.parse(partner.products_of_interest);
+        } else if (Array.isArray(partner.products_of_interest)) {
+          productsOfInterest = partner.products_of_interest;
+        }
+      }
+
       const parsedPartner = {
         ...partner,
-        areaOfInterest: partner.area_of_interest ? JSON.parse(partner.area_of_interest) : [],
-        productsOfInterest: partner.products_of_interest ? JSON.parse(partner.products_of_interest) : []
+        areaOfInterest,
+        productsOfInterest
       };
       
       console.log('Parsed partner:', parsedPartner);
