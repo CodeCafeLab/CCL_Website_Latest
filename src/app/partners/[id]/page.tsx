@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Partner } from '@/types';
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const DetailPageSkeleton = () => (
     <div className="max-w-4xl mx-auto">
@@ -88,7 +89,10 @@ export default function PartnerDetailPage() {
       }
   }
   const currentStatus = statusConfig[partner.status] || { icon: AlertCircle, className: "bg-muted text-muted-foreground" };
-
+  
+  const areaOfInterest = partner.area_of_interest || partner.areaOfInterest || [];
+  const productsOfInterest = partner.products_of_interest || partner.productsOfInterest || [];
+  const portfolioUrl = partner.portfolio_url || partner.portfolioUrl;
 
   return (
     <div className="container mx-auto py-12 max-w-4xl">
@@ -103,7 +107,7 @@ export default function PartnerDetailPage() {
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-3 mb-2">
               <User className="h-8 w-8 text-primary" />
-              {partner.fullName}
+              {partner.full_name || partner.fullName}
             </h1>
             <p className="text-muted-foreground flex items-center gap-2 text-lg"><Building className="h-5 w-5" />{partner.company}</p>
           </div>
@@ -116,39 +120,48 @@ export default function PartnerDetailPage() {
         <div className="grid md:grid-cols-2 gap-x-8 gap-y-4 mb-8 text-md border-t border-b border-border/60 py-6">
           <div className="flex items-center gap-3"><Mail className="h-5 w-5 text-muted-foreground" /> <a href={`mailto:${partner.email}`} className="text-primary hover:underline truncate">{partner.email}</a></div>
           <div className="flex items-center gap-3"><Phone className="h-5 w-5 text-muted-foreground" /> {partner.phone}</div>
-          <div className="flex items-center gap-3"><Globe className="h-5 w-5 text-muted-foreground" /> {partner.cityCountry}</div>
-          <div className="flex items-center gap-3"><Globe className="h-5 w-5 text-muted-foreground" /> <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate">{partner.website}</a></div>
+          <div className="flex items-center gap-3"><Globe className="h-5 w-5 text-muted-foreground" /> {partner.city_country || partner.cityCountry}</div>
+          {partner.website && <div className="flex items-center gap-3"><Globe className="h-5 w-5 text-muted-foreground" /> <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate">{partner.website}</a></div>}
         </div>
 
         <div className="space-y-8">
-          <div>
-            <h3 className="font-semibold text-xl mb-3">Area of Interest</h3>
-            <div className="flex flex-wrap gap-2">
-              {partner.areaOfInterest.map((interest, idx) => (
-                <Badge key={idx} variant="outline" className="text-md px-3 py-1">{interest}</Badge>
-              ))}
+          {areaOfInterest.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-xl mb-3">Area of Interest</h3>
+              <div className="flex flex-wrap gap-2">
+                {areaOfInterest.map((interest: string, idx: number) => (
+                  <Badge key={idx} variant="outline" className="text-md px-3 py-1">{interest}</Badge>
+                ))}
+              </div>
             </div>
-          </div>
-           <div>
-            <h3 className="font-semibold text-xl mb-3">Products of Interest</h3>
-            <div className="flex flex-wrap gap-2">
-              {partner.productsOfInterest.map((product, idx) => (
-                <Badge key={idx} variant="secondary" className="text-md px-3 py-1">{product}</Badge>
-              ))}
+          )}
+           {productsOfInterest.length > 0 && (
+             <div>
+              <h3 className="font-semibold text-xl mb-3">Products of Interest</h3>
+              <div className="flex flex-wrap gap-2">
+                {productsOfInterest.map((product: string, idx: number) => (
+                  <Badge key={idx} variant="secondary" className="text-md px-3 py-1">{product}</Badge>
+                ))}
+              </div>
             </div>
-          </div>
+           )}
           <div>
             <h3 className="font-semibold text-xl mb-3">Collaboration Plan</h3>
-            <div className="bg-muted p-4 rounded-lg text-md whitespace-pre-line border">{partner.collaborationPlan}</div>
+            <div className="bg-muted p-4 rounded-lg text-md whitespace-pre-line border">{partner.collaboration_plan || partner.collaborationPlan}</div>
           </div>
-          {partner.portfolioUrl && (
+          {portfolioUrl ? (
              <div>
                 <h3 className="font-semibold text-xl mb-3">Portfolio/Proposal</h3>
                 <Button asChild variant="outline">
-                    <a href={partner.portfolioUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
+                    <a href={portfolioUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                         <FileText className="h-4 w-4" /> View Document
                     </a>
                 </Button>
+            </div>
+          ) : partner.portfolio && (
+             <div>
+                <h3 className="font-semibold text-xl mb-3">Portfolio/Proposal</h3>
+                <div className="bg-muted p-4 rounded-lg text-md whitespace-pre-line border">{partner.portfolio}</div>
             </div>
           )}
         </div>
@@ -156,7 +169,7 @@ export default function PartnerDetailPage() {
         <div className="text-xs text-muted-foreground mt-8 pt-4 border-t border-border/50">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            <span>Submitted on: {new Date(partner.createdAt).toLocaleString()}</span>
+            <span>Submitted on: {new Date(partner.created_at || partner.createdAt).toLocaleString()}</span>
           </div>
         </div>
       </div>

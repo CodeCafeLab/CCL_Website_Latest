@@ -1,3 +1,4 @@
+
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem {
@@ -66,17 +67,25 @@ export interface Product {
 export interface Partner {
   id: string;
   fullName: string;
+  full_name?: string; // from backend
   company: string;
   email: string;
   phone: string;
   cityCountry: string;
+  city_country?: string; // from backend
   website: string;
   areaOfInterest: string[];
+  area_of_interest?: string[]; // from backend
   productsOfInterest: string[];
+  products_of_interest?: string[]; // from backend
   collaborationPlan: string;
+  collaboration_plan?: string; // from backend
   portfolioUrl?: string;
+  portfolio_url?: string; // from backend
+  portfolio?: string;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
+  created_at?: string; // from backend
 }
 
 export interface ProductSubMenuItem {
