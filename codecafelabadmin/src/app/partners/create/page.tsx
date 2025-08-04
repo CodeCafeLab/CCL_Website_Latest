@@ -14,7 +14,7 @@ interface PartnerRequest {
   areaOfInterest: string[];
   productsOfInterest: string[];
   collaborationPlan: string;
-  portfolio: string;
+  portfolio: string | File | null;
 }
 
 export default function CreatePartnerPage() {
@@ -31,7 +31,7 @@ export default function CreatePartnerPage() {
     areaOfInterest: [],
     productsOfInterest: [],
     collaborationPlan: "",
-    portfolio: "",
+    portfolio: null,
   });
 
   const [loading, setLoading] = useState(false);
@@ -77,7 +77,21 @@ export default function CreatePartnerPage() {
     setSuccess(null);
 
     try {
-      const response = await apiClient.post('/partners', form);
+      // Prepare the data to send
+      const requestData = {
+        fullName: form.fullName,
+        company: form.company,
+        email: form.email,
+        phone: form.phone,
+        cityCountry: form.cityCountry,
+        website: form.website,
+        areaOfInterest: form.areaOfInterest,
+        productsOfInterest: form.productsOfInterest,
+        collaborationPlan: form.collaborationPlan,
+        portfolio: typeof form.portfolio === 'string' ? form.portfolio : ''
+      };
+
+      const response = await apiClient.post('/partners', requestData);
 
       if (response.status === 201) {
         setSuccess("Thank you! Your partnership request has been submitted successfully. Our team will contact you within 48 hours for onboarding and discussion. We're excited to partner with you!");
@@ -93,7 +107,7 @@ export default function CreatePartnerPage() {
           areaOfInterest: [],
           productsOfInterest: [],
           collaborationPlan: "",
-          portfolio: "",
+          portfolio: null,
         });
         
         // Redirect to partners list after 2 seconds
@@ -293,16 +307,39 @@ export default function CreatePartnerPage() {
               Upload Portfolio / Brochure (Optional)
             </label>
             <input
-              type="text"
+              type="file"
               id="portfolio"
               name="portfolio"
-              value={form.portfolio}
-              onChange={handleChange}
+              accept="application/pdf"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  // Upload to Cloudinary
+                  const formData = new FormData();
+                  formData.append("file", file);
+                  formData.append("upload_preset", "unsigned_preset");
+                  formData.append("resource_type", "raw"); // For PDF files
+                  
+                  try {
+                    const res = await fetch(
+                      "https://api.cloudinary.com/v1_1/dubvzmk7g/raw/upload",
+                      {
+                        method: "POST",
+                        body: formData,
+                      }
+                    );
+                    const data = await res.json();
+                    setForm({ ...form, portfolio: data.secure_url });
+                  } catch (error) {
+                    console.error("Error uploading file:", error);
+                    setErrors(["Error uploading portfolio file. Please try again."]);
+                  }
+                }
+              }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter a link to your portfolio or brochure"
             />
             <p className="mt-1 text-sm text-gray-500">
-              Please provide a link to your portfolio, brochure, or any relevant documents.
+              Please upload a PDF file for your portfolio or brochure.
             </p>
           </div>
 

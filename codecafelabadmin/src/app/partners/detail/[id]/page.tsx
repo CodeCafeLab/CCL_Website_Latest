@@ -234,7 +234,7 @@ export default function PartnerDetailPage() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Portfolio / Brochure</h3>
             <div className="bg-gray-50 p-4 rounded-lg">
               <a href={partner.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                View Portfolio/Brochure
+                View Portfolio/Brochure (PDF)
               </a>
             </div>
           </div>
